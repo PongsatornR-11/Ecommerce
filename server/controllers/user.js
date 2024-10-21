@@ -21,7 +21,7 @@ exports.listUsers = async(req,res) =>{
 exports.changeStatus =async(req,res) =>{
     try{
         const { id , enabled } = req.body
-        const user = await prisma.user.update({
+        await prisma.user.update({
             where:{ id: Number(id) },
             data:{ enabled: enabled }
         })
