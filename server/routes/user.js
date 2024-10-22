@@ -15,7 +15,6 @@ const {
     saveAddress,
     saveOrder,
     getOrder 
-
 } = require('../controllers/user')
 
 router.get('/users', authCheck, adminCheck, listUsers)

@@ -21,10 +21,14 @@ exports.listUsers = async(req,res) =>{
 exports.changeStatus =async(req,res) =>{
     try{
         const { id , enabled } = req.body
-        await prisma.user.update({
+        const user = await prisma.user.update({
             where:{ id: Number(id) },
             data:{ enabled: enabled }
         })
+        // res.json({
+        //     message: 'update user status success!',
+        //     user: user
+        // })
         res.send('update status success!')
     } catch(err){
         console.log(err)
@@ -35,7 +39,7 @@ exports.changeStatus =async(req,res) =>{
 exports.changeRole = async(req,res) =>{
     try{
         const { id, role } = req.body
-        await prisma.user.update({
+        const user = await prisma.user.update({
             where:{ id : id },
             data:{ role: role }
         })
