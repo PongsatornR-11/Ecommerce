@@ -10,7 +10,6 @@ exports.authCheck = async (req, res, next) =>{
             // status(401) is Unauthorized
         }
         const token = headerToken.split(' ')[1]
-
         const decode = jwt.verify(token, process.env.SECRET)
         req.user = decode
 
