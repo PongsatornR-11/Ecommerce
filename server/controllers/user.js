@@ -54,8 +54,6 @@ exports.userCart = async(req,res) =>{
     try{
 
         const { cart } =req.body
-        console.log(cart)
-        console.log(req.user.id)
 
         const user = await prisma.user.findFirst({
             where:{ id :Number(req.user.id)}
@@ -130,7 +128,23 @@ exports.getUserCart = async(req,res) =>{
 
 exports.emptyCart = async (req,res) =>{
     try{
-        res.send('hello empty user cart in controller')
+        const cart = await prisma.cart.findFirst({
+            where:{ orderedById : Number(req.user.id)}
+        })
+        if(!cart){
+            return res.status(400).json({ message: "No cart!"})
+        }
+
+        await prisma.productOnCart.deleteMany({
+            where: { cartId: cart.id }
+        })
+        const result = await prisma.cart.deleteMany({
+            where: { orderedById: Number(req.user.id) }
+        })
+        res.json({
+            message : 'Cart deleted',
+            deletedCount : result.count
+        })
     }catch(err){
         console.log(err)
         res.status(500).json({message : "Empty user cart function error"})
@@ -139,7 +153,20 @@ exports.emptyCart = async (req,res) =>{
 
 exports.saveAddress = async (req,res) =>{
     try{
-        res.send('hello saveAddress in controller')
+        const { address } = req.body
+        const addressUser = await prisma.user.update({
+            where:{
+                id: Number(req.user.id)
+            },
+            data:{
+                address: address
+            }
+        })
+        res.json({
+            ok: true,
+            message: "Update success",
+            addressUpdate: addressUser.address
+        })
     }catch(err){
         console.log(err)
         res.status(500).json({ message :"Save address function error"})
@@ -148,6 +175,22 @@ exports.saveAddress = async (req,res) =>{
 
 exports.saveOrder = async(req,res) =>{
     try{
+        // this is real !!!!
+        // step 1 Get user Cart
+        const userCart = await prisma.cart.findFirst({
+            where:{
+                orderedById : Number(req.user.id)
+            },
+            include: { products : true }
+        })
+
+        // check quantities
+        if(~userCart || userCart.products.length === 0){
+            return res.status(400).json({ 
+                ok: false, 
+                message : 'cart is empty!'})
+        }
+
         res.send('hello saveOrder in controller')
     }catch(err){
         console.log(err)
