@@ -184,14 +184,72 @@ exports.saveOrder = async(req,res) =>{
             include: { products : true }
         })
 
-        // check quantities
-        if(~userCart || userCart.products.length === 0){
+        // check cart empty 
+        if(!userCart || userCart.products.length === 0){
             return res.status(400).json({ 
                 ok: false, 
                 message : 'cart is empty!'})
         }
 
-        res.send('hello saveOrder in controller')
+        // check quantity for loop in object
+        for(const item of userCart.products){
+            const product = await prisma.product.findUnique({
+                where: { id:item.productId},
+                select:{ title: true, quantity: true}
+            })
+
+            if(!product || item.count > product.quantity){
+                return res.status(400).json({
+                    ok: false, 
+                    message: `sorry out of product ${product.title}`
+                })
+            }
+        }
+
+        // create a new order
+        const order = await prisma.order.create({
+            data:{
+                products:{
+                    create: userCart.products.map((item)=>({
+                        productId: item.productId,
+                        count: item.count,
+                        price: item.price,
+                    }))
+                },
+                orderedBy:{
+                    connect: { 
+                        id: Number(req.user.id),
+                    }
+                },
+                cartTotal: userCart.cartTotal
+            }
+        })
+
+        // after save order success 
+        // 1. delete cart that orderbyId
+        // 2.delete ProductOnCart, reduce quantity of product,
+
+        // update product\
+
+        // prepare object to decrease remain quantities and increate sold quantity
+        const updateProductObject = userCart.products.map((item) =>({
+            where: { id: item.productId },
+            data: {
+                quantity: {decrement :item.count},
+                sold: { increment : item.count}
+            }
+        }))
+        console.log(updateProductObject)
+
+        await Promise.all(
+            updateProductObject.map((updateproductItem)=> prisma.product.update(updateproductItem))
+        )
+        await prisma.cart.deleteMany({
+            where:{
+                orderedById : Number(req.user.id)
+            }
+        })
+        res.json({ok : true, order })
     }catch(err){
         console.log(err)
         res.status(500).json({message : "Save order function error"})
@@ -200,7 +258,25 @@ exports.saveOrder = async(req,res) =>{
 
 exports.getOrder = async(req,res) =>{
     try{
-        res.send('hello getOrder in controller')
+        const orders = await prisma.order.findMany({
+            where:{
+                orderedById : Number(req.user.id)
+            },
+            include:{ 
+                products:{
+                    include:{
+                        product:true
+                    }                
+            }}
+        })
+
+        if(!orders.length === 0){
+            res.status(400).json({ok: false, message: 'No orders'})
+        }
+        res.json({
+            ok: true,
+            orders: orders
+        })
     }catch(err){
         console.log(err)
         res.status(500).json({message : "getOrder function error"})
