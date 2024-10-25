@@ -8,15 +8,22 @@ import History from '../pages/History'
 import Checkout from '../pages/Checkout'
 import Login from '../pages/auth/login'
 import Register from '../pages/auth/Register'
+import Layout from '../layouts/Layout'
 
 const router = createBrowserRouter([
-    { path: '/', element:<Home /> },
-    { path: 'shop', element:<Shop /> },
-    { path: 'cart', element:<Cart />},
-    { path: 'history', element:<History />},
-    { path: 'checkout', element:<Checkout />},
-    { path: 'login', element:<Login />},
-    { path: 'register', element:<Register />},
+    { 
+        path: '/', 
+        element:<Layout/>,
+        children:[
+            { index: true, element:<Home /> },
+            { path: 'shop', element:<Shop /> },
+            { path: 'cart', element:<Cart />},
+            { path: 'history', element:<History />},
+            { path: 'checkout', element:<Checkout />},
+            { path: 'login', element:<Login />},
+            { path: 'register', element:<Register />},
+        ]
+    },
 ])
 
 const AppRoutes = () => {
