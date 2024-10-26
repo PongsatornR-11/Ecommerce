@@ -1,11 +1,13 @@
 // rafce
 
-import React from 'react'
+import React from "react";
 
 const Home = () => {
   return (
-    <div>Home Page in pages folder</div>
-  )
-}
+    <div>
+      <h1 className="text-3xl font-bold underline">Home page</h1>
+    </div>
+  );
+};
 
-export default Home
+export default Home;

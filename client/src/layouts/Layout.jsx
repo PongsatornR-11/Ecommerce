@@ -1,16 +1,18 @@
 //rafce
 
-import React from 'react'
-import { Outlet } from 'react-router-dom'
+import React from "react";
+import { Outlet } from "react-router-dom";
+import MainNav from "../components/MainNav";
 
 const Layout = () => {
   return (
     <div>
-        <h1>Main Nav</h1>
-        <hr/>
+      <MainNav />
+      <main>
         <Outlet />
+      </main>
     </div>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;
