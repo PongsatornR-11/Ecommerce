@@ -1,8 +1,13 @@
 //rafce
 
 import React, { useState } from "react";
+import axios from "axios";
+
+import { toast } from 'react-toastify';
 
 const Register = () => {
+
+
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -10,14 +15,31 @@ const Register = () => {
   });
 
   const handleOnchange = (event) => {
-    console.log(event.target.name, event.target.value);
-    setForm({});
+    setForm({
+      ...form,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (form.password !== form.confirmPassword) {
+      return alert("Password is not match!!");
+    }
+    // send to back end.
+    try {
+      const res = await axios.post("http://localhost:5000/api/register", form);
+      toast.success(res.data)
+    } catch (err) {
+      const errMsg = err.response?.data?.message
+      toast.error(errMsg)
+    }
   };
 
   return (
     <div>
       Register
-      <form>
+      <form onSubmit={handleSubmit}>
         Email
         <input
           onChange={handleOnchange}
@@ -31,7 +53,7 @@ const Register = () => {
           onChange={handleOnchange}
           className="border"
           name="password"
-          type="password"
+          type="text"
         />
         Confirm Password
         <input
