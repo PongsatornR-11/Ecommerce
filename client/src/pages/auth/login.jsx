@@ -2,7 +2,10 @@
 
 import React, { useState } from "react";
 
-// for handle with back end 
+// import redirect module
+import { useNavigate } from "react-router-dom";
+
+// for handle with back end
 import axios from "axios";
 
 // for handle error , alart
@@ -12,11 +15,13 @@ import { toast } from "react-toastify";
 import useEcomStore from "../../store/ecom-store";
 
 const Login = () => {
+  const navigate = useNavigate();
 
-  // from store folder user zustand 
-  const actionLogin = useEcomStore((state) => state.actionLogin)
+  // from store folder use zustand
+  const actionLogin = useEcomStore((state) => state.actionLogin);
+  // const user = useEcomStore((state) => state.user);
 
-
+  // handle change receive value form user on website
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -29,16 +34,33 @@ const Login = () => {
     });
   };
 
+  //if user press Submit or login run this code.
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    try{
-      //from Zustand 
-      const res = await actionLogin(form)
-      toast.success(`${res.data.payload.email} log in Success`)
-    }catch(err){
-      const errMsg = err.response?.data?.message
-      toast.error(errMsg)
+    try {
+      //from Zustand
+      const res = await actionLogin(form);
+      console.log("res", res);
+
+      const role = res.data.payload.role;
+      console.log("role", role);
+
+      // roleRedirect
+      const roleRedirect = (role) => {
+        if (role === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/user");
+        }
+      };
+
+      roleRedirect(role);
+
+      toast.success(`${res.data.payload.email} log in Success`);
+    } catch (err) {
+      const errMsg = err.response?.data?.message;
+      toast.error(errMsg);
     }
   };
 
