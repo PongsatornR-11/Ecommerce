@@ -9,7 +9,7 @@ export const currentUser = async(token) =>
     // configuration
     {
       headers: {
-        Authorization: `Bearer ${token} `,
+        Authorization: `Bearer ${token}`,
       },
     }
   );
