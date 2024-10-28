@@ -25,9 +25,7 @@ const LoadingToRedirect = () => {
     return <Navigate to={"/"} />;
   }
 
-  return (
-    <div>No Permission, Redirect in {count}</div>
-  );
+  return <div>No Permission, Redirect in {count}</div>;
 };
 
 export default LoadingToRedirect;

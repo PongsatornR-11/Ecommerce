@@ -43,7 +43,7 @@ const router = createBrowserRouter([
   // admin path
   {
     path: "/admin",
-    element: <ProtectRouteAdmin element={ <LayoutAdmin /> } />,
+    element: <ProtectRouteAdmin element={<LayoutAdmin />} />,
     children: [
       { index: true, element: <Dashboard /> },
       { path: "category", element: <Category /> },
@@ -56,7 +56,7 @@ const router = createBrowserRouter([
   {
     path: "/user",
     // element: <LayoutUser />,
-    element: <ProtectRouteUser element={<LayoutUser />}/>,
+    element: <ProtectRouteUser element={<LayoutUser />} />,
     children: [{ index: true, element: <HomeUser /> }],
   },
 ]);
