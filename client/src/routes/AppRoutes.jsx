@@ -21,6 +21,9 @@ import Layout from "../layouts/Layout";
 import LayoutAdmin from "../layouts/LayoutAdmin";
 import LayoutUser from "../layouts/LayoutUser";
 
+import ProtectRouteUser from "./ProtectRouteUser";
+import ProtectRouteAdmin from "./ProtectRouteAdmin";
+
 const router = createBrowserRouter([
   // public path
   {
@@ -40,7 +43,7 @@ const router = createBrowserRouter([
   // admin path
   {
     path: "/admin",
-    element: <LayoutAdmin />,
+    element: <ProtectRouteAdmin element={ <LayoutAdmin /> } />,
     children: [
       { index: true, element: <Dashboard /> },
       { path: "category", element: <Category /> },
@@ -52,7 +55,8 @@ const router = createBrowserRouter([
   // user path
   {
     path: "/user",
-    element: <LayoutUser />,
+    // element: <LayoutUser />,
+    element: <ProtectRouteUser element={<LayoutUser />}/>,
     children: [{ index: true, element: <HomeUser /> }],
   },
 ]);
