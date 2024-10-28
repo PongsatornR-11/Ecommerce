@@ -13,14 +13,13 @@ import Register from "../pages/auth/Register";
 import Dashboard from "../pages/admin/Dashboard";
 import Category from "../pages/admin/Category";
 import Product from "../pages/admin/Product";
-import Manage from '../pages/admin/Manage'
+import Manage from "../pages/admin/Manage";
 import HomeUser from "../pages/user/HomeUser";
 
 //import layouts from folder 'layouts'
 import Layout from "../layouts/Layout";
 import LayoutAdmin from "../layouts/LayoutAdmin";
 import LayoutUser from "../layouts/LayoutUser";
-
 
 const router = createBrowserRouter([
   // public path
@@ -52,13 +51,10 @@ const router = createBrowserRouter([
 
   // user path
   {
-    path: '/user',
+    path: "/user",
     element: <LayoutUser />,
-    children: [
-      { index: true, element:<HomeUser />},
-    ]
-  }
-  
+    children: [{ index: true, element: <HomeUser /> }],
+  },
 ]);
 
 const AppRoutes = () => {

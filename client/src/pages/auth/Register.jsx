@@ -3,11 +3,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 const Register = () => {
-
-
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -29,10 +27,10 @@ const Register = () => {
     // send to back end.
     try {
       const res = await axios.post("http://localhost:5000/api/register", form);
-      toast.success(res.data)
+      toast.success(res.data);
     } catch (err) {
-      const errMsg = err.response?.data?.message
-      toast.error(errMsg)
+      const errMsg = err.response?.data?.message;
+      toast.error(errMsg);
     }
   };
 
