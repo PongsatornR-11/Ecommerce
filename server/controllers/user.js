@@ -1,117 +1,118 @@
 const prisma = require('../config/prisma')
 
-exports.listUsers = async(req,res) =>{
-    try{
+exports.listUsers = async (req, res) => {
+    try {
         const users = await prisma.user.findMany({
-            select:{
-                id:true,
-                email:true,
-                role:true,
-                enabled:true,
-                address:true
+            select: {
+                id: true,
+                email: true,
+                role: true,
+                enabled: true,
+                address: true
             }
         })
         res.send(users)
-    }catch(err){
+    } catch (err) {
         console.log(err)
-        res.status(500).json({message : "Server error"})
+        res.status(500).json({ message: "Server error" })
     }
 }
 
-exports.changeStatus =async(req,res) =>{
-    try{
-        const { id , enabled } = req.body
+exports.changeStatus = async (req, res) => {
+    try {
+        const { id, enabled } = req.body
         const user = await prisma.user.update({
-            where:{ id: Number(id) },
-            data:{ enabled: enabled }
+            where: { id: Number(id) },
+            data: { enabled: enabled }
         })
         // res.json({
         //     message: 'update user status success!',
         //     user: user
         // })
         res.send('update status success!')
-    } catch(err){
+    } catch (err) {
         console.log(err)
-        res.status(500).json({message : "Server error"})
+        res.status(500).json({ message: "Server error" })
     }
 }
 
-exports.changeRole = async(req,res) =>{
-    try{
+exports.changeRole = async (req, res) => {
+    try {
         const { id, role } = req.body
         const user = await prisma.user.update({
-            where:{ id : Number(id) },
-            data:{ role: role }
+            where: { id: Number(id) },
+            data: { role: role }
         })
         res.send('hello change role in controller')
-    }catch(err){
+    } catch (err) {
         console.log(err)
-        res.status(500).json({message: "Change role error"})
+        res.status(500).json({ message: "Change role error" })
     }
 }
 
-exports.userCart = async(req,res) =>{
-    try{
+exports.userCart = async (req, res) => {
+    try {
 
-        const { cart } =req.body
+        const { cart } = req.body
 
         const user = await prisma.user.findFirst({
-            where:{ id :Number(req.user.id)}
+            where: { id: Number(req.user.id) }
         })
         // console.log(user)
         // delete old cart item
         await prisma.productOnCart.deleteMany({
-            where:{
-                cart: { 
-                    orderedById: user.id }
+            where: {
+                cart: {
+                    orderedById: user.id
+                }
             }
         })
 
         // delete old cart
         await prisma.cart.deleteMany({
-            where:{
+            where: {
                 orderedById: user.id
             }
         })
 
         //prepare product
-        let products = cart.map((item)=>({
-            productId : item.id,
-            count : item.count,
-            price : item.price
+        let products = cart.map((item) => ({
+            productId: item.id,
+            count: item.count,
+            price: item.price
         }))
 
         // find total price
-        let cartTotal = products.reduce((sum, item)=>
+        let cartTotal = products.reduce((sum, item) =>
             sum + item.price * item.count, 0)
 
         const newCart = await prisma.cart.create({
-            data:{
-                products:{
+            data: {
+                products: {
                     create: products
                 },
-                cartTotal : cartTotal,
+                cartTotal: cartTotal,
                 orderedById: user.id
             }
         })
         console.log(newCart)
         res.send('Add cart completed!')
-    }catch(err){
+    } catch (err) {
         console.log(err)
-        res.status(500).json({ message : "user cart function error"})
+        res.status(500).json({ message: "user cart function error" })
     }
 }
 
-exports.getUserCart = async(req,res) =>{
-    try{
+exports.getUserCart = async (req, res) => {
+    try {
         const cart = await prisma.cart.findFirst({
-            where:{
+            where: {
                 orderedById: Number(req.user.id)
             },
-            include:{
-                products:{
-                    include:{
-                        product:true
+            include: {
+                products: {
+                    include: {
+                        product: true
                     }
                 }
             }
@@ -120,19 +121,19 @@ exports.getUserCart = async(req,res) =>{
             products: cart.products,
             cartTotal: cart.cartTotal
         })
-    }catch(err){
+    } catch (err) {
         console.log(err)
-        res.status(500).json({message: "get User cart function error"})
+        res.status(500).json({ message: "get User cart function error" })
     }
 }
 
-exports.emptyCart = async (req,res) =>{
-    try{
+exports.emptyCart = async (req, res) => {
+    try {
         const cart = await prisma.cart.findFirst({
-            where:{ orderedById : Number(req.user.id)}
+            where: { orderedById: Number(req.user.id) }
         })
-        if(!cart){
-            return res.status(400).json({ message: "No cart!"})
+        if (!cart) {
+            return res.status(400).json({ message: "No cart!" })
         }
 
         await prisma.productOnCart.deleteMany({
@@ -142,23 +143,23 @@ exports.emptyCart = async (req,res) =>{
             where: { orderedById: Number(req.user.id) }
         })
         res.json({
-            message : 'Cart deleted',
-            deletedCount : result.count
+            message: 'Cart deleted',
+            deletedCount: result.count
         })
-    }catch(err){
+    } catch (err) {
         console.log(err)
-        res.status(500).json({message : "Empty user cart function error"})
+        res.status(500).json({ message: "Empty user cart function error" })
     }
 }
 
-exports.saveAddress = async (req,res) =>{
-    try{
+exports.saveAddress = async (req, res) => {
+    try {
         const { address } = req.body
         const addressUser = await prisma.user.update({
-            where:{
+            where: {
                 id: Number(req.user.id)
             },
-            data:{
+            data: {
                 address: address
             }
         })
@@ -167,40 +168,41 @@ exports.saveAddress = async (req,res) =>{
             message: "Update success",
             addressUpdate: addressUser.address
         })
-    }catch(err){
+    } catch (err) {
         console.log(err)
-        res.status(500).json({ message :"Save address function error"})
+        res.status(500).json({ message: "Save address function error" })
     }
 }
 
-exports.saveOrder = async(req,res) =>{
-    try{
+exports.saveOrder = async (req, res) => {
+    try {
         // this is real !!!!
         // step 1 Get user Cart
         const userCart = await prisma.cart.findFirst({
-            where:{
-                orderedById : Number(req.user.id)
+            where: {
+                orderedById: Number(req.user.id)
             },
-            include: { products : true }
+            include: { products: true }
         })
 
         // check cart empty 
-        if(!userCart || userCart.products.length === 0){
-            return res.status(400).json({ 
-                ok: false, 
-                message : 'cart is empty!'})
+        if (!userCart || userCart.products.length === 0) {
+            return res.status(400).json({
+                ok: false,
+                message: 'cart is empty!'
+            })
         }
 
         // check quantity for loop in object
-        for(const item of userCart.products){
+        for (const item of userCart.products) {
             const product = await prisma.product.findUnique({
-                where: { id:item.productId},
-                select:{ title: true, quantity: true}
+                where: { id: item.productId },
+                select: { title: true, quantity: true }
             })
 
-            if(!product || item.count > product.quantity){
+            if (!product || item.count > product.quantity) {
                 return res.status(400).json({
-                    ok: false, 
+                    ok: false,
                     message: `sorry out of product ${product.title}`
                 })
             }
@@ -208,16 +210,16 @@ exports.saveOrder = async(req,res) =>{
 
         // create a new order
         const order = await prisma.order.create({
-            data:{
-                products:{
-                    create: userCart.products.map((item)=>({
+            data: {
+                products: {
+                    create: userCart.products.map((item) => ({
                         productId: item.productId,
                         count: item.count,
                         price: item.price,
                     }))
                 },
-                orderedBy:{
-                    connect: { 
+                orderedBy: {
+                    connect: {
                         id: Number(req.user.id),
                     }
                 },
@@ -232,53 +234,54 @@ exports.saveOrder = async(req,res) =>{
         // update product\
 
         // prepare object to decrease remain quantities and increate sold quantity
-        const updateProductObject = userCart.products.map((item) =>({
+        const updateProductObject = userCart.products.map((item) => ({
             where: { id: item.productId },
             data: {
-                quantity: {decrement :item.count},
-                sold: { increment : item.count}
+                quantity: { decrement: item.count },
+                sold: { increment: item.count }
             }
         }))
         console.log(updateProductObject)
 
         await Promise.all(
-            updateProductObject.map((updateproductItem)=> prisma.product.update(updateproductItem))
+            updateProductObject.map((updateproductItem) => prisma.product.update(updateproductItem))
         )
         await prisma.cart.deleteMany({
-            where:{
-                orderedById : Number(req.user.id)
+            where: {
+                orderedById: Number(req.user.id)
             }
         })
-        res.json({ok : true, order })
-    }catch(err){
+        res.json({ ok: true, order })
+    } catch (err) {
         console.log(err)
-        res.status(500).json({message : "Save order function error"})
+        res.status(500).json({ message: "Save order function error" })
     }
 }
 
-exports.getOrder = async(req,res) =>{
-    try{
+exports.getOrder = async (req, res) => {
+    try {
         const orders = await prisma.order.findMany({
-            where:{
-                orderedById : Number(req.user.id)
+            where: {
+                orderedById: Number(req.user.id)
             },
-            include:{ 
-                products:{
-                    include:{
-                        product:true
-                    }                
-            }}
+            include: {
+                products: {
+                    include: {
+                        product: true
+                    }
+                }
+            }
         })
 
-        if(!orders.length === 0){
-            res.status(400).json({ok: false, message: 'No orders'})
+        if (!orders.length === 0) {
+            res.status(400).json({ ok: false, message: 'No orders' })
         }
         res.json({
             ok: true,
             orders: orders
         })
-    }catch(err){
+    } catch (err) {
         console.log(err)
-        res.status(500).json({message : "getOrder function error"})
+        res.status(500).json({ message: "getOrder function error" })
     }
 }
