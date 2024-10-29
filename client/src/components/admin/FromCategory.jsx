@@ -6,15 +6,20 @@ import { createCategory } from "../../api/Category";
 
 import useEcomStore from "../../store/ecom-store";
 
+import { toast } from 'react-toastify'
+
 const FromCategory = () => {
   const token = useEcomStore((state) => state.token);
   const [name, setName] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // prevent refresh page when run function handlerSubmit
+    if(!name){
+        return toast.warning('Please fill data')
+    }
     try {
       const res = await createCategory(token, { name });
-      console.log(res);
+      toast.success(`Add Catergory ${res.data.name} Success`)
     } catch (err) {
       console.log(err);
     }
