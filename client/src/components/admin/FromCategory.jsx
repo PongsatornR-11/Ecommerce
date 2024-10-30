@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 
-import { createCategory, listCategory, removeCategory } from "../../api/Category";
+import { createCategory, removeCategory } from "../../api/Category";
 
 import useEcomStore from "../../store/ecom-store";
 
@@ -30,30 +30,23 @@ const FromCategory = () => {
 
 
   // list category 
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]); // local state
+
+  const categories = useEcomStore((state) => state.categories) //global state to get categories variable 
+  const getCategory = useEcomStore((state) => state.getCategory) //global state to call function getCategory
   useEffect(() => {
     getCategory(token)
   }, [])
 
-  async function getCategory(token) {
-    try {
-      const res = await listCategory(token);
-      // console.log(res)
-      setCategories(res.data)
-    } catch (err) {
-      console.log(err);
-      const errMsg = err.response?.data?.message;
-      toast.error(errMsg);
-    }
-  }
+
 
   // remove category
-  const handleRemove = async(id)=>{
-    try{
-      const res = await removeCategory(token,id)
+  const handleRemove = async (id) => {
+    try {
+      const res = await removeCategory(token, id)
       getCategory(token)
-      toast.warning(`Removed ${res.data.name} `)
-    }catch(err){
+      toast.warning(`Category ${res.data.name} Removed `)
+    } catch (err) {
       console.log(err)
     }
   }
@@ -77,17 +70,17 @@ const FromCategory = () => {
 
         {
           categories.map((item, index) =>
-            <li 
+            <li
               className="flex justify-between my-2"
               key={index}
-              >
+            >
               <span>
                 {item.name}
               </span>
-              
-              <button 
+
+              <button
                 className="bg-red-400"
-                onClick={()=>handleRemove(item.id)}
+                onClick={() => handleRemove(item.id)}
               >
                 Delete
               </button>

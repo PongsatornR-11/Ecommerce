@@ -4,9 +4,12 @@ import { create } from "zustand";
 // create, handle local storage
 import { persist, createJSONStorage } from "zustand/middleware";
 
+import { listCategory } from "../api/Category";
+
 const ecomStore = (set) => ({
   user: null,
   token: null,
+  categories: [],
   actionLogin: async (form) => {
     const res = await axios.post("http://localhost:5000/api/login", form);
 
@@ -17,6 +20,14 @@ const ecomStore = (set) => ({
     });
     return res;
   },
+  getCategory: async (token) => {
+    try {
+      const res = await listCategory(token);
+      set({ categories: res.data })
+    } catch (err) {
+      console.log(err);
+    }
+  }
 });
 
 const userPersist = {
