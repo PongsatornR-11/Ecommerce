@@ -41,10 +41,8 @@ const Login = () => {
     try {
       //from Zustand
       const res = await actionLogin(form);
-      console.log("res", res);
 
       const role = res.data.payload.role;
-      console.log("role", role);
 
       // roleRedirect
       const roleRedirect = (role) => {
