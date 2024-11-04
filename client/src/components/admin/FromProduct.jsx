@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import useEcomStore from '../../store/ecom-store'
 import { createProduct } from '../../api/product'
+import { toast } from 'react-toastify'
 
 
 const initialState = {
@@ -13,34 +14,39 @@ const initialState = {
     images: []
 }
 
-
 const FromProduct = () => {
 
     const token = useEcomStore((state) => state.token)
+
     const getCategory = useEcomStore((state) => state.getCategory)
     const categories = useEcomStore((state) => state.categories)
+
+    const getProduct = useEcomStore((state) => state.getProduct)
+    const products = useEcomStore((state) => state.products)
+
     const [form, setForm] = useState(initialState)
 
     useEffect(() => {
         getCategory(token)
+        getProduct(token, 5)
     }, [])
-    console.log(categories)
 
     const handleOnChange = ((e) => {
         console.log(e.target.name, e.target.value)
         setForm({
             ...form,
-            [e.target.name] : e.target.value
+            [e.target.name]: e.target.value
         })
     })
 
-    const handleSubmit = async (e)=>{
+    const handleSubmit = async (e) => {
         e.preventDefault()
         console.log(form)
-        try{
+        try {
             const res = await createProduct(token, form)
             console.log(res)
-        }catch(err){
+            toast.success(`Add ${res.data.title} Qty ${res.data.quantity} success!`)
+        } catch (err) {
             console.log(err)
         }
     }
@@ -95,8 +101,51 @@ const FromProduct = () => {
                         )
                     }
                 </select>
-                <hr/>
+                <hr />
                 <button className='bg-blue-400'>Add Product</button>
+
+                <hr />
+                <br />
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">No.</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Sold</th>
+                            <th scope="col">Update date</th>
+                            <th scope="col">Manage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {
+                            products.map((item, index) => {
+                                console.log(item)
+                                return (
+                                    <tr>
+                                        <th scope="row">{index + 1}</th>
+                                        <td>{item.title}</td>
+                                        <td>{item.description}</td>
+                                        <td>{item.price}</td>
+                                        <td>{item.quantity}</td>
+                                        <td>{item.sold}</td>
+                                        <td>{item.updateAt}</td>
+                                        <td>
+                                            <p>Edit</p>
+                                            <p>Delete</p>
+                                        </td>
+                                    </tr>
+                                )
+                            })
+                        }
+
+
+                    </tbody>
+                </table>
+
             </form>
         </div>
     )
