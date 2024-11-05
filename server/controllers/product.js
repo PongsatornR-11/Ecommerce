@@ -1,5 +1,7 @@
 const prisma = require('../config/prisma')
 
+const cloudinary = require('cloudinary').v2
+
 exports.create = async (req, res) => {
     try {
         // receive data from frontend
@@ -303,6 +305,43 @@ exports.searchFilters = async (req, res) => {
             }
             await handlePrice(req, res, price)
         }
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ message: "Server error" })
+    }
+}
+
+
+
+
+
+
+cloudinary.config({
+    cloud_name: process.env.CLOUNDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUNDINARY_API_KEY,
+    api_secret: process.env.CLOUNDINARY_API_SCRET,
+});
+
+exports.createImage = async (req, res) => {
+    try {
+        const result = await cloudinary.uploader.upload(
+            req.body.image,
+            {
+                public_id: `WomenOn${Date.now()}`,
+                resource_type: 'auto',
+                folder: 'Ecom'
+            }
+        )
+        res.send(result)
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ message: "Server error" })
+    }
+}
+
+exports.removeImage = async (req, res) => {
+    try {
+        res.send('hello remove image ')
     } catch (err) {
         console.log(err)
         res.status(500).json({ message: "Server error" })

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import useEcomStore from '../../store/ecom-store'
 import { createProduct } from '../../api/product'
 import { toast } from 'react-toastify'
+import UpdateFile from './UpdateFile'
 
 
 const initialState = {
@@ -102,6 +103,10 @@ const FromProduct = () => {
                     }
                 </select>
                 <hr />
+                {/* upload file */}
+                
+                <UpdateFile form={form} setForm={setForm}/>
+                
                 <button className='bg-blue-400'>Add Product</button>
 
                 <hr />
@@ -123,9 +128,9 @@ const FromProduct = () => {
 
                         {
                             products.map((item, index) => {
-                                console.log(item)
+                                // console.log(item)
                                 return (
-                                    <tr>
+                                    <tr key={index}>
                                         <th scope="row">{index + 1}</th>
                                         <td>{item.title}</td>
                                         <td>{item.description}</td>

@@ -2,7 +2,19 @@ const express = require('express')
 const router = express.Router()
 
 // import controller
-const { create, list, update, read, remove, listby, searchFilters } = require('../controllers/product')
+const { 
+    create, 
+    list, 
+    update, 
+    read, 
+    remove, 
+    listby, 
+    searchFilters,
+    createImage,
+    removeImage,
+} = require('../controllers/product')
+
+const { authCheck, adminCheck } = require('../middlewares/authCheck')
 
 // @Endpoint http://localhost:5000/api/product
 router.post('/product', create)
@@ -12,6 +24,7 @@ router.put('/product/:id', update)
 router.delete('/product/:id', remove)
 router.post('/productby', listby)
 router.post('/search/filters', searchFilters)
-
+router.post('/images', authCheck, adminCheck, createImage)
+router.post('/removeimages', authCheck, adminCheck, removeImage)
 
 module.exports = router

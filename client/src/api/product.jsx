@@ -18,3 +18,16 @@ export const listProduct = async (token, count = 20) =>{
         }
     })
 }
+
+export const uploadFiles = async (token, form) =>{
+    return await axios.post('http://localhost:5000/api/images',
+        {
+            image:  form
+        },
+        {
+        headers:{
+            Authorization: `Rrarer ${token}`
+        }
+        }
+    )
+}
