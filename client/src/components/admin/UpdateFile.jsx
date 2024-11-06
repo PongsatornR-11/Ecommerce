@@ -9,7 +9,9 @@ const UpdateFile = (props) => {
     const { form, setForm } = props
 
     const token = useEcomStore((state) => state.token)
+
     const [isLoading, setIsLoading] = useState(false)
+
     const handleOnChange = (e) => {
         const files = e.target.files
         if (files) {
@@ -38,7 +40,16 @@ const UpdateFile = (props) => {
                         // endpoint Backend
                         uploadFiles(token, data)
                         .then((res)=>{
-                            console.log(res)
+                            // console.log(res)
+
+                            allFiles.push(res.data)
+                            setForm({
+                                ...form,
+                                images: allFiles
+                            })
+
+                            console.log('form', form)
+                            toast.success('Upload image success!')
                         })
                         .catch((err)=>{
                             console.log(err)

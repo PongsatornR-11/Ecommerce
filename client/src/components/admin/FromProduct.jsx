@@ -29,7 +29,7 @@ const FromProduct = () => {
 
     useEffect(() => {
         getCategory(token)
-        getProduct(token, 5)
+        getProduct(token, 20)
     }, [])
 
     const handleOnChange = ((e) => {
