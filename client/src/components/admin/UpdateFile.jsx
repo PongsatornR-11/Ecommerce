@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 import Resize from 'react-image-file-resizer'
-import { uploadFiles } from '../../api/product'
+import { removeFile, uploadFiles } from '../../api/product'
 import useEcomStore from '../../store/ecom-store'
 
 
@@ -39,21 +39,20 @@ const UpdateFile = (props) => {
                     (data) => {
                         // endpoint Backend
                         uploadFiles(token, data)
-                        .then((res)=>{
-                            // console.log(res)
+                            .then((res) => {
+                                // console.log(res)
 
-                            allFiles.push(res.data)
-                            setForm({
-                                ...form,
-                                images: allFiles
+                                allFiles.push(res.data)
+                                setForm({
+                                    ...form,
+                                    images: allFiles
+                                })
+
+                                toast.success('Upload image success!')
                             })
-
-                            console.log('form', form)
-                            toast.success('Upload image success!')
-                        })
-                        .catch((err)=>{
-                            console.log(err)
-                        })
+                            .catch((err) => {
+                                console.log(err)
+                            })
                     },
                     "base64"
 
@@ -61,14 +60,46 @@ const UpdateFile = (props) => {
             }
         }
     }
+
+    const handleDelete = (public_id)=>{
+        console.log(public_id)
+        removeFile(token,public_id)
+        .then((res)=>{
+            console.log(res)
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+    }
     return (
-        <div>
-            <input
-                onChange={handleOnChange}
-                type='file'
-                name='images'
-                multiple
-            />
+        <div className='my-4'>
+            <div className='flex mx-4 gap-4 my-4'>
+                {
+                    form.images.map((item,index) =>
+                        <div className='relative'key={index}>
+                            <img 
+                                className='w-24 h-24 hover:scale-105'
+                                src={item.url}
+                            />
+                            <span
+                                onClick={()=>handleDelete(item.public_id)} 
+                                className='absolute top-0 right-0 bg-red-400 p-1 rounded cursor-pointer'
+                            >
+                                x
+                            </span>
+                        </div>
+                    )
+                }
+            </div>
+
+            <div>
+                <input
+                    onChange={handleOnChange}
+                    type='file'
+                    name='images'
+                    multiple
+                />
+            </div>
         </div>
     )
 }
