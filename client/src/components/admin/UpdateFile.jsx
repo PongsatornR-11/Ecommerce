@@ -19,8 +19,6 @@ const UpdateFile = (props) => {
             let allFiles = form.images
             for (let i = 0; i < files.length; i++) {
 
-                // console.log(files[i])
-
                 //Validate image
                 const file = files[i]
                 if (!file.type.startsWith('image/')) {
@@ -61,28 +59,36 @@ const UpdateFile = (props) => {
         }
     }
 
-    const handleDelete = (public_id)=>{
-        console.log(public_id)
-        removeFile(token,public_id)
-        .then((res)=>{
-            console.log(res)
-        })
-        .catch((err)=>{
-            console.log(err)
-        })
+    const handleDelete = (public_id) => {
+        const images = form.images
+        removeFile(token, public_id)
+            .then((res) => {
+                const filterImages = images.filter((item, index) => {
+                    return item.public_id !== public_id
+                })
+                console.log('filterImages', filterImages)
+                setForm({
+                    ...form,
+                    images: filterImages
+                })
+                toast.error(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
     return (
         <div className='my-4'>
             <div className='flex mx-4 gap-4 my-4'>
                 {
-                    form.images.map((item,index) =>
-                        <div className='relative'key={index}>
-                            <img 
+                    form.images.map((item, index) =>
+                        <div className='relative' key={index}>
+                            <img
                                 className='w-24 h-24 hover:scale-105'
                                 src={item.url}
                             />
                             <span
-                                onClick={()=>handleDelete(item.public_id)} 
+                                onClick={() => handleDelete(item.public_id)}
                                 className='absolute top-0 right-0 bg-red-400 p-1 rounded cursor-pointer'
                             >
                                 x

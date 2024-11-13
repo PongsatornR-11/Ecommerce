@@ -341,7 +341,11 @@ exports.createImage = async (req, res) => {
 
 exports.removeImage = async (req, res) => {
     try {
-        res.send('hello remove image ')
+        const { public_id } = req.body
+        await cloudinary.uploader.destroy(public_id, 
+            (result)=>{
+                res.send('Image Removed')
+        })
     } catch (err) {
         console.log(err)
         res.status(500).json({ message: "Server error" })
