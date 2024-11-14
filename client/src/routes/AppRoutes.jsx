@@ -15,6 +15,7 @@ import Category from "../pages/admin/Category";
 import Product from "../pages/admin/Product";
 import Manage from "../pages/admin/Manage";
 import HomeUser from "../pages/user/HomeUser";
+import EditProduct from "../pages/admin/EditProduct";
 
 //import layouts from folder 'layouts'
 import Layout from "../layouts/Layout";
@@ -50,6 +51,7 @@ const router = createBrowserRouter([
       { index: true, element: <Dashboard /> },
       { path: "category", element: <Category /> },
       { path: "product", element: <Product /> },
+      { path: "product/:id", element: <EditProduct /> },
       { path: "manage", element: <Manage /> },
     ],
   },
