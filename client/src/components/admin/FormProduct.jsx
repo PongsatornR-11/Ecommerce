@@ -5,7 +5,7 @@ import { createProduct, deleteProduct } from '../../api/product'
 import { toast } from 'react-toastify'
 import UpdateFile from './UpdateFile'
 import { Link } from 'react-router-dom'
-
+import { Pencil, Trash, Trash2 } from 'lucide-react';
 
 const initialState = {
     title: "",
@@ -25,7 +25,14 @@ const FromProduct = () => {
     const getProduct = useEcomStore((state) => state.getProduct)
     const products = useEcomStore((state) => state.products)
 
-    const [form, setForm] = useState(initialState)
+    const [form, setForm] = useState({
+        title: "",
+        description: "",
+        price: 0,
+        quantity: 0,
+        categoryId: '',
+        images: []
+    })
     
     useEffect(() => {
         getCategory(token)
@@ -121,13 +128,16 @@ const FromProduct = () => {
 
                 <UpdateFile form={form} setForm={setForm} />
 
-                <button className='bg-blue-400'>Add Product</button>
+                <button className='
+                    bg-blue-400 p-2 rounded-md shadow-md 
+                    hover:scale-105 hover:-translate-y-1 hover:duration-200
+                '>Add Product</button>
 
                 <hr />
                 <br />
-                <table className="table">
+                <table className="table w-full border">
                     <thead>
-                        <tr>
+                        <tr className='bg-gray-400 border'>
                             <th scope="col">No.</th>
                             <th scope="col">Picture</th>
                             <th scope="col">Product Name</th>
@@ -171,15 +181,18 @@ const FromProduct = () => {
 
                                         <td className='flex gap-2'>
                                             <Link to={'/admin/product/' + item.id}>
-                                                <p className='cursor-pointer bg-yellow-500 rounded-md p-1 shadow-md'>
-                                                    Edit
+                                                <p className='cursor-pointer 
+                                                    hover:scale-105 hover:-translate-y-1 hover:duration-200 
+                                                    bg-yellow-500 rounded-md p-1 shadow-md'>
+                                                    <Pencil />
                                                 </p>
                                             </Link>
                                             <p
-                                                className='cursor-pointer bg-red-400 rounded-md p-1 shadow-md'
+                                                className='cursor-pointer 
+                                                hover:scale-105 hover:-translate-y-1 hover:duration-200 
+                                                bg-red-400 rounded-md p-1 shadow-md'
                                                 onClick={() => handleDelete(item.id,item.title)}
-                                            >
-                                                Delete
+                                            ><Trash2 />
                                             </p>
                                         </td>
                                     </tr>
