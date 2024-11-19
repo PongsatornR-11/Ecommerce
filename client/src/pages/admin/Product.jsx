@@ -1,12 +1,12 @@
 //rafce
 
 import React from 'react'
-import FromProduct from '../../components/admin/FromProduct'
+import FormProduct from '../../components/admin/FormProduct'
 
 const Product = () => {
   return (
     <div>
-      <FromProduct />
+      <FormProduct />
     </div>
   )
 }

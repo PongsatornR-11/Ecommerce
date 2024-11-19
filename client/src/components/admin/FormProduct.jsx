@@ -4,7 +4,7 @@ import useEcomStore from '../../store/ecom-store'
 import { createProduct } from '../../api/product'
 import { toast } from 'react-toastify'
 import UpdateFile from './UpdateFile'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 
 const initialState = {
@@ -17,7 +17,7 @@ const initialState = {
 }
 
 const FromProduct = () => {
-
+    const navigate = useNavigate()
     const token = useEcomStore((state) => state.token)
 
     const getCategory = useEcomStore((state) => state.getCategory)
@@ -34,7 +34,7 @@ const FromProduct = () => {
     }, [])
 
     const handleOnChange = ((e) => {
-        console.log(e.target.name, e.target.value)
+        // console.log(e.target.name, e.target.value)
         setForm({
             ...form,
             [e.target.name]: e.target.value
@@ -116,6 +116,7 @@ const FromProduct = () => {
                     <thead>
                         <tr>
                             <th scope="col">No.</th>
+                            <th scope="col">Picture</th>
                             <th scope="col">Product Name</th>
                             <th scope="col">Description</th>
                             <th scope="col">Price</th>
@@ -126,19 +127,39 @@ const FromProduct = () => {
                         </tr>
                     </thead>
                     <tbody>
-
                         {
                             products.map((item, index) => {
-                                // console.log(item)
                                 return (
-                                    <tr key={index}>
+                                    <tr
+                                        key={index}
+                                        onClick={() => navigate(`/admin/product/${item.id}`)}
+                                        className="cursor-pointer hover:bg-gray-100 transition-colors"
+                                        role="button"
+                                        aria-label={`Edit ${item.title}`}
+                                    >
                                         <th scope="row">{index + 1}</th>
+                                        
+                                        <td>
+                                            {
+                                                item.images.length > 0
+                                                ? <img 
+                                                    src={item.images[0].url}
+                                                    className='w-24 h-24 rounded-lg shadow-sm'
+                                                    />
+                                                : <div className='w-24 h-24 bg-gray-200 rounded-sm flex items-center justify-center shadow-sm'>
+                                                    No Image
+                                                    </div>
+                                            }    
+                                        </td>
+
+
+
                                         <td>{item.title}</td>
                                         <td>{item.description}</td>
                                         <td>{item.price}</td>
                                         <td>{item.quantity}</td>
                                         <td>{item.sold}</td>
-                                        <td>{item.updateAt}</td>
+                                        <td>{item.updatedAt}</td>
                                         <td>
                                             <p className='bg-yellow-500 rounded-md p-1 shadow-md'>
                                                 <Link to={'/admin/product/' + item.id}>
@@ -151,8 +172,6 @@ const FromProduct = () => {
                                 )
                             })
                         }
-
-
                     </tbody>
                 </table>
 

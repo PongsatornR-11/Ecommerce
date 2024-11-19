@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
 import useEcomStore from '../../store/ecom-store'
-import { createProduct, readProduct, listProduct } from '../../api/product'
+import { createProduct, readProduct, listProduct, updateProduct } from '../../api/product'
 import { toast } from 'react-toastify'
 import UpdateFile from './UpdateFile'
-
+import { useParams, useNavigate } from 'react-router-dom'
 
 const initialState = {
     title: "Core i5 14500",
@@ -17,20 +17,29 @@ const initialState = {
 
 const FromEditProduct = () => {
 
+    const { id } = useParams()
+    const navigate = useNavigate()
     const token = useEcomStore((state) => state.token)
-
     const getCategory = useEcomStore((state) => state.getCategory)
     const categories = useEcomStore((state) => state.categories)
 
-    const getProduct = useEcomStore((state) => state.getProduct)
-    const products = useEcomStore((state) => state.products)
-
     const [form, setForm] = useState(initialState)
+
+    const fetchProduct = async (token, id, form) => {
+        try {
+            const res = await readProduct(token, id, form)
+            // console.log('res from back end', res)
+            setForm(res.data)
+        } catch (err) {
+            console.log('Error fetch data', err)
+        }
+    }
 
     useEffect(() => {
         getCategory(token)
-        getProduct(token, 20)
+        fetchProduct(token, id, form)
     }, [])
+
 
     const handleOnChange = ((e) => {
         console.log(e.target.name, e.target.value)
@@ -44,9 +53,10 @@ const FromEditProduct = () => {
         e.preventDefault()
         console.log(form)
         try {
-            const res = await createProduct(token, form)
+            const res = await updateProduct(token, id, form)
             console.log(res)
             toast.success(`Add ${res.data.title} Qty ${res.data.quantity} success!`)
+            navigate('/admin/product')
         } catch (err) {
             console.log(err)
         }
@@ -104,10 +114,10 @@ const FromEditProduct = () => {
                 </select>
                 <hr />
                 {/* upload file */}
-                
-                <UpdateFile form={form} setForm={setForm}/>
-                
-                <button className='bg-blue-400'>Add Product</button>
+
+                <UpdateFile form={form} setForm={setForm} />
+
+                <button className='bg-blue-400'>Edit Product</button>
 
                 <hr />
                 <br />
