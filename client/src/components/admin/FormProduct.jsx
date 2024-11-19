@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from 'react'
 
 import useEcomStore from '../../store/ecom-store'
-import { createProduct } from '../../api/product'
+import { createProduct, deleteProduct } from '../../api/product'
 import { toast } from 'react-toastify'
 import UpdateFile from './UpdateFile'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 
 const initialState = {
-    title: "Core i5 14500",
-    description: "description about i5",
-    price: 599,
-    quantity: 13,
+    title: "",
+    description: "",
+    price: 0,
+    quantity: 0,
     categoryId: '',
     images: []
 }
 
 const FromProduct = () => {
-    const navigate = useNavigate()
     const token = useEcomStore((state) => state.token)
 
     const getCategory = useEcomStore((state) => state.getCategory)
@@ -27,7 +26,7 @@ const FromProduct = () => {
     const products = useEcomStore((state) => state.products)
 
     const [form, setForm] = useState(initialState)
-
+    
     useEffect(() => {
         getCategory(token)
         getProduct(token, 20)
@@ -47,14 +46,25 @@ const FromProduct = () => {
         try {
             const res = await createProduct(token, form)
             console.log(res)
+            setForm(initialState)
+            getProduct(token)
             toast.success(`Add ${res.data.title} Qty ${res.data.quantity} success!`)
         } catch (err) {
             console.log(err)
         }
     }
 
-    const handleDelete = async (id) => {
-        console.log(`id ${id}`)
+    const handleDelete = async (id,title) => {
+        if(window.confirm(`Confirm to delete ${title}`)){
+            try{
+                const res = await deleteProduct(token,id)
+                console.log(res)
+                getProduct(token)
+                toast.success(`${title} has been deleted!!`)
+            } catch(err){
+                console.log(err)
+            }
+        }
     }
     return (
         <div className='container mx-auto p-4 bg-[#ffffff] shadow-md'>
@@ -167,7 +177,7 @@ const FromProduct = () => {
                                             </Link>
                                             <p
                                                 className='cursor-pointer bg-red-400 rounded-md p-1 shadow-md'
-                                                onClick={() => handleDelete(item.id)}
+                                                onClick={() => handleDelete(item.id,item.title)}
                                             >
                                                 Delete
                                             </p>

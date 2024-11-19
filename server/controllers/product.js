@@ -1,6 +1,12 @@
 const prisma = require('../config/prisma')
 
 const cloudinary = require('cloudinary').v2
+//configuration cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUNDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUNDINARY_API_KEY,
+    api_secret: process.env.CLOUNDINARY_API_SCRET,
+});
 
 exports.create = async (req, res) => {
     try {
@@ -131,13 +137,35 @@ exports.remove = async (req, res) => {
     try {
         const { id } = req.params
 
-        // will be back soon
+        // step 1 find product (include images of that product)
+        const product = await prisma.product.findFirst({
+            where: { id: Number(id) },
+            include: { images: true }
+        })
+        if (!product) {
+            return res.status(400).json({ message: `product id : ${id} doesn't exist!!!` })
+        }
+        // step 2 use promise for waiting delete images from cloudinary
+        const deleteImages = product.images.map((image) =>
+            new Promise((resolve, reject) => {
+                // delete from cluod
+                cloudinary.uploader.destroy(
+                    image.public_id, 
+                    (error, result)=>{
+                        if(error) reject(error)
+                        else resolve(result)
+                    }
+                )
+            })
+        )
+        await Promise.all(deleteImages)
+        // step 3 delete product
         await prisma.product.delete({
             where: {
                 id: Number(id)
             }
         })
-        res.send('deleted success')
+        res.send(`Delete ${product.title} Success!`)
     } catch (err) {
         console.log(err)
         res.status(500).json({ message: "Server error" })
@@ -161,8 +189,6 @@ exports.listby = async (req, res) => {
         res.status(500).json({ message: "Server error" })
     }
 }
-
-
 
 // const handleQuery = async(req,res,query) =>{
 //     try{
@@ -228,7 +254,6 @@ exports.listby = async (req, res) => {
 //         res.status(500).json({message : "Search category error"})
 //     }
 // }
-
 
 
 exports.searchFilters = async (req, res) => {
@@ -312,16 +337,6 @@ exports.searchFilters = async (req, res) => {
 }
 
 
-
-
-
-
-cloudinary.config({
-    cloud_name: process.env.CLOUNDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUNDINARY_API_KEY,
-    api_secret: process.env.CLOUNDINARY_API_SCRET,
-});
-
 exports.createImage = async (req, res) => {
     try {
         const result = await cloudinary.uploader.upload(
@@ -342,10 +357,10 @@ exports.createImage = async (req, res) => {
 exports.removeImage = async (req, res) => {
     try {
         const { public_id } = req.body
-        await cloudinary.uploader.destroy(public_id, 
-            (result)=>{
+        await cloudinary.uploader.destroy(public_id,
+            (result) => {
                 res.send('Image Removed')
-        })
+            })
     } catch (err) {
         console.log(err)
         res.status(500).json({ message: "Server error" })
