@@ -10,7 +10,9 @@ const MainNav = () => {
         <div className="flex justify-between h-16">
           <div className="flex items-center gap-4">
             {/* left */}
-            <Link to={"/"} className="text-2xl font-bold">LOGO</Link>
+            <Link to={"/"} className="text-2xl font-bold">
+              LOGO
+            </Link>
             <Link to={"/"}>Home</Link>
             <Link to={"shop"}>Shop</Link>
             <Link to={"cart"}>Cart</Link>

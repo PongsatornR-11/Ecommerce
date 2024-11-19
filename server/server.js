@@ -1,21 +1,22 @@
 // import
 
-const express = require('express')
+const express = require("express");
 const app = express();
-const morgan = require('morgan')
-const { readdirSync } = require('fs')
-const cors = require('cors')
-
+const morgan = require("morgan");
+const { readdirSync } = require("fs");
+const cors = require("cors");
 
 // middle ware
-app.use(morgan('dev'));
-// for support json data 
-app.use(express.json({ limit: '5mb' }));
+app.use(morgan("dev"));
+// for support json data
+app.use(express.json({ limit: "5mb" }));
 
 app.use(cors());
 
 //import all of routes folder.
-readdirSync('./routes').map((file) => app.use('/api', require('./routes/' + file)))
+readdirSync("./routes").map((file) =>
+  app.use("/api", require("./routes/" + file)),
+);
 
 // step 3 router
 // app.post('/api', (req,res)=>{
@@ -25,7 +26,5 @@ readdirSync('./routes').map((file) => app.use('/api', require('./routes/' + file
 //     res.send('Jukkru 555+')
 // })
 
-
-
 const port = 5000;
-app.listen(port, () => console.log(`Server is running on port ${port}`))
+app.listen(port, () => console.log(`Server is running on port ${port}`));

@@ -1,7 +1,7 @@
 // import axios for handle with back end
 import axios from "axios";
 
-export const currentUser = async(token) =>
+export const currentUser = async (token) =>
   await axios.post(
     "http://localhost:5000/api/current-user",
     // send data
@@ -11,7 +11,7 @@ export const currentUser = async(token) =>
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }
+    },
   );
 
 export const currentAdmin = async (token) => {
@@ -24,6 +24,6 @@ export const currentAdmin = async (token) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }
+    },
   );
 };

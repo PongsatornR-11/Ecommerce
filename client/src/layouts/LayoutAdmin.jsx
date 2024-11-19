@@ -11,7 +11,6 @@ const LayoutAdmin = () => {
     <div className="flex h-screen">
       <SidebarAdmin />
       <div className="flex-1 flex flex-col">
-
         <HeaderAdmin />
         <main className="flex-1 p-6 bg-[#EEEEEE] overflow-y-auto">
           <Outlet />

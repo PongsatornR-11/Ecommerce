@@ -26,19 +26,19 @@ const ecomStore = (set) => ({
   getCategory: async (token) => {
     try {
       const res = await listCategory(token);
-      set({ categories: res.data })
+      set({ categories: res.data });
     } catch (err) {
       console.log(err);
     }
   },
   getProduct: async (token, count) => {
     try {
-      const res = await listProduct(token, count)
-      set({ products: res.data})
+      const res = await listProduct(token, count);
+      set({ products: res.data });
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  },
 });
 
 const userPersist = {

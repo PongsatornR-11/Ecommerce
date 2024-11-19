@@ -22,7 +22,6 @@ import Layout from "../layouts/Layout";
 import LayoutAdmin from "../layouts/LayoutAdmin";
 import LayoutUser from "../layouts/LayoutUser";
 
-
 // import protect route
 import ProtectRouteUser from "./ProtectRouteUser";
 import ProtectRouteAdmin from "./ProtectRouteAdmin";

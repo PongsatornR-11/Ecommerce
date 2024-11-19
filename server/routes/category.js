@@ -1,15 +1,14 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
 // import controller functions in controllers folder
-const { create, list, remove } = require('../controllers/category')
+const { create, list, remove } = require("../controllers/category");
 
 // import middle ware
-const { authCheck, adminCheck} = require('../middlewares/authCheck')
+const { authCheck, adminCheck } = require("../middlewares/authCheck");
 // endpoint http://localhost:5000/api/category
-router.post('/category', authCheck, adminCheck, create)
-router.get('/category', authCheck, adminCheck, list)
-router.delete('/category/:id', authCheck, adminCheck, remove)
+router.post("/category", authCheck, adminCheck, create);
+router.get("/category", authCheck, adminCheck, list);
+router.delete("/category/:id", authCheck, adminCheck, remove);
 
-
-module.exports = router
+module.exports = router;

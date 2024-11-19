@@ -6,10 +6,9 @@ import { createCategory, removeCategory } from "../../api/Category";
 
 import useEcomStore from "../../store/ecom-store";
 
-import { toast } from 'react-toastify'
+import { toast } from "react-toastify";
 
 const FromCategory = () => {
-
   const token = useEcomStore((state) => state.token);
 
   // add category
@@ -17,39 +16,36 @@ const FromCategory = () => {
   const handleSubmit = async (e) => {
     e.preventDefault(); // prevent refresh page when run function handlerSubmit
     if (!categoryName) {
-      return toast.warning('Please fill data')
+      return toast.warning("Please fill data");
     }
     try {
       const res = await createCategory(token, { name: categoryName });
-      toast.success(`Add Catergory ${res.data.name} Success`)
-      getCategory(token)
+      toast.success(`Add Catergory ${res.data.name} Success`);
+      getCategory(token);
     } catch (err) {
       console.log(err);
     }
   };
 
-
-  // list category 
+  // list category
   // const [categories, setCategories] = useState([]); // local state
 
-  const categories = useEcomStore((state) => state.categories) //global state to get categories variable 
-  const getCategory = useEcomStore((state) => state.getCategory) //global state to call function getCategory
+  const categories = useEcomStore((state) => state.categories); //global state to get categories variable
+  const getCategory = useEcomStore((state) => state.getCategory); //global state to call function getCategory
   useEffect(() => {
-    getCategory(token)
-  }, [])
-
-
+    getCategory(token);
+  }, []);
 
   // remove category
   const handleRemove = async (id) => {
     try {
-      const res = await removeCategory(token, id)
-      getCategory(token)
-      toast.warning(`Category ${res.data.name} Removed `)
+      const res = await removeCategory(token, id);
+      getCategory(token);
+      toast.warning(`Category ${res.data.name} Removed `);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   return (
     <div className="container mx-auto p-4 bg-[#ffffff] shadow-md">
@@ -67,29 +63,19 @@ const FromCategory = () => {
       <hr />
 
       <ul className="list-none">
+        {categories.map((item, index) => (
+          <li className="flex justify-between my-2" key={index}>
+            <span>{item.name}</span>
 
-        {
-          categories.map((item, index) =>
-            <li
-              className="flex justify-between my-2"
-              key={index}
+            <button
+              className="bg-red-400"
+              onClick={() => handleRemove(item.id)}
             >
-              <span>
-                {item.name}
-              </span>
-
-              <button
-                className="bg-red-400"
-                onClick={() => handleRemove(item.id)}
-              >
-                Delete
-              </button>
-            </li>
-          )
-        }
-
+              Delete
+            </button>
+          </li>
+        ))}
       </ul>
-
     </div>
   );
 };
