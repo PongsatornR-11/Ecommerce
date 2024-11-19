@@ -53,6 +53,9 @@ const FromProduct = () => {
         }
     }
 
+    const handleDelete = async (id) => {
+        console.log(`id ${id}`)
+    }
     return (
         <div className='container mx-auto p-4 bg-[#ffffff] shadow-md'>
             <form onSubmit={handleSubmit}>
@@ -132,27 +135,22 @@ const FromProduct = () => {
                                 return (
                                     <tr
                                         key={index}
-                                        onClick={() => navigate(`/admin/product/${item.id}`)}
-                                        className="cursor-pointer hover:bg-gray-100 transition-colors"
-                                        role="button"
-                                        aria-label={`Edit ${item.title}`}
+                                        className="hover:bg-gray-100 transition-colors"
                                     >
                                         <th scope="row">{index + 1}</th>
-                                        
+
                                         <td>
                                             {
                                                 item.images.length > 0
-                                                ? <img 
-                                                    src={item.images[0].url}
-                                                    className='w-24 h-24 rounded-lg shadow-sm'
+                                                    ? <img
+                                                        src={item.images[0].url}
+                                                        className='w-24 h-24 rounded-lg shadow-sm'
                                                     />
-                                                : <div className='w-24 h-24 bg-gray-200 rounded-sm flex items-center justify-center shadow-sm'>
-                                                    No Image
+                                                    : <div className='w-24 h-24 bg-gray-200 rounded-sm flex items-center justify-center shadow-sm'>
+                                                        No Image
                                                     </div>
-                                            }    
+                                            }
                                         </td>
-
-
 
                                         <td>{item.title}</td>
                                         <td>{item.description}</td>
@@ -160,13 +158,19 @@ const FromProduct = () => {
                                         <td>{item.quantity}</td>
                                         <td>{item.sold}</td>
                                         <td>{item.updatedAt}</td>
-                                        <td>
-                                            <p className='bg-yellow-500 rounded-md p-1 shadow-md'>
-                                                <Link to={'/admin/product/' + item.id}>
+
+                                        <td className='flex gap-2'>
+                                            <Link to={'/admin/product/' + item.id}>
+                                                <p className='cursor-pointer bg-yellow-500 rounded-md p-1 shadow-md'>
                                                     Edit
-                                                </Link>
+                                                </p>
+                                            </Link>
+                                            <p
+                                                className='cursor-pointer bg-red-400 rounded-md p-1 shadow-md'
+                                                onClick={() => handleDelete(item.id)}
+                                            >
+                                                Delete
                                             </p>
-                                            <p>Delete</p>
                                         </td>
                                     </tr>
                                 )

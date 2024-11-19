@@ -29,6 +29,16 @@ export const readProduct = async (token, id) => {
     )
 }
 
+export const deleteProduct = async (token, id) => {
+
+    return await axios.delete(`http://localhost:5000/api/product/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    )
+}
+
 export const updateProduct = async (token, id, form) => {
     return await axios.put(`http://localhost:5000/api/product/${id}`, form,
         {
