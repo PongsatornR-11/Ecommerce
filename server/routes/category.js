@@ -8,7 +8,7 @@ const { create, list, remove } = require("../controllers/category");
 const { authCheck, adminCheck } = require("../middlewares/authCheck");
 // endpoint http://localhost:5000/api/category
 router.post("/category", authCheck, adminCheck, create);
-router.get("/category", authCheck, adminCheck, list);
+router.get("/category", list);
 router.delete("/category/:id", authCheck, adminCheck, remove);
 
 module.exports = router;

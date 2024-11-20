@@ -8,12 +8,8 @@ export const createProduct = async (token, form) => {
   });
 };
 
-export const listProduct = async (token, count = 20) => {
-  return await axios.get(`http://localhost:5000/api/products/${count}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const listProduct = async (count = 20) => {
+  return await axios.get(`http://localhost:5000/api/products/${count}`);
 };
 
 export const readProduct = async (token, id) => {

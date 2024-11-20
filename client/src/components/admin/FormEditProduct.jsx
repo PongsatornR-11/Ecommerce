@@ -40,7 +40,7 @@ const FromEditProduct = () => {
   };
 
   useEffect(() => {
-    getCategory(token);
+    getCategory();
     fetchProduct(token, id, form);
   }, []);
 

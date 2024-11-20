@@ -35,8 +35,8 @@ const FromProduct = () => {
   });
 
   useEffect(() => {
-    getCategory(token);
-    getProduct(token, 20);
+    getCategory();
+    getProduct(100);
   }, []);
 
   const handleOnChange = (e) => {
@@ -54,7 +54,7 @@ const FromProduct = () => {
       const res = await createProduct(token, form);
       console.log(res);
       setForm(initialState);
-      getProduct(token);
+      getProduct();
       toast.success(`Add ${res.data.title} Qty ${res.data.quantity} success!`);
     } catch (err) {
       console.log(err);
@@ -66,7 +66,7 @@ const FromProduct = () => {
       try {
         const res = await deleteProduct(token, id);
         console.log(res);
-        getProduct(token);
+        getProduct();
         toast.success(`${title} has been deleted!!`);
       } catch (err) {
         console.log(err);
