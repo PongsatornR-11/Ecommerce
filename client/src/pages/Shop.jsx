@@ -1,13 +1,18 @@
 // rafce
 
-import React from "react";
+import React, { useEffect } from "react";
 import ProductCard from "../components/card/productCard";
 import useEcomStore from "../store/ecom-store";
 
 const Shop = () => {
 
-  const token = useEcomStore((state) => state.token)
-  const getProduct = useEcomStore((state)=> state.getProduct)
+  const getProduct = useEcomStore((state) => state.getProduct)
+  const products = useEcomStore((state) => state.products)
+
+  useEffect(() => {
+    getProduct(10)
+  }, [])
+
   return (
     <div className="flex">
       {/* Search Bar */}
@@ -16,7 +21,11 @@ const Shop = () => {
       <div className="w-1/2 p-4 h-screen overflow-y-auto">
         <p className="text-2xl font-bold mb-4">All product</p>
         <div className="flex flex-wrap gap-4">
-          <ProductCard />
+          {
+            products.map((product, index) =>
+              <ProductCard key={index} product={product}/>
+            )
+          }
         </div>
       </div>
       {/* cart */}
