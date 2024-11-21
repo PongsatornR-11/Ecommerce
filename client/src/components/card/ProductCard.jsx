@@ -2,7 +2,6 @@ import React from 'react'
 import { ShoppingCart } from 'lucide-react';
 
 const ProductCard = ({ product }) => {
-    console.log(product)
     return (
         <div className='border rounded-md shadow-md p-2 w-48'>
             <div>

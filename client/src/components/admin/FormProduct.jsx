@@ -24,7 +24,6 @@ const FromProduct = () => {
 
   const getProduct = useEcomStore((state) => state.getProduct);
   const products = useEcomStore((state) => state.products);
-
   const [form, setForm] = useState({
     title: "",
     description: "",

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const createProduct = async (token, form) => {
-  return await axios.post("http://localhost:5000/api/product", form, {
+  return await axios.post(`http://localhost:5000/api/product`, form, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -63,3 +63,7 @@ export const removeFile = async (token, public_id) => {
     },
   );
 };
+
+export const searchFilter = async (arg) => {
+  return await axios.post(`http://localhost:5000/api/search/filters`, arg)
+}

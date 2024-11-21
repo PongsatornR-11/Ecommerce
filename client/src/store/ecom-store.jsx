@@ -6,7 +6,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 
 import { listCategory } from "../api/Category";
 
-import { listProduct } from "../api/product";
+import { listProduct, searchFilter } from "../api/product";
 
 const ecomStore = (set) => ({
   user: null,
@@ -39,6 +39,15 @@ const ecomStore = (set) => ({
       console.log(err);
     }
   },
+  actionSearchFilter: async (arg) => {
+    try {
+      const res = await searchFilter(arg)
+      set({ products: res.data})
+      console.log(`zustand action searchfilter`)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 });
 
 const userPersist = {
