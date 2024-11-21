@@ -43,7 +43,6 @@ const ecomStore = (set) => ({
     try {
       const res = await searchFilter(arg)
       set({ products: res.data})
-      console.log(`zustand action searchfilter`)
     } catch (err) {
       console.log(err)
     }

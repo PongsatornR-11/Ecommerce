@@ -7,6 +7,9 @@ const SearchCard = () => {
     const products = useEcomStore((state) => state.products)
     const actionSearchFilter = useEcomStore((state) => state.actionSearchFilter)
 
+    const getCategory = useEcomStore((state) => state.getCategory)
+    const categories = useEcomStore((state) => state.categories)
+    console.log(categories)
     const [text, setText] = useState('')
 
     // step 1 Search by Text
