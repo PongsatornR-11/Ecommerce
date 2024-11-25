@@ -22,7 +22,7 @@ const ProductCard = ({ product }) => {
 
             <div className='flex justify-between items-end p-1'>
                 <span className='text-sm font-bold '>{product.price}</span>
-                <button className='bg-blue-200 rounded-md p-2 hover:bg-blue-600 shadow-sm hover:duration-500 hover:text-white'><ShoppingCart /></button>
+                <button className='bg-blue-300 rounded-md p-2 hover:bg-blue-500 shadow-sm hover:duration-500 hover:text-white'><ShoppingCart /></button>
             </div>
         </div>
     )

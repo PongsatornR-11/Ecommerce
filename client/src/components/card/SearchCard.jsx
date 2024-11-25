@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import useEcomStore from '../../store/ecom-store'
 
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
+
 const SearchCard = () => {
 
     const getProduct = useEcomStore((state) => state.getProduct)
@@ -12,6 +15,16 @@ const SearchCard = () => {
 
     const [text, setText] = useState('')
     const [categoryChecked, setCategoryChecked] = useState([])
+
+    const [price, setPrice] = useState([0, 30000])
+    const [ok, setOk] = useState(false)
+
+    useEffect(()=>{
+        setText('')
+        setCategoryChecked([])
+        setPrice([0, 30000])
+        getProduct()
+    },[])
 
     useEffect(() => {
         getCategory()
@@ -46,7 +59,18 @@ const SearchCard = () => {
             getProduct()
         }
     }
+
     // step 3 Search by price
+    useEffect(() => {
+        actionSearchFilter({ price: price })
+    },[ok])
+    const handlePrice = (value) => {
+        setPrice(value)
+        console.log('price', price)
+        setTimeout(()=>{
+            setOk(!ok)
+        },300)
+    }
 
     return (
         <div>
@@ -73,6 +97,25 @@ const SearchCard = () => {
                             <label>{item.name}</label>
                         </div>
                     )}
+                </div>
+            </div>
+            <hr />
+            {/* Search by Price */}
+            <div>
+                <h1>Price</h1>
+                <div>
+                    <div className='flex justify-between w-full'>
+                        <span>Min : {price[0]}</span>
+                        <span>Max : {price[1]}</span>
+                    </div>
+                    <Slider
+                        range
+                        min={0}
+                        max={100000}
+                        defaultValue={[1000, 30000]}
+                        step={100}
+                        onChange={handlePrice}
+                    />
                 </div>
             </div>
         </div>
