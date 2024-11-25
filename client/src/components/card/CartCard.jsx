@@ -1,5 +1,5 @@
 import React from 'react'
-import { Trash2, Minus, Plus } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 
 const CartCard = () => {
 
