@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const MainNav = () => {
   return (
-    <nav className="bg-green-300">
+    <nav className="bg-gray-300 hover:bg-gray-400 transition-all hover:duration-200">
       <div className="mx-auto px-4">
         <div className="flex justify-between h-16">
           <div className="flex items-center gap-4">
