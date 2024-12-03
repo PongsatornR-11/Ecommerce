@@ -7,7 +7,7 @@ start wt new-tab -p "Command Prompt" -d "C:\Learn coding\web coding\Projects\Eco
 :: Wait a bit to ensure Windows Terminal finishes opening all tabs before launching the next program
 timeout /t 3 >nul
 :: Open Postman
-start "" C:\Users\basni\AppData\Local\Postman"
+start "" "C:\Users\basni\AppData\Local\Postman\Postman.exe"
 
 
 
