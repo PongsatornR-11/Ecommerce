@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 // import
 
 const express = require("express");
@@ -25,6 +27,7 @@ readdirSync("./routes").map((file) =>
 //     console.log(`username: ${username},password:${password}`);
 //     res.send('Jukkru 555+')
 // })
+
 
 const port = 5000;
 app.listen(port, () => console.log(`Server is running on port ${port}`));
