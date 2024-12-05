@@ -1,17 +1,36 @@
 import React from 'react'
 import { List } from 'lucide-react'
 import useEcomStore from '../../store/ecom-store'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { createUserCart } from '../../api/user'
+
 const ListCart = () => {
 
-    const carts = useEcomStore((state) => state.carts)
+    const cart = useEcomStore((state) => state.carts)
     const getTotalPrice = useEcomStore((state) => state.getTotalPrice)
+    const user = useEcomStore((state) => state.user)
+    const token = useEcomStore((state) => state.token)
+    const navigate = useNavigate()
+
+    const handleCheckout = async () => {
+        await createUserCart(token, { cart: cart })
+            .then((res) => {
+                console.log(res)
+                toast.success('Checkout success!')
+                navigate('/checkout')
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
     return (
         <div className='bg-gray-100 p-4 rounded-sm'>
             {/* header */}
             <div className='flex items-center gap-2 mb-2'>
                 <List size={24} />
-                <p className='text-xl font-bold'>Summary {carts.length} items</p>
+                <p className='text-xl font-bold'>Summary {cart.length} {cart.length > 1 ? 'items' : 'item'}</p>
             </div>
             <hr />
             {/* list cart */}
@@ -19,7 +38,7 @@ const ListCart = () => {
                 {/* left */}
                 <div className='md:col-span-2'>
                     {/* Card */}
-                    {carts.map((item, index) => (
+                    {cart.map((item, index) => (
                         <div key={index} className='bg-white p-2 rounded-md mb-2'>
                             {/* Row 1 */}
                             <div className='flex items-center justify-between mb-2'>
@@ -41,7 +60,7 @@ const ListCart = () => {
                                 </div>
                                 <div>
                                     <div className='font-bold text-blue-500'>
-                                        {item.price}
+                                        {item.price * item.count}
                                     </div>
                                 </div>
                             </div>
@@ -57,15 +76,28 @@ const ListCart = () => {
                         <span className='text-xl'><span>฿ </span>{getTotalPrice()}</span>
                     </div>
 
-                    <div className='space-y-2'>
+                    <div className='flex flex-col gap-2'>
                         <Link to='/shop'>
                             <button className='w-full bg-gray-200 shadow-md text-gray-500 px-2 py-1 rounded-md hover:bg-gray-300 transition-all hover:duration-200'>
                                 Edit
                             </button>
                         </Link>
-                        <button className='w-full bg-blue-400 shadow-md text-white px-2 py-1 rounded-md hover:bg-blue-500 transition-all hover:duration-200'>
-                            Checkout
-                        </button>
+
+                        {user
+                            ? <Link>
+                                <button 
+                                onClick={handleCheckout}
+                                className='w-full bg-green-400 shadow-md text-white px-2 py-1 rounded-md hover:bg-green-500 transition-all hover:duration-200'>
+                                    Checkout
+                                </button>
+                            </Link>
+                            : <Link to='/login'>
+                                <button className='w-full bg-blue-400 shadow-md text-white px-2 py-1 rounded-md hover:bg-blue-500 transition-all hover:duration-200'>
+                                    login
+                                </button>
+                            </Link>
+                        }
+
                     </div>
                 </div>
             </div>

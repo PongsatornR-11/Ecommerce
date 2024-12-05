@@ -18,7 +18,7 @@ const Shop = () => {
   return (
     <div className="flex">
       {/* Search Bar */}
-      <div className="w-1/4 p-4 bg-gray-100 h-screen"><SearchCard /></div>
+      <div className="w-1/6 p-4 bg-gray-100 h-screen"><SearchCard /></div>
       {/* product */}
       <div className="w-1/2 p-4 h-screen overflow-y-auto">
         <p className="text-2xl font-bold mb-4">All product</p>
@@ -31,7 +31,7 @@ const Shop = () => {
         </div>
       </div>
       {/* cart */}
-      <div className="w-1/4 p-4 bg-gray-100 h-screen overflow-y-auto">
+      <div className="w-2/6 p-4 bg-gray-100 h-screen overflow-y-auto">
         <CartCard />
       </div>
     </div>

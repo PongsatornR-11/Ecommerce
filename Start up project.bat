@@ -1,7 +1,8 @@
 @echo off
-start wt new-tab -p "Command Prompt" -d "C:\Learn coding\web coding\Projects\Ecommerce\client" cmd.exe /k "npm run dev"^
-    ; new-tab -p "Command Prompt" -d "C:\Learn coding\web coding\Projects\Ecommerce\server" cmd.exe /k "npm start"^
-    ; new-tab -p "Command Prompt" -d "C:\Learn coding\web coding\Projects\Ecommerce" cmd.exe /c "cursor . && exit"
+
+start wt new-tab -p "Command Prompt" -d "C:\Learn coding\web coding\Projects\Ecommerce" cmd.exe /c "cursor . && exit"^
+; new-tab -p "Command Prompt" -d "C:\Learn coding\web coding\Projects\Ecommerce\client" cmd.exe /k "npm run dev"^
+; new-tab -p "Command Prompt" -d "C:\Learn coding\web coding\Projects\Ecommerce\server" cmd.exe /k "npm start"
 
 :: Wait a bit to ensure Windows Terminal finishes opening all tabs before launching the next program
 timeout /t 3 >nul
