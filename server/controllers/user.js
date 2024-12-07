@@ -113,7 +113,11 @@ exports.getUserCart = async (req, res) => {
       include: {
         products: {
           include: {
-            product: true,
+            product: {
+              include: {
+                images: true,
+              },
+            },
           },
         },
       },

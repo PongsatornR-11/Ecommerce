@@ -16,7 +16,7 @@ import Product from "../pages/admin/Product";
 import Manage from "../pages/admin/Manage";
 import HomeUser from "../pages/user/HomeUser";
 import EditProduct from "../pages/admin/EditProduct";
-
+import Payment from "../pages/user/Payment";
 //import layouts from folder 'layouts'
 import Layout from "../layouts/Layout";
 import LayoutAdmin from "../layouts/LayoutAdmin";
@@ -60,7 +60,7 @@ const router = createBrowserRouter([
     path: "/user",
     // element: <LayoutUser />,
     element: <ProtectRouteUser element={<LayoutUser />} />,
-    children: [{ index: true, element: <HomeUser /> }],
+    children: [{ index: true, element: <HomeUser /> }, { path: 'payment', element: <Payment /> }],
   },
 ]);
 
