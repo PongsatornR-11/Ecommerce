@@ -31,7 +31,6 @@ const SummaryCard = () => {
         }
         saveAddress(token, address)
             .then(res => {
-                console.log('res', res)
                 toast.success(res.data.message)
                 setAddressUpdate(true)
             })
