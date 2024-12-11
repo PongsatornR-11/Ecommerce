@@ -182,6 +182,10 @@ exports.saveAddress = async (req, res) => {
 exports.saveOrder = async (req, res) => {
   try {
     // this is real !!!!
+    // step 0 check Stripe
+    // console.log(req.body)
+    // return res.send('hello save Order ')
+
     // step 1 Get user Cart
     const userCart = await prisma.cart.findFirst({
       where: {
@@ -198,7 +202,7 @@ exports.saveOrder = async (req, res) => {
       });
     }
 
-    // check quantity for loop in object
+    // check quantity
     for (const item of userCart.products) {
       const product = await prisma.product.findUnique({
         where: { id: item.productId },

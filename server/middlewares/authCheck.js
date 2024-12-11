@@ -7,7 +7,7 @@ exports.authCheck = async (req, res, next) => {
     if (!headerToken) {
       return res
         .status(401)
-        .json({ message: "Token is required for Authorization!~~~~~~~~~" });
+        .json({ message: "Token is required for Authorization!" });
       // status(401) is Unauthorized
     }
     const token = headerToken.split(" ")[1];

@@ -3,8 +3,11 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import { payment } from '../../api/stripe';
 import useEcomStore from '../../store/ecom-store';
+import CheckoutForm from '../../components/CheckoutForm';
 
-const stripePromise = loadStripe("pk_test_51QTdPoClpvgManj8Y4YrlTovz7T7WrUXAWbU9jVz84ILzNomfBKd8DZLnUMTK3JRzoqw8RNPXD5jIgHHsoEcuK1n00nUTE9VRU");
+const STRIPE_PUBLISHABLE_KEY = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+
+const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
 
 const Payment = () => {
@@ -14,14 +17,27 @@ const Payment = () => {
     useEffect(() => {
         payment(token)
             .then((res) => {
-                console.log(res)
+                setClientSecret(res.data.clientSecret)
             })
             .catch((err) => {
                 console.log(err)
             })
     }, [])
+
+    const appearance = {
+        theme: 'stripe',
+    };
+    // Enable the skeleton loader UT for optimal loading.
+    const loader = 'auto'
+
     return (
-        <div>Payment</div>
+        <div>
+            {clientSecret && (
+                <Elements options={{ clientSecret, appearance, loader }} stripe={stripePromise}>
+                    <CheckoutForm/>
+                </Elements>
+            )}
+        </div>
     )
 }
 
