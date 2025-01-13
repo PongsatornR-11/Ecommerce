@@ -20,7 +20,7 @@ const MainNav = () => {
             <Link to={"shop"}>Shop</Link>
             {/* badge */}
 
-            <Link to={"cart"} className="relative">
+            <Link to={"/cart"} className="relative">
               Cart
               {carts.length > 0 && (
                 <span className="absolute -top-3 -right-5 bg-red-500 text-white px-2 rounded-full">
@@ -33,8 +33,8 @@ const MainNav = () => {
 
           <div className="flex items-center gap-4">
             {/* right */}
-            <Link to={"register"}>Register</Link>
-            <Link to={"login"}>Login</Link>
+            <Link to={"/register"}>Register</Link>
+            <Link to={"/login"}>Login</Link>
           </div>
         </div>
       </div>

@@ -58,6 +58,22 @@ exports.userCart = async (req, res) => {
       where: { id: Number(req.user.id) },
     });
     // console.log(user)
+
+    // check quantity
+    for (const item of cart) {
+      const product = await prisma.product.findUnique({
+        where: { id: item.id },
+        select: { title: true, quantity: true },
+      });
+
+      if (!product || item.count > product.quantity) {
+        return res.status(400).json({
+          ok: false,
+          message: `sorry out of product ${product.title}`,
+        });
+      }
+    }
+
     // delete old cart item
     await prisma.productOnCart.deleteMany({
       where: {
@@ -183,7 +199,7 @@ exports.saveOrder = async (req, res) => {
   try {
     // this is real !!!!
     // step 0 check Stripe
-    // console.log(req.body)
+    console.log(req.body)
     // return res.send('hello save Order ')
 
     // step 1 Get user Cart
@@ -202,21 +218,10 @@ exports.saveOrder = async (req, res) => {
       });
     }
 
-    // check quantity
-    for (const item of userCart.products) {
-      const product = await prisma.product.findUnique({
-        where: { id: item.productId },
-        select: { title: true, quantity: true },
-      });
+    
 
-      if (!product || item.count > product.quantity) {
-        return res.status(400).json({
-          ok: false,
-          message: `sorry out of product ${product.title}`,
-        });
-      }
-    }
-
+    const { id, amount, status, currency } = req.body.paymentIntent
+    const amountTHB = amount / 100
     // create a new order
     const order = await prisma.order.create({
       data: {
@@ -233,6 +238,10 @@ exports.saveOrder = async (req, res) => {
           },
         },
         cartTotal: userCart.cartTotal,
+        stripePaymentId: String(id),
+        amount: Number(amountTHB),
+        status: status,
+        currency: currency,
       },
     });
 

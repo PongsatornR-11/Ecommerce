@@ -7,6 +7,7 @@ import { createUserCart } from '../../api/user'
 
 const ListCart = () => {
 
+    const toastDuration = useEcomStore((state) => state.toastDuration)
     const cart = useEcomStore((state) => state.carts)
     const getTotalPrice = useEcomStore((state) => state.getTotalPrice)
     const user = useEcomStore((state) => state.user)
@@ -22,6 +23,7 @@ const ListCart = () => {
             })
             .catch((err) => {
                 console.log(err)
+                toast.warning(err.response.data.message)
             })
     }
 
