@@ -1,6 +1,6 @@
 @echo off
 
-start wt new-tab -p "Command Prompt" -d "C:\Learn coding\web coding\Projects\Ecommerce" cmd.exe /c "cursor . && exit"^
+start wt new-tab -p "Command Prompt" -d "C:\Learn coding\web coding\Projects\Ecommerce" cmd.exe /c "code . && exit"^
 ; new-tab -p "Command Prompt" -d "C:\Learn coding\web coding\Projects\Ecommerce\client" cmd.exe /k "npm run dev"^
 ; new-tab -p "Command Prompt" -d "C:\Learn coding\web coding\Projects\Ecommerce\server" cmd.exe /k "npm start"
 
