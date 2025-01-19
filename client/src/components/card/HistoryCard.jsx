@@ -41,12 +41,14 @@ const HistoryCard = () => {
                             {/* table  loop product*/}
                             <div>
                                 <table className='border w-full '>
-                                    <tr className='bg-gray-200'>
-                                        <th>Product</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                        <th>Total</th>
-                                    </tr>
+                                    <thead>
+                                        <tr className='bg-gray-200'>
+                                            <th>Product</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
                                     <tbody>
                                         {/* product loop */}
                                         {item?.products.map((products, index) => {

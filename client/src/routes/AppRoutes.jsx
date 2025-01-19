@@ -25,6 +25,7 @@ import LayoutUser from "../layouts/LayoutUser";
 // import protect route
 import ProtectRouteUser from "./ProtectRouteUser";
 import ProtectRouteAdmin from "./ProtectRouteAdmin";
+import ManageOrder from "../pages/admin/ManageOrder";
 
 const router = createBrowserRouter([
   // public path
@@ -51,6 +52,7 @@ const router = createBrowserRouter([
       { path: "product", element: <Product /> },
       { path: "product/:id", element: <EditProduct /> },
       { path: "manage", element: <Manage /> },
+      { path: "orders", element: <ManageOrder /> },
     ],
   },
 

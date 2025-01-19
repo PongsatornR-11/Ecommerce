@@ -6,6 +6,7 @@ import {
   Bolt,
   ChartColumnStacked,
   PackageSearch,
+  ShoppingBasket,
   LogOut,
 } from "lucide-react";
 
@@ -65,8 +66,19 @@ const SidebarAdmin = () => {
               : "text-gray-300 px-4 py-2 hover:bg-gray-500 hover:text-white rounded flex items-center"
           }
         >
-          <PackageSearch className="mr-2" />
+          <ShoppingBasket className="mr-2" />
           Product
+        </NavLink>
+        <NavLink
+          to={"orders"}
+          className={({ isActive }) =>
+            isActive
+              ? "bg-[#222831] rounded-md px-4 py-2 text-white flex items-center"
+              : "text-gray-300 px-4 py-2 hover:bg-gray-500 hover:text-white rounded flex items-center"
+          }
+        >
+          <PackageSearch className="mr-2" />
+          Orders
         </NavLink>
       </nav>
 
