@@ -15,7 +15,7 @@ exports.changeOrderStatus = async (req, res) => {
       return res.status(500).json({ message: "No order Id on record" });
     }
 
-    //update that order
+    //update status order
     const orderUpdate = await prisma.order.update({
       where: {
         id: Number(orderId),

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { getOrdersAdmin } from '../../api/admin'
+import { getOrdersAdmin, changeOrderStatus } from '../../api/admin'
 import useEcomStore from '../../store/ecom-store'
+import { toast } from 'react-toastify'
 
 const TableOrders = () => {
 
@@ -9,15 +10,47 @@ const TableOrders = () => {
     const [orders, setOrders] = useState([])
 
     useEffect(() => {
+        if (token) { handleGetOrderAdmin(token) }
+    }, [])
+
+    const handleGetOrderAdmin = (token) => {
         getOrdersAdmin(token)
             .then((res) => {
                 setOrders(res.data)
-                // console.log(res.data)
             })
             .catch((err) => {
                 console.log(err)
             })
-    }, [])
+    }
+
+    const handleChangeOrderStatus = (token, orderId, orderStatus) => {
+        changeOrderStatus(token, orderId, orderStatus)
+            .then((res) => {
+                console.log(res)
+                toast.success('Order status updated')
+                handleGetOrderAdmin(token)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    const getStatusColor = (status) => {
+        switch (status) {
+            case 'Not processed':
+                return 'bg-red-300'
+            case 'Processing':
+                return 'bg-yellow-300'
+            case 'Dispatched':
+                return 'bg-blue-300'
+            case 'Cancelled':
+                return 'bg-gray-300'
+            case 'Completed':
+                return 'bg-green-300'
+            default:
+                return ''
+        }
+    }
     return (
         <div className="container mx-auto p-4 bg-[#ffffff] shadow-md">
             <h1 className="text-2xl font-bold">Orders</h1>
@@ -37,7 +70,6 @@ const TableOrders = () => {
                     <tbody className='border'>
                         {
                             orders?.map((item, index) => {
-                                console.log(item)
                                 return (
                                     <tr key={index} className='border'>
                                         <td className='text-center'>{index + 1}</td>
@@ -46,7 +78,6 @@ const TableOrders = () => {
                                                 {item.orderedBy.email}
                                             </p>
                                         </td>
-
 
                                         <td className='px-2 py-4'>
                                             {item.products?.map((product, index) => {
@@ -59,12 +90,35 @@ const TableOrders = () => {
                                             })}
                                         </td>
 
+                                        <td>
+                                            <span
+                                                className={`${getStatusColor(item.orderStatus)} px-2 py-1 rounded-full text-xs`}
+                                            >
+                                                {item.orderStatus}
+                                            </span>
+                                        </td>
 
 
-                                        <td>{item.orderStatus}</td>
+
+
                                         <td>{item.cartTotal}</td>
                                         <td>{item.orderedBy.address}</td>
-                                        <td>action</td>
+
+                                        <td>
+                                            <select
+                                                value={item.orderStatus}
+                                                onChange={(event) =>
+                                                    handleChangeOrderStatus(token, item.id, event.target.value)
+                                                }
+                                            >
+                                                <option value='Not processed'>Not processed</option>
+                                                <option value='Processing'>Processing</option>
+                                                <option value='Dispatched'>Dispatched</option>
+                                                <option value='Cancelled'>Cancelled</option>
+                                                <option value='Completed'>Completed</option>
+                                            </select>
+                                        </td>
+
                                     </tr>
                                 )
                             })

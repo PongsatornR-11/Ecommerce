@@ -7,7 +7,21 @@ export const getOrdersAdmin = async (token) =>
         `${API_BASE_URL}/admin/orders`,
         {
             headers: {
-                Authorization : `Bearer ${token}`
+                Authorization: `Bearer ${token}`
             }
         }
     )
+
+export const changeOrderStatus = async (token, orderId, orderStatus) => {
+
+    return axios.put(`${API_BASE_URL}/admin/order-status`,
+        {
+            orderId,
+            orderStatus
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+}
