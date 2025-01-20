@@ -92,30 +92,28 @@ const TableOrders = () => {
 
                                         <td>
                                             <span
-                                                className={`${getStatusColor(item.orderStatus)} px-2 py-1 rounded-full text-xs`}
+                                                className={`${getStatusColor(item.orderStatus)} px-2 py-1 rounded-md text-xs`}
                                             >
                                                 {item.orderStatus}
                                             </span>
                                         </td>
-
-
-
 
                                         <td>{item.cartTotal}</td>
                                         <td>{item.orderedBy.address}</td>
 
                                         <td>
                                             <select
+                                                className={`text-xs p-1 rounded-md border ${getStatusColor(item.orderStatus)}`}
                                                 value={item.orderStatus}
                                                 onChange={(event) =>
                                                     handleChangeOrderStatus(token, item.id, event.target.value)
                                                 }
                                             >
-                                                <option value='Not processed'>Not processed</option>
-                                                <option value='Processing'>Processing</option>
-                                                <option value='Dispatched'>Dispatched</option>
-                                                <option value='Cancelled'>Cancelled</option>
-                                                <option value='Completed'>Completed</option>
+                                                <option value='Not processed' className={getStatusColor('Not processed')}>Not processed</option>
+                                                <option value='Processing' className={getStatusColor('Processing')}>Processing</option>
+                                                <option value='Dispatched' className={getStatusColor('Dispatched')}>Dispatched</option>
+                                                <option value='Cancelled' className={getStatusColor('Cancelled')}>Cancelled</option>
+                                                <option value='Completed' className={getStatusColor('Completed')}>Completed</option>
                                             </select>
                                         </td>
 
