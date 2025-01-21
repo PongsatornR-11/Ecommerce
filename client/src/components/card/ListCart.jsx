@@ -4,6 +4,7 @@ import useEcomStore from '../../store/ecom-store'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { createUserCart } from '../../api/user'
+import { formatPrice } from '../../utils/number'
 
 const ListCart = () => {
 
@@ -57,12 +58,12 @@ const ListCart = () => {
 
                                     <div>
                                         <p className='font-bold'>{item.title}</p>
-                                        <p className='text-sm text-gray-500'>{item.price} x {item.count}</p>
+                                        <p className='text-sm text-gray-500'>{formatPrice(item.price)} THB x {item.count}</p>
                                     </div>
                                 </div>
                                 <div>
                                     <div className='font-bold text-blue-500'>
-                                        {item.price * item.count}
+                                        {formatPrice(item.price * item.count)} THB
                                     </div>
                                 </div>
                             </div>
@@ -74,8 +75,8 @@ const ListCart = () => {
                 <div className='border p-2 rounded-md bg-white shadow-md space-y-2'>
                     <p className='text-xl font-bold'>Total price</p>
                     <div className='font-bold flex justify-between'>
-                        <span>Net price</span>
-                        <span className='text-xl'><span>฿ </span>{getTotalPrice()}</span>
+                        <span>NET PRICE</span>
+                        <span className='text-xl'>{formatPrice(getTotalPrice())} THB</span>
                     </div>
 
                     <div className='flex flex-col gap-2'>

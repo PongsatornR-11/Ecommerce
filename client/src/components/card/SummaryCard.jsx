@@ -3,6 +3,7 @@ import useEcomStore from '../../store/ecom-store'
 import { listUserCart, saveAddress } from '../../api/user'  
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import { formatPrice } from '../../utils/number'
 
 const SummaryCard = () => {
     const token = useEcomStore(state => state.token)
@@ -79,11 +80,11 @@ const SummaryCard = () => {
                                         }
                                         <div>
                                             <p>{item.product.title.length > 15 ? item.product.title.substring(0, 15) + '...' : item.product.title}</p>
-                                            <p>{item.count} x {item.product.price}</p>
+                                            <p className='text-sm'>{item.count} x {formatPrice(item.product.price)}</p>
                                         </div>
                                     </div>
                                     <div>
-                                        <p className='font-semibold'>{(item.count * item.price).toLocaleString()}</p>
+                                        <p className='font-semibold'>{formatPrice(item.count * item.price)} THB</p>
                                     </div>
                                 </div>
                             </div>
@@ -106,7 +107,7 @@ const SummaryCard = () => {
                         <div>
                             <div className='flex justify-between gap-4 items-end'>
                                 <p className='font-semibold'>Net Total:</p>
-                                <p className='font-bold text-xl'>{cartTotal.toLocaleString()}</p>
+                                <p className='font-bold text-xl'>{formatPrice(cartTotal)} THB</p>
                             </div>
                         </div>
                         <hr />

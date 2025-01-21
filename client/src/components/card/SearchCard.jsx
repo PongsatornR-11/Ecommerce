@@ -3,6 +3,7 @@ import useEcomStore from '../../store/ecom-store'
 
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import { formatPrice } from '../../utils/number';
 
 const SearchCard = () => {
 
@@ -105,8 +106,8 @@ const SearchCard = () => {
                 <h1>Price</h1>
                 <div>
                     <div className='flex justify-between w-full'>
-                        <span>Min : {price[0]}</span>
-                        <span>Max : {price[1]}</span>
+                        <span>Min : {formatPrice(price[0])}</span>
+                        <span>Max : {formatPrice(price[1])}</span>
                     </div>
                     <Slider
                         range

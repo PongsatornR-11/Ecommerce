@@ -5,7 +5,9 @@ import { createProduct, deleteProduct } from "../../api/product";
 import { toast } from "react-toastify";
 import UpdateFile from "./UpdateFile";
 import { Link } from "react-router-dom";
-import { Pencil, Trash, Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
+import { formatPrice } from "../../utils/number";
+
 
 const initialState = {
   title: "",
@@ -162,7 +164,7 @@ const FromProduct = () => {
                     {item.images.length > 0 ? (
                       <img
                         src={item.images[0].url}
-                        className="w-24 h-24 rounded-lg shadow-sm"
+                        className="w-24 h-24 rounded-lg shadow-sm object-cover"
                       />
                     ) : (
                       <div className="w-24 h-24 bg-gray-200 rounded-sm flex items-center justify-center shadow-sm">
@@ -171,31 +173,31 @@ const FromProduct = () => {
                     )}
                   </td>
 
-                  <td>{item.title}</td>
-                  <td>{item.description}</td>
-                  <td>{item.price}</td>
+                  <td>{item.title.length > 15 ? item.title.substring(0, 15) + "..." : item.title}</td>
+                  <td className="text-sm">{item.description.length > 30 ? item.description.substring(0, 30) + "..." : item.description}</td>
+                  <td>{formatPrice(item.price)} THB</td>
                   <td>{item.quantity}</td>
                   <td>{item.sold}</td>
                   <td>{item.updatedAt}</td>
 
                   <td className="flex gap-2">
-                    <Link to={"/admin/product/" + item.id}>
+                      <Link to={"/admin/product/" + item.id}>
+                        <p
+                          className="cursor-pointer 
+                                  hover:scale-105 hover:-translate-y-1 hover:duration-200 
+                                  bg-yellow-500 rounded-md p-1 shadow-md"
+                        >
+                          <Pencil />
+                        </p>
+                      </Link>
                       <p
                         className="cursor-pointer 
-                                                    hover:scale-105 hover:-translate-y-1 hover:duration-200 
-                                                    bg-yellow-500 rounded-md p-1 shadow-md"
+                                hover:scale-105 hover:-translate-y-1 hover:duration-200 
+                                bg-red-400 rounded-md p-1 shadow-md"
+                        onClick={() => handleDelete(item.id, item.title)}
                       >
-                        <Pencil />
+                        <Trash2 />
                       </p>
-                    </Link>
-                    <p
-                      className="cursor-pointer 
-                                                hover:scale-105 hover:-translate-y-1 hover:duration-200 
-                                                bg-red-400 rounded-md p-1 shadow-md"
-                      onClick={() => handleDelete(item.id, item.title)}
-                    >
-                      <Trash2 />
-                    </p>
                   </td>
                 </tr>
               );

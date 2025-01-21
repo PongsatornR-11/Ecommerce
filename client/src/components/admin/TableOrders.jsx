@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { getOrdersAdmin, changeOrderStatus } from '../../api/admin'
 import useEcomStore from '../../store/ecom-store'
 import { toast } from 'react-toastify'
+import { formatPrice } from '../../utils/number'
 
 const TableOrders = () => {
 
     const token = useEcomStore((state) => state.token)
-
     const [orders, setOrders] = useState([])
 
     useEffect(() => {
@@ -84,7 +84,7 @@ const TableOrders = () => {
                                                 return (<div>
                                                     <li key={index}>
                                                         {product.product.title.length > 15 ? product.product.title.substring(0, 15) + '... ' : product.product.title}
-                                                        <span className='text-sm'>{product.count} x {product.product.price}</span>
+                                                        <span className='text-sm'>{product.count} x {formatPrice(product.product.price)}</span>
                                                     </li>
                                                 </div>)
                                             })}
@@ -98,7 +98,8 @@ const TableOrders = () => {
                                             </span>
                                         </td>
 
-                                        <td>{item.cartTotal}</td>
+                                        <td>{formatPrice(item.cartTotal)} THB</td>
+
                                         <td>{item.orderedBy.address}</td>
 
                                         <td>
