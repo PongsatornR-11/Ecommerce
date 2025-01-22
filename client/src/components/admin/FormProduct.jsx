@@ -7,7 +7,7 @@ import UpdateFile from "./UpdateFile";
 import { Link } from "react-router-dom";
 import { Pencil, Trash2 } from "lucide-react";
 import { formatPrice } from "../../utils/number";
-
+import { formatDate } from "../../utils/datetimeformat";
 
 const initialState = {
   title: "",
@@ -178,7 +178,7 @@ const FromProduct = () => {
                   <td>{formatPrice(item.price)} THB</td>
                   <td>{item.quantity}</td>
                   <td>{item.sold}</td>
-                  <td>{item.updatedAt}</td>
+                  <td>{formatDate(item.updatedAt)}</td>
 
                   <td className="flex gap-2">
                       <Link to={"/admin/product/" + item.id}>

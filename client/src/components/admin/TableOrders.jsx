@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { getOrdersAdmin, changeOrderStatus } from '../../api/admin'
 import useEcomStore from '../../store/ecom-store'
 import { toast } from 'react-toastify'
+
+// utils import
 import { formatPrice } from '../../utils/number'
+import { formatDate, formatDateTh, formatHourFromNow} from '../../utils/datetimeformat'
+import { getStatusColor } from '../../utils/statusColor'
 
 const TableOrders = () => {
 
@@ -35,22 +39,7 @@ const TableOrders = () => {
             })
     }
 
-    const getStatusColor = (status) => {
-        switch (status) {
-            case 'Not processed':
-                return 'bg-red-300'
-            case 'Processing':
-                return 'bg-yellow-300'
-            case 'Dispatched':
-                return 'bg-blue-300'
-            case 'Cancelled':
-                return 'bg-gray-300'
-            case 'Completed':
-                return 'bg-green-300'
-            default:
-                return ''
-        }
-    }
+    
     return (
         <div className="container mx-auto p-4 bg-[#ffffff] shadow-md">
             <h1 className="text-2xl font-bold">Orders</h1>
@@ -64,6 +53,7 @@ const TableOrders = () => {
                             <th>Status</th>
                             <th>Total</th>
                             <th>address</th>
+                            <th>Order Date</th>
                             <th>Update status</th>
                         </tr>
                     </thead>
@@ -101,7 +91,8 @@ const TableOrders = () => {
                                         <td>{formatPrice(item.cartTotal)} THB</td>
 
                                         <td>{item.orderedBy.address}</td>
-
+                                        
+                                        <td>{formatDate(item.createdAt)}</td>
                                         <td>
                                             <select
                                                 className={`text-xs p-1 rounded-md border ${getStatusColor(item.orderStatus)}`}
