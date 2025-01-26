@@ -32,3 +32,7 @@ export const formatHourFromNow = (date) => {
 export const formatTime = (date) => {
     return moment(date).format('LT');
 }
+
+export const formatDateTime = (date) => {
+    return moment(date).format('lll');
+}

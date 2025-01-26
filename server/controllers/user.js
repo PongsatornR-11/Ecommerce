@@ -9,6 +9,8 @@ exports.listUsers = async (req, res) => {
         role: true,
         enabled: true,
         address: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
     res.send(users);

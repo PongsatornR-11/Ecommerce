@@ -3,10 +3,17 @@ import { ShoppingCart } from 'lucide-react';
 import useEcomStore from '../../store/ecom-store';
 import { formatPrice } from '../../utils/number';
 
+import { motion } from "motion/react"
+
 const ProductCard = ({ product }) => {
     const actionAddCart = useEcomStore((state) => state.actionAddCart)
     
     return (
+        <motion.div
+            initial={{ opacity: 0, scale: 0.7 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.2 }}
+        >
         <div className='border rounded-md shadow-md p-2 w-48 h-[280px] flex flex-col'>
             <div>
                 {
@@ -34,6 +41,7 @@ const ProductCard = ({ product }) => {
                 </button>
             </div>
         </div>
+        </motion.div>
     )
 }
 export default ProductCard

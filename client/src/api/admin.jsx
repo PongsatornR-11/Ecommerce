@@ -25,3 +25,30 @@ export const changeOrderStatus = async (token, orderId, orderStatus) => {
             }
         })
 }
+
+export const getListAllUsers = async (token) => {
+    return axios.get(`${API_BASE_URL}/users`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+}
+
+export const changeUserStatus = async (token, value) => {
+    return axios.post(`${API_BASE_URL}/change-status`,
+        value,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+}
+
+export const changeUserRole = async (token, value) =>{
+    return axios.post(`${API_BASE_URL}/change-role`, value, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+}
