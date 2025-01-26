@@ -16,4 +16,4 @@ start "C:\Program Files\Google\Chrome\Application\chrome.exe" "http://localhost:
 :: Open Lofi girl
 start "C:\Program Files\Google\Chrome\Application\chrome.exe" "https://www.youtube.com/watch?v=jfKfPfyJRdk"
 :: Open roithai  ep 30 // 00.00
-start "C:\Program Files\Google\Chrome\Application\chrome.exe" "https://www.youtube.com/watch?v=LrLW7oOLZus&list=PL3CRqF9WxjEZHFnZSSdC4wNDgvkKhpMtS&index=32"
+start "C:\Program Files\Google\Chrome\Application\chrome.exe" "https://www.youtube.com/watch?v=cKPn6niKnT8&list=PL3CRqF9WxjEZHFnZSSdC4wNDgvkKhpMtS&index=35"
