@@ -77,7 +77,10 @@ const ecomStore = (set, get) => ({
     return get().carts.reduce((sum, item) => {
       return sum + (item.price * item.count)
     }, 0)
-  }
+  },
+  actionClearCart: () => {
+    set({ carts: [] })
+  },
 });
 
 const userPersist = {

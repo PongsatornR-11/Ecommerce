@@ -8,7 +8,6 @@ import { formatPrice } from '../../utils/number'
 
 const ListCart = () => {
 
-    const toastDuration = useEcomStore((state) => state.toastDuration)
     const cart = useEcomStore((state) => state.carts)
     const getTotalPrice = useEcomStore((state) => state.getTotalPrice)
     const user = useEcomStore((state) => state.user)
@@ -88,9 +87,10 @@ const ListCart = () => {
 
                         {user
                             ? <Link>
-                                <button 
-                                onClick={handleCheckout}
-                                className='w-full bg-green-400 shadow-md text-white px-2 py-1 rounded-md hover:bg-green-500 transition-all hover:duration-200'>
+                                <button
+                                    disabled={cart.length < 1}
+                                    onClick={handleCheckout}
+                                    className='w-full bg-green-400 shadow-md text-white px-2 py-1 rounded-md hover:bg-green-500 transition-all hover:duration-200'>
                                     Checkout
                                 </button>
                             </Link>
