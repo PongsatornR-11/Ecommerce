@@ -1,17 +1,26 @@
 //rafce
 
-import React from "react";
+import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import useEcomStore from "../store/ecom-store";
 import { Github } from 'lucide-react'
-import { UserRound } from 'lucide-react'
+import { UserRound, ChevronDown } from 'lucide-react'
 
 
 const MainNav = () => {
 
   const carts = useEcomStore((state) => state.carts)
+  const user = useEcomStore((state) => state.user)
+  const logout = useEcomStore((state) => state.actionLogout)
+
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  }
   return (
-    <nav className="bg-gray-300 shadow-md hover:bg-gray-400 transition-all hover:duration-200">
+    <nav className="bg-gray-300 shadow-md">
       <div className="mx-auto">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -25,8 +34,8 @@ const MainNav = () => {
               to={"/"}
               className={({ isActive }) =>
                 isActive
-                  ? "bg-gray-400 px-5 h-full flex items-center text-sm font-medium hover:bg-gray-300 transition-all hover:duration-200"
-                  : "px-5 h-full flex items-center text-sm font-medium hover:bg-gray-300 transition-all hover:duration-200"
+                  ? "bg-gray-400 px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200"
+                  : "px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200"
               }
             >
               Home
@@ -36,8 +45,8 @@ const MainNav = () => {
               to={"shop"}
               className={({ isActive }) =>
                 isActive
-                  ? "bg-gray-400 px-5 h-full flex items-center text-sm font-medium hover:bg-gray-300 transition-all hover:duration-200"
-                  : "px-5 h-full flex items-center text-sm font-medium hover:bg-gray-300 transition-all hover:duration-200"
+                  ? "bg-gray-400 px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200"
+                  : "px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200"
               }
             >
               Shop
@@ -48,8 +57,8 @@ const MainNav = () => {
               to={"/cart"}
               className={({ isActive }) =>
                 isActive
-                  ? "bg-gray-400 px-5 h-full flex items-center text-sm font-medium hover:bg-gray-300 transition-all hover:duration-200 relative"
-                  : "px-5 h-full flex items-center text-sm font-medium hover:bg-gray-300 transition-all hover:duration-200 relative"
+                  ? "bg-gray-400 px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200 relative"
+                  : "px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200 relative"
               }>
               Cart
               {carts.length > 0 && (
@@ -61,36 +70,52 @@ const MainNav = () => {
 
           </div>
 
+          {
+            user
+              ? <div className="hover:bg-gray-400 transition-all hover:duration-200">
+                <button
+                  onClick={toggleDropdown}
+                  className="px-3 h-full gap-1 flex items-center font-medium ">
+                  <UserRound size={24} />
+                  <ChevronDown size={20} />
+                </button>
 
-          <div className="flex items-center gap-4">
-            <button
-              className="px-5 h-full flex items-center text-sm font-medium hover:bg-gray-200 transition-all hover:duration-200">
-              <UserRound size={32} />
-            </button>
-          </div>
+                {
+                  isOpen && ( // if isOpen is true, then render the dropdown
+                    <div className="absolute mt-2 top-14 bg-gray-300 shadow-md">
+                      <Link to={'/user/history'} className="w-18 block text-sm font-medium px-2 py-2 hover:bg-gray-400 transition-all hover:duration-200">
+                        History
+                      </Link>
+                      <button onClick={() => logout()} className="w-18 block text-sm font-medium px-2 py-2 hover:bg-gray-400 transition-all hover:duration-200">
+                        Logout
+                      </button>
+                    </div>
+                  )}
+              </div>
+              : <div className="flex items-center">
+                <NavLink
+                  to={"/register"}
+                  className={({ isActive }) =>
+                    isActive
+                  ? "bg-gray-400 px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200 relative"
+                  : "px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200 relative"
+                  }>
+                  Register
+                </NavLink>
+                <NavLink
+                  to={"/login"}
+                  className={({ isActive }) =>
+                    isActive
+                  ? "bg-gray-400 px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200 relative"
+                  : "px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200 relative"
+                }>
+                  Login
+                </NavLink>
+              </div>
+          }
 
 
-          {/* <div className="flex items-center">
-            <NavLink
-              to={"/register"}
-              className={({ isActive }) =>
-                isActive
-                  ? "bg-gray-400 px-5 h-full flex items-center text-sm font-medium hover:bg-gray-300 transition-all hover:duration-200 relative"
-                  : "px-5 h-full flex items-center text-sm font-medium hover:bg-gray-300 transition-all hover:duration-200 relative"
-              }>
-              Register
-            </NavLink>
-            <NavLink
-              to={"/login"}
-              className={({ isActive }) =>
-                isActive
-                  ? "bg-gray-400 px-5 h-full flex items-center text-sm font-medium hover:bg-gray-300 transition-all hover:duration-200 relative"
-                  : "px-5 h-full flex items-center text-sm font-medium hover:bg-gray-300 transition-all hover:duration-200 relative"
-              }
-            >
-              Login
-            </NavLink>
-          </div> */}
+
         </div>
       </div>
     </nav>

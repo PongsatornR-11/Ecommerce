@@ -81,6 +81,13 @@ const ecomStore = (set, get) => ({
   actionClearCart: () => {
     set({ carts: [] })
   },
+  actionLogout: () => {
+    set({
+      user: null,
+      token: null,
+      carts: [],
+    })
+  }
 });
 
 const userPersist = {

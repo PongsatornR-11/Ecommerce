@@ -65,6 +65,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomeUser /> }, 
       { path: 'payment', element: <Payment /> },
       { path: "history", element: <History /> },
+      { path: "shop", element: <Shop /> },
     ],
   },
 ]);
