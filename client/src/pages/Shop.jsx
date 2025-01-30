@@ -1,7 +1,7 @@
 // rafce
 
 import React, { useEffect } from "react";
-import ProductCard from "../components/card/productCard";
+import ProductCard from "../components/card/ProductCard";
 import useEcomStore from "../store/ecom-store";
 import SearchCard from "../components/card/SearchCard";
 import CartCard from "../components/card/CartCard";
