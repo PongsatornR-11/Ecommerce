@@ -15,5 +15,5 @@ start "" "C:\Users\basni\AppData\Local\Postman\Postman.exe"
 start "C:\Program Files\Google\Chrome\Application\chrome.exe" "http://localhost:5173"
 :: Open Lofi girl
 start "C:\Program Files\Google\Chrome\Application\chrome.exe" "https://www.youtube.com/watch?v=jfKfPfyJRdk"
-:: Open roithai  ep 30 // 14.52
-start "C:\Program Files\Google\Chrome\Application\chrome.exe" "https://www.youtube.com/watch?v=Lq-kME_rJIU&list=PL3CRqF9WxjEZHFnZSSdC4wNDgvkKhpMtS&index=40"
+:: Open roithai  ep 30 // 15.05
+start "C:\Program Files\Google\Chrome\Application\chrome.exe" "https://www.youtube.com/watch?v=2GwFz-aaMuU&list=PL3CRqF9WxjEZHFnZSSdC4wNDgvkKhpMtS&index=40"

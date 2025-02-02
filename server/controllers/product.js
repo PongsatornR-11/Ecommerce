@@ -180,6 +180,7 @@ exports.listby = async (req, res) => {
       orderBy: { [sort]: order },
       include: {
         category: true,
+        images: true,
       },
     });
     res.send(products);

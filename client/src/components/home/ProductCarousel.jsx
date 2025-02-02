@@ -23,12 +23,13 @@ const ProductCarousel = () => {
     }, [])
 
     return (
-        <div>
+        <div className='my-2'>
+            p
             <Swiper
                 slidesPerView={5}
-                spaceBetween={10}
+                spaceBetween={50}
                 autoplay={{
-                    delay: 100,
+                    delay: 3000,
                     disableOnInteraction: false,
                 }}
                 scrollbar={{

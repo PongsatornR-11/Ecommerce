@@ -31,16 +31,15 @@ const ContentCarousel = () => {
         <div>
             <Swiper
                 autoplay={{
-                    delay: 2500,
+                    delay: 5000,
                     disableOnInteraction: false,
                 }}
-                pagination={{clickable: true,}}
+                pagination={{ clickable: true, }}
                 modules={[Pagination, Autoplay]} className="mySwiper h-80 object-cover">
                 {
                     Images?.map((image) => {
                         return (
                             <SwiperSlide key={image.id}>
-                                {/* <img src={`${image.url}`} /> */}
                                 <img src={`${image.download_url}`} />
                             </SwiperSlide>
                         )

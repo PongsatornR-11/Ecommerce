@@ -26,7 +26,7 @@ const MainNav = () => {
           <div className="flex items-center">
 
             {/* left */}
-            <Link to={"https://github.com/WomenOnTOP"} className="text-2xl font-bold px-8">
+            <Link to={"https://github.com/WomenOnTOP"} className="h-full items-center text-2xl font-bold w-20 flex justify-center hover:text-white hover:bg-gray-500 transition-all hover:duration-200">
               <Github size={32} />
             </Link>
 
@@ -34,8 +34,8 @@ const MainNav = () => {
               to={"/"}
               className={({ isActive }) =>
                 isActive
-                  ? "bg-gray-400 px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200"
-                  : "px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200"
+                  ? "bg-gray-500 w-20 h-full justify-center flex items-center text-sm font-medium hover:text-white hover:bg-gray-500 transition-all hover:duration-200"
+                  : "w-20 h-full flex justify-center items-center text-sm font-medium hover:text-white hover:bg-gray-500 transition-all hover:duration-200"
               }
             >
               Home
@@ -45,8 +45,8 @@ const MainNav = () => {
               to={"shop"}
               className={({ isActive }) =>
                 isActive
-                  ? "bg-gray-400 px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200"
-                  : "px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200"
+                  ? "bg-gray-500 w-20 justify-center h-full flex items-center text-sm font-medium hover:text-white hover:bg-gray-500 transition-all hover:duration-200"
+                  : "w-20 justify-center h-full flex items-center text-sm font-medium hover:text-white hover:bg-gray-500 transition-all hover:duration-200"
               }
             >
               Shop
@@ -57,8 +57,8 @@ const MainNav = () => {
               to={"/cart"}
               className={({ isActive }) =>
                 isActive
-                  ? "bg-gray-400 px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200 relative"
-                  : "px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200 relative"
+                  ? "bg-gray-500 text-white w-20 justify-center h-full flex items-center text-sm font-medium hover:text-white hover:bg-gray-500 transition-all hover:duration-200 relative"
+                  : "w-20 justify-center h-full flex items-center text-sm font-medium hover:text-white hover:bg-gray-500 transition-all hover:duration-200 relative"
               }>
               Cart
               {carts.length > 0 && (
@@ -72,10 +72,10 @@ const MainNav = () => {
 
           {
             user
-              ? <div className="hover:bg-gray-400 transition-all hover:duration-200">
+              ? <div>
                 <button
                   onClick={toggleDropdown}
-                  className="px-3 h-full gap-1 flex items-center font-medium ">
+                  className="hover:bg-gray-500 transition-all hover:duration-200 px-3 h-full gap-1 flex items-center font-medium hover:text-white">
                   <UserRound size={24} />
                   <ChevronDown size={20} />
                 </button>
@@ -83,10 +83,10 @@ const MainNav = () => {
                 {
                   isOpen && ( // if isOpen is true, then render the dropdown
                     <div className="absolute mt-2 top-14 bg-gray-300 shadow-md">
-                      <Link to={'/user/history'} className="w-18 block text-sm font-medium px-2 py-2 hover:bg-gray-400 transition-all hover:duration-200">
+                      <Link to={'/user/history'} className="w-18 hover:text-white block text-sm font-medium px-2 py-2 hover:bg-gray-500 transition-all hover:duration-200">
                         History
                       </Link>
-                      <button onClick={() => logout()} className="w-18 block text-sm font-medium px-2 py-2 hover:bg-gray-400 transition-all hover:duration-200">
+                      <button onClick={() => logout()} className="w-18 block hover:text-white text-sm font-medium px-2 py-2 hover:bg-gray-500 transition-all hover:duration-200">
                         Logout
                       </button>
                     </div>
