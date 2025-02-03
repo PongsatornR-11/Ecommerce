@@ -4,6 +4,7 @@ import ProductCard from '../card/ProductCard'
 
 import { formatHour } from '../../utils/datetimeformat'
 
+
 const NewProduct = () => {
 
     const [products, setProducts] = useState([])

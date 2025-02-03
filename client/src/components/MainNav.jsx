@@ -12,7 +12,6 @@ const MainNav = () => {
   const user = useEcomStore((state) => state.user)
   const logout = useEcomStore((state) => state.actionLogout)
 
-
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {

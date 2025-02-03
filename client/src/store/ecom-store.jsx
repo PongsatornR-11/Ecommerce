@@ -49,13 +49,19 @@ const ecomStore = (set, get) => ({
     }
   },
   actionAddCart: async (product) => {
-    const carts = get().carts
-    const updateCart = [...carts, { ...product, count: 1 }]
+    const carts = get().carts;
+    const existingProduct = carts.find(item => item.id === product.id);
 
-    // unique step
-    const unique = _.unionWith(updateCart, _.isEqual)
+    let updateCart;
+    if (existingProduct) {
+      updateCart = carts.map(item =>
+      item.id === product.id ? { ...item, count: item.count + 1 } : item
+      );
+    } else {
+      updateCart = [...carts, { ...product, count: 1 }];
+    }
 
-    set({ carts: unique })
+    set({ carts: updateCart });
   },
   actionUpdateQuantity: (productId, newQuantity) => {
     set((state) => ({

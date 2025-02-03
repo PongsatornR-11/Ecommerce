@@ -46,7 +46,7 @@ const ProductCarousel = () => {
     return (
         <div className='my-2'>
 
-            <p className='text-2xl text-center mt-5'>Our product!</p>
+            <p className='text-2xl text-center mt-5'>Other products!</p>
             <Swiper
                 slidesPerView={slidesPerView}
                 spaceBetween={50}
