@@ -3,6 +3,8 @@ import { ShoppingCart } from 'lucide-react';
 import useEcomStore from '../../store/ecom-store';
 import { formatPrice } from '../../utils/number';
 
+import { toast } from 'react-toastify'
+
 import { motion } from "motion/react"
 
 const ProductCard = ({ product }) => {
@@ -35,7 +37,12 @@ const ProductCard = ({ product }) => {
             <div className='flex justify-between items-end p-1'>
                 <span className='text-sm font-bold '>{formatPrice(product.price)} THB</span>
                 <button 
-                onClick={() => actionAddCart(product)}
+                onClick={() => {
+                    toast.success(`${product.title} has been added to your cart!`)
+                    return(
+                        actionAddCart(product)
+                    )
+                }}
                 className='bg-blue-300 rounded-md p-2 hover:bg-blue-500 shadow-sm hover:duration-500 hover:text-white'
                 ><ShoppingCart />
                 </button>

@@ -101,7 +101,7 @@ const TableOrders = () => {
                                                     handleChangeOrderStatus(token, item.id, event.target.value)
                                                 }
                                             >
-                                                <option value='Not processed' className={getStatusColor('Not processed')}>Not processed</option>
+                                                <option value='Not Process' className={getStatusColor('Not Process')}>Not Process</option>
                                                 <option value='Processing' className={getStatusColor('Processing')}>Processing</option>
                                                 <option value='Dispatched' className={getStatusColor('Dispatched')}>Dispatched</option>
                                                 <option value='Cancelled' className={getStatusColor('Cancelled')}>Cancelled</option>

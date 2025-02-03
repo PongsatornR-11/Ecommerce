@@ -1,6 +1,6 @@
 export const getStatusColor = (status) => {
     switch (status) {
-        case 'Not processed':
+        case 'Not Process':
             return 'bg-red-400'
         case 'Processing':
             return 'bg-yellow-400'

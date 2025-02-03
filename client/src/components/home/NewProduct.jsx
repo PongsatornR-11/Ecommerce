@@ -30,7 +30,7 @@ const NewProduct = () => {
                         return (
                             <div key={index} >
                                 <div className='relative z-20'>
-                                    <p className='z-10 absolute px-2 py-1 bg-red-400 shadow-md rounded-full right-1 top-1'>
+                                    <p className='z-10 absolute px-2 py-1 bg-green-300 shadow-md rounded-xl right-1 top-1'>
                                         {formatHour(product.updatedAt)}
                                     </p>
                                 </div>

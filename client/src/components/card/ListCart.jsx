@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { createUserCart } from '../../api/user'
 import { formatPrice } from '../../utils/number'
+import { useCurrentTime } from '../../utils/datetimeformat'
 
 const ListCart = () => {
 
@@ -30,9 +31,12 @@ const ListCart = () => {
     return (
         <div className='bg-gray-100 p-4 rounded-sm'>
             {/* header */}
-            <div className='flex items-center gap-2 mb-2'>
-                <List size={24} />
-                <p className='text-xl font-bold'>Summary {cart.length} {cart.length > 1 ? 'items' : 'item'}</p>
+            <div className='flex justify-between items-center gap-2 mb-2'>
+                <div className='flex items-center'>
+                    <List size={24} />
+                    <p className='text-xl font-bold px-2'>Summary {cart.length} {cart.length > 1 ? 'items' : 'item'} </p>
+                </div>
+                <span>{useCurrentTime()}</span>
             </div>
             <hr />
             {/* list cart */}

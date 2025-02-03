@@ -66,14 +66,20 @@ const MainNav = () => {
                 </span>
               )}
             </NavLink>
-
           </div>
 
           {
             user
-              ? <div className="relative">
+              ? <div className="relative flex">
+                {
+                  user.role == 'admin'
+                    ? <NavLink to='/admin' className="flex items-center justify-center w-20 h-full text-sm font-medium hover:text-white hover:bg-gray-500 transition-all hover:duration-200">
+                      Admin
+                    </NavLink>
+                    : ''
+                }
                 <button
-                  onClick={()=> toggleDropdown()}
+                  onClick={() => toggleDropdown()}
                   className="hover:bg-gray-500 transition-all w-20 hover:duration-200 px-3 h-full gap-1 flex justify-center items-center font-medium hover:text-white">
                   <UserRound size={24} />
                   <ChevronDown size={20} />
@@ -81,7 +87,7 @@ const MainNav = () => {
 
                 {
                   isOpen && ( // if isOpen is true, then render the dropdown
-                    <div className="absolute mt-2 top-14 bg-gray-300 shadow-md z-50 w-20">
+                    <div className="absolute mt-2 right-0 top-14 bg-gray-300 shadow-md z-50 w-20">
                       <Link to={'/user/history'} className="w-full text-center hover:text-white block text-sm font-medium px-2 py-2 hover:bg-gray-500 transition-all hover:duration-200">
                         History
                       </Link>
