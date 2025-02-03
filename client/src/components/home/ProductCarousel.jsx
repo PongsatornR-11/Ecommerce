@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import useEcomStore from '../../store/ecom-store'
 import ProductCard from '../card/ProductCard';
 
@@ -22,11 +22,33 @@ const ProductCarousel = () => {
         getProducts()
     }, [])
 
+    const [slidesPerView, setSlidesPerView] = useState(4);
+
+    const calSlidePerView = () => {
+        const width = window.innerWidth
+        const calSlide = Math.floor(width / 200)
+        return calSlide
+    }
+
+    useEffect(() => {
+        const handleResize = () => {
+            setSlidesPerView(calSlidePerView());
+        }
+
+        window.addEventListener('resize', handleResize)
+        setSlidesPerView(calSlidePerView())
+
+        return () => {
+            window.removeEventListener('resize', handleResize)
+        }
+    }, [])
+
     return (
         <div className='my-2'>
-            p
+
+            <p className='text-2xl text-center mt-5'>Our product!</p>
             <Swiper
-                slidesPerView={5}
+                slidesPerView={slidesPerView}
                 spaceBetween={50}
                 autoplay={{
                     delay: 3000,

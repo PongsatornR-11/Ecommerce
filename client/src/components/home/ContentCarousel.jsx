@@ -22,13 +22,12 @@ const ContentCarousel = () => {
         await axios.get('https://picsum.photos/v2/list?page=1&limit=15')
             .then((res) => {
                 setImages(res.data)
-                console.log(Images)
             })
             .catch(err => console.log(err))
     }
 
     return (
-        <div>
+        <div className='-z-10'>
             <Swiper
                 autoplay={{
                     delay: 5000,

@@ -3,8 +3,7 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import useEcomStore from "../store/ecom-store";
-import { Github } from 'lucide-react'
-import { UserRound, ChevronDown } from 'lucide-react'
+import { Github, UserRound, ChevronDown } from 'lucide-react'
 
 
 const MainNav = () => {
@@ -62,7 +61,7 @@ const MainNav = () => {
               }>
               Cart
               {carts.length > 0 && (
-                <span className="absolute -top-0 -right-0 bg-red-500 text-white px-2 rounded-full">
+                <span className="absolute top-1 right-1 bg-red-500 text-white px-2 rounded-full">
                   {carts.length}
                 </span>
               )}
@@ -72,21 +71,21 @@ const MainNav = () => {
 
           {
             user
-              ? <div>
+              ? <div className="relative">
                 <button
-                  onClick={toggleDropdown}
-                  className="hover:bg-gray-500 transition-all hover:duration-200 px-3 h-full gap-1 flex items-center font-medium hover:text-white">
+                  onClick={()=> toggleDropdown()}
+                  className="hover:bg-gray-500 transition-all w-20 hover:duration-200 px-3 h-full gap-1 flex justify-center items-center font-medium hover:text-white">
                   <UserRound size={24} />
                   <ChevronDown size={20} />
                 </button>
 
                 {
                   isOpen && ( // if isOpen is true, then render the dropdown
-                    <div className="absolute mt-2 top-14 bg-gray-300 shadow-md">
-                      <Link to={'/user/history'} className="w-18 hover:text-white block text-sm font-medium px-2 py-2 hover:bg-gray-500 transition-all hover:duration-200">
+                    <div className="absolute mt-2 top-14 bg-gray-300 shadow-md z-50 w-20">
+                      <Link to={'/user/history'} className="w-full text-center hover:text-white block text-sm font-medium px-2 py-2 hover:bg-gray-500 transition-all hover:duration-200">
                         History
                       </Link>
-                      <button onClick={() => logout()} className="w-18 block hover:text-white text-sm font-medium px-2 py-2 hover:bg-gray-500 transition-all hover:duration-200">
+                      <button onClick={() => logout()} className="w-full block hover:text-white text-sm font-medium px-2 py-2 hover:bg-gray-500 transition-all hover:duration-200">
                         Logout
                       </button>
                     </div>
@@ -97,8 +96,8 @@ const MainNav = () => {
                   to={"/register"}
                   className={({ isActive }) =>
                     isActive
-                  ? "bg-gray-400 px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200 relative"
-                  : "px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200 relative"
+                      ? "bg-gray-400 px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200 relative"
+                      : "px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200 relative"
                   }>
                   Register
                 </NavLink>
@@ -106,9 +105,9 @@ const MainNav = () => {
                   to={"/login"}
                   className={({ isActive }) =>
                     isActive
-                  ? "bg-gray-400 px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200 relative"
-                  : "px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200 relative"
-                }>
+                      ? "bg-gray-400 px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200 relative"
+                      : "px-5 h-full flex items-center text-sm font-medium hover:bg-gray-400 transition-all hover:duration-200 relative"
+                  }>
                   Login
                 </NavLink>
               </div>

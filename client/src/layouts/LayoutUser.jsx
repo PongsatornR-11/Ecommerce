@@ -7,7 +7,7 @@ import MainNav from "../components/MainNav";
 const LayoutUser = () => {
   return (
     <div>
-      <MainNav />
+      <MainNav/>
       <main className="h-full px-4 mt-2 mx-auto">
         <Outlet />
       </main>

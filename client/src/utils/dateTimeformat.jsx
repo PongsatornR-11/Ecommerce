@@ -36,3 +36,7 @@ export const formatTime = (date) => {
 export const formatDateTime = (date) => {
     return moment(date).format('lll');
 }
+
+export const formatHour = (time) => {
+    return moment(time).startOf('hour').fromNow();
+}
