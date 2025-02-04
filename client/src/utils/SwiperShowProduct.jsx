@@ -1,27 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import useEcomStore from '../../store/ecom-store'
-import ProductCard from '../card/ProductCard';
+import { Swiper } from 'swiper/react'
 
-// Import Swiper React components
-import { Swiper, SwiperSlide } from 'swiper/react';
-
-// Import Swiper styles
-import 'swiper/css';
+// import Swiper styles
+import "swiper/css"
+// import "swiper/css/pagination"
 import 'swiper/css/scrollbar';
-import 'swiper/css/pagination';
 import "swiper/css/navigation"
 
 // import required modules
-import { Autoplay, Scrollbar, Navigation } from 'swiper/modules';
+import { Pagination, Autoplay, Navigation, Scrollbar } from 'swiper/modules'
 
-
-const ProductCarousel = () => {
-    const getProducts = useEcomStore((state) => state.getProduct)
-    const products = useEcomStore((state) => state.products)
-
-    useEffect(() => {
-        getProducts()
-    }, [])
+const SwiperShowProduct = ({ children }) => {
 
     const [slidesPerView, setSlidesPerView] = useState(4);
 
@@ -45,35 +34,29 @@ const ProductCarousel = () => {
     }, [])
 
     return (
-        <div className='my-2'>
-
-            <p className='text-2xl text-center mt-5'>Our other products!</p>
+        <div>
             <Swiper
                 slidesPerView={slidesPerView}
                 spaceBetween={50}
                 autoplay={{
-                    delay: 3000,
+                    delay: 2500,
                     disableOnInteraction: false,
                 }}
+                // pagination={{
+                //     clickable: true,
+                // }}
                 scrollbar={{
                     hide: true,
                 }}
                 navigation={true}
                 modules={[Scrollbar, Autoplay, Navigation]}
-                className="mySwiper"
+                className="mySwiper object-cover rounded-md"
             >
-                {
-                    products?.map((product, index) => {
-                        return (
-                            <SwiperSlide key={index} className='p-4'>
-                                <ProductCard key={index} product={product} />
-                            </SwiperSlide>
-                        )
-                    })
-                }
+                {children}
+
             </Swiper>
         </div>
     )
 }
 
-export default ProductCarousel
+export default SwiperShowProduct

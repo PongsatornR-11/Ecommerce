@@ -8,7 +8,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 // import required modules
-import { Autoplay, Pagination } from 'swiper/modules';
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import axios from 'axios';
 
 const ContentCarousel = () => {
@@ -34,7 +34,7 @@ const ContentCarousel = () => {
                     disableOnInteraction: false,
                 }}
                 pagination={{ clickable: true, }}
-                modules={[Pagination, Autoplay]} className="mySwiper h-80 object-cover">
+                modules={[Pagination, Autoplay, Navigation]} className="mySwiper h-80 object-cover">
                 {
                     Images?.map((image) => {
                         return (
