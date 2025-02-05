@@ -25,7 +25,12 @@ const registerSchema = z
 
 const Register = () => {
 
-    const { register, handleSubmit, watch, formState: { errors }, } = useForm({
+    const { 
+        register, 
+        handleSubmit, 
+        watch, 
+        formState: { errors }, 
+    } = useForm({
         resolver: zodResolver(registerSchema)
     })
 

@@ -10,10 +10,9 @@ timeout /t 3 >nul
 start "" "C:\Users\basni\AppData\Local\Postman\Postman.exe"
 
 
-
 :: Open Web project
 start "C:\Program Files\Google\Chrome\Application\chrome.exe" "http://localhost:5173"
 :: Open Lofi girl
 start "C:\Program Files\Google\Chrome\Application\chrome.exe" "https://www.youtube.com/watch?v=jfKfPfyJRdk"
 :: Open roithai  ep 30 // 15.05
-start "C:\Program Files\Google\Chrome\Application\chrome.exe" "https://www.youtube.com/watch?v=GcaCqwtoxec&list=PL3CRqF9WxjEZHFnZSSdC4wNDgvkKhpMtS&index=42"
+start "C:\Program Files\Google\Chrome\Application\chrome.exe" "https://www.youtube.com/watch?v=dfZtg7hyt2A&list=PL3CRqF9WxjEZHFnZSSdC4wNDgvkKhpMtS&index=43"
