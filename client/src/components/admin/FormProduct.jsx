@@ -77,53 +77,84 @@ const FromProduct = () => {
   return (
     <div className="container mx-auto p-4 bg-[#ffffff] shadow-md">
       <form onSubmit={handleSubmit}>
-        <h1>Add Product details</h1>
-        <input
-          className="border"
-          value={form.title}
-          onChange={handleOnChange}
-          placeholder="Enter product name here"
-          name="title"
-        />
-        <input
-          className="border"
-          value={form.description}
-          onChange={handleOnChange}
-          placeholder="Enter product here"
-          name="description"
-        />
-        <input
-          className="border"
-          type="number"
-          value={form.price}
-          onChange={handleOnChange}
-          placeholder="Enter price here"
-          name="price"
-        />
-        <input
-          className="border"
-          type="number"
-          value={form.quantity}
-          onChange={handleOnChange}
-          placeholder="Enter quantity here"
-          name="quantity"
-        />
-        <select
-          className="border"
-          name="categoryId"
-          onChange={handleOnChange}
-          required
-          value={form.categoryId}
-        >
-          <option value="" disabled>
-            Please Select
-          </option>
-          {categories.map((item, index) => (
-            <option key={index} value={item.id}>
-              {item.name}
+        <h1 className="font-bold text-xl mb-3">Add Product details</h1>
+        <div className="flex flex-col space-y-3 items-left">
+
+          <div className="w-80 ">
+            <label className="text-sm">Product Title</label>
+            <input
+              className="border w-full px-3 py-1 rounded-md 
+                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              value={form.title}
+              onChange={handleOnChange}
+              placeholder="Enter product name here"
+              name="title"
+            />
+          </div>
+          <div className="flex">
+            <div className="w-2/3 ">
+              <label className="text-sm">Product Description</label>
+              <textarea
+                className="block w-64 h-20 border rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2"
+                value={form.description}
+                onChange={handleOnChange}
+                placeholder="Enter product here"
+                name="description"
+              ></textarea>
+            </div>
+
+            <div>
+              <div className=" w-1/3">
+                <label className="text-sm">Product Price</label>
+                <div className="flex">
+                  <input
+                    className="border"
+                    type="number"
+                    value={form.price}
+                    onChange={handleOnChange}
+                    placeholder="Enter price here"
+                    name="price"
+                  />
+                  <span>THB</span>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-sm">Product Quantity</label>
+                <div className="flex">
+                  <input
+                    className="border"
+                    type="number"
+                    value={form.quantity}
+                    onChange={handleOnChange}
+                    placeholder="Enter quantity here"
+                    name="quantity"
+                  />
+                  <span>EA</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <p>Category</p>
+          <select
+            className="border"
+            name="categoryId"
+            onChange={handleOnChange}
+            required
+            value={form.categoryId}
+          >
+            <option value="" disabled>
+              Please Select
             </option>
-          ))}
-        </select>
+            {categories.map((item, index) => (
+              <option key={index} value={item.id}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+        </div>
         <hr />
         {/* upload file */}
 
@@ -181,23 +212,28 @@ const FromProduct = () => {
                   <td>{formatDate(item.updatedAt)}</td>
 
                   <td className="flex gap-2">
-                      <Link to={"/admin/product/" + item.id}>
-                        <p
-                          className="cursor-pointer 
+                    <div className="flex flex-col space-y-2 justify-between">
+
+                      <div>
+                        <Link to={"/admin/product/" + item.id}>
+                          <p
+                            className="cursor-pointer 
                                   hover:scale-105 hover:-translate-y-1 hover:duration-200 
-                                  bg-yellow-500 rounded-md p-1 shadow-md"
-                        >
-                          <Pencil />
-                        </p>
-                      </Link>
+                                  bg-yellow-500 rounded-md p-1 shadow-md "
+                          >
+                            <Pencil />
+                          </p>
+                        </Link>
+                      </div>
                       <p
                         className="cursor-pointer 
                                 hover:scale-105 hover:-translate-y-1 hover:duration-200 
-                                bg-red-400 rounded-md p-1 shadow-md"
+                                bg-red-400 rounded-md p-1 shadow-md flex"
                         onClick={() => handleDelete(item.id, item.title)}
                       >
                         <Trash2 />
                       </p>
+                    </div>
                   </td>
                 </tr>
               );

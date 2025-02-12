@@ -18,11 +18,11 @@ const Shop = () => {
   return (
     <div className="flex">
       {/* Search Bar */}
-      <div className="w-1/6 p-4 bg-gray-100 h-screen"><SearchCard /></div>
+      <div className="w-1/6 p-4 bg-gray-100"><SearchCard /></div>
       {/* product */}
-      <div className="w-1/2 p-4 h-screen overflow-y-auto">
+      <div className="w-5/6 p-4  overflow-y-auto">
         <p className="text-2xl font-bold mb-4">All product</p>
-        <div className="flex flex-wrap gap-4 items-center justify-center">
+        <div className="flex flex-wrap gap-2 items-center justify-center">
           {
             products.map((product, index) =>
               <ProductCard key={index} product={product} />
@@ -31,7 +31,7 @@ const Shop = () => {
         </div>
       </div>
       {/* cart */}
-      <div className="w-2/6 p-4 bg-gray-100 h-screen overflow-y-auto">
+      <div className="w-2/6 p-4 bg-gray-100 overflow-y-auto">
         <CartCard />
       </div>
     </div>

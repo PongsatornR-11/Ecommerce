@@ -8,17 +8,19 @@ import { Github, UserRound, ChevronDown } from 'lucide-react'
 
 const MainNav = () => {
 
+  
   const carts = useEcomStore((state) => state.carts)
   const user = useEcomStore((state) => state.user)
   const logout = useEcomStore((state) => state.actionLogout)
 
   const [isOpen, setIsOpen] = useState(false);
 
+
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   }
   return (
-    <nav className="bg-gray-300 shadow-md">
+    <nav className="bg-gray-300 shadow-md sticky top-0 z-50">
       <div className="mx-auto">
         <div className="flex justify-between h-16">
           <div className="flex items-center">

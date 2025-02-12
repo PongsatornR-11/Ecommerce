@@ -5,8 +5,10 @@ import { toast } from 'react-toastify'
 
 // utils import
 import { formatPrice } from '../../utils/number'
-import { formatDate, formatDateTh, formatHourFromNow} from '../../utils/datetimeformat'
+import { formatDate, formatDateTh, useCurrentTime } from '../../utils/datetimeformat'
 import { getStatusColor } from '../../utils/statusColor'
+
+
 
 const TableOrders = () => {
 
@@ -20,7 +22,7 @@ const TableOrders = () => {
     const handleGetOrderAdmin = (token) => {
         getOrdersAdmin(token)
             .then((res) => {
-                setOrders(res.data)
+                setOrders(res.data.reverse())
             })
             .catch((err) => {
                 console.log(err)
@@ -39,10 +41,16 @@ const TableOrders = () => {
             })
     }
 
-    
+
     return (
         <div className="container mx-auto p-4 bg-[#ffffff] shadow-md">
-            <h1 className="text-2xl font-bold">Orders</h1>
+            <div className='flex justify-between'>
+
+                <h1 className="text-2xl font-bold">Orders</h1>
+                <span className='flex items-center px-3'>
+                    {useCurrentTime()}
+                </span>
+            </div>
             <div className="flex justify-between items-center">
                 <table className='w-full table-auto mt-4 border'>
                     <thead className='border'>
@@ -82,7 +90,7 @@ const TableOrders = () => {
 
                                         <td>
                                             <span
-                                                className={`${getStatusColor(item.orderStatus)} px-2 py-1 rounded-md text-xs`}
+                                                className={`${getStatusColor(item.orderStatus)} px-1 py-1 rounded-md text-xs`}
                                             >
                                                 {item.orderStatus}
                                             </span>
@@ -91,7 +99,7 @@ const TableOrders = () => {
                                         <td>{formatPrice(item.cartTotal)} THB</td>
 
                                         <td>{item.orderedBy.address}</td>
-                                        
+
                                         <td>{formatDate(item.createdAt)}</td>
                                         <td>
                                             <select

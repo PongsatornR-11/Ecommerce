@@ -16,7 +16,7 @@ const CartCard = () => {
         <div>
             <h1 className='text-xl font-bold'>Cart</h1>
             {/* Border */}
-            <div className='border p-2'>
+            <div className='p-2'>
                 {/* Card */}
                 {carts.map((item, index) => (
                     <div key={index} className='bg-white p-2 rounded-md mb-2'>
@@ -48,23 +48,23 @@ const CartCard = () => {
                         {/* Row 2 */}
                         <div className='flex justify-between'>
                             {/* left */}
-                            <div className='border rounded-sm px-2 py-1 flex items-center'>
+                            <div className='rounded-sm flex items-center'>
                                 <button
                                     onClick={() => actionUpdateQuantity(item.id, item.count - 1)}
                                     className='px-1 py-1 bg-gray-200 
                                         shadow-sm hover:bg-gray-300 transition-all hover:duration-200'>
                                     <Minus size={16} />
                                 </button>
-                                <span className='px-4'>{item.count}</span>
+                                <span className='px-2 text-sm'>{item.count}</span>
                                 <button
                                     onClick={() => actionUpdateQuantity(item.id, item.count + 1)}
-                                    className='px-1 py-1 bg-gray-200
+                                    className='px-1 py-1 bg-gray-200 
                             shadow-sm hover:bg-gray-300 transition-all hover:duration-200'>
                                     <Plus size={16} />
                                 </button>
                             </div>
                             {/* right */}
-                            <div className='font-bold text-blue-500'>
+                            <div className='font-bold text-blue-500 flex items-center'>
                                 {formatPrice(item.price * item.count)} THB
                             </div>
                         </div>

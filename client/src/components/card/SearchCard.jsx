@@ -67,7 +67,6 @@ const SearchCard = () => {
     },[ok])
     const handlePrice = (value) => {
         setPrice(value)
-        console.log('price', price)
         setTimeout(()=>{
             setOk(!ok)
         },300)

@@ -8,81 +8,105 @@ import { useNavigate } from "react-router-dom";
 // for handle with back end
 import axios from "axios";
 
-// for handle error , alart
-import { toast } from "react-toastify";
-
 // Zustand State Management (global state)
 import useEcomStore from "../../store/ecom-store";
+
+import { useForm } from "react-hook-form";
+import { z } from 'zod';
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const registerSchema = z
+  .object({
+    email: z.string().email({ message: 'Invalid email!' }),
+    password: z.string()
+  })
 
 const Login = () => {
   const navigate = useNavigate();
 
+  // check invalid password
+  const [Invalid, setInvalid] = useState(false);
   // from store folder use zustand
   const actionLogin = useEcomStore((state) => state.actionLogin);
-  // const user = useEcomStore((state) => state.user);
+  const user = useEcomStore((state) => state.user);
 
-  // handle change receive value form user on website
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
+  // Redirect to '/shop' if user is already logged in
+  if (user) {
+    navigate('/shop');
+  }
+  
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(registerSchema)
+  })
 
-  const handleOnchange = (event) => {
-    setForm({
-      ...form,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  //if user press Submit or login run this code.
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const onSubmit = async (data) => {
 
     try {
-      //from Zustand
-      const res = await actionLogin(form);
-
-      const role = res.data.payload.role;
-
-      // roleRedirect
+      const res = await actionLogin(data)
+      const role = res.data.payload.role
       const roleRedirect = (role) => {
         if (role === "admin") {
-          navigate("/admin");
+          navigate('/admin');
         } else {
           navigate(-1);
         }
-      };
-
-      roleRedirect(role);
-
-      toast.success(`${res.data.payload.email} log in Success`);
+      }
+      roleRedirect(role)
     } catch (err) {
       const errMsg = err.response?.data?.message;
-      toast.error(errMsg);
-    }
-  };
+      setInvalid(true)
 
+    }
+  }
   return (
-    <div>
-      Login
-      <form onSubmit={handleSubmit}>
-        Email
-        <input
-          onChange={handleOnchange}
-          className="border"
-          name="email"
-          type="email"
-          placeholder="Enter Email here"
-        />
-        Password
-        <input
-          onChange={handleOnchange}
-          className="border"
-          name="password"
-          type="text"
-        />
-        <button className="bg-blue-400 rounded-md">Login</button>
-      </form>
+    <div className="min-h-screen flex items-center justify-center">
+
+      <div className="w-full shadow-md px-8 max-w-md bg-gray-200 rounded-md">
+        <h1 className="text-2xl text-center my-3 font-bold text-gray-600">
+          login
+        </h1>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="space-y-3 my-5 rounded-md">
+            <div>
+              <input {...register('email')}
+                placeholder="Email"
+                className={`border w-full px-3 py-2 rounded-md 
+                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                            ${errors.email && 'border-red-500'}`} />
+              {errors.email &&
+                <p className="text-red-500 text-sm">
+                  {errors.email.message}
+                </p>
+              }
+            </div>
+
+            <div>
+              <input {...register('password')}
+                type="password"
+                placeholder="Password"
+                className={`border w-full px-3 py-2 rounded-md 
+                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                            ${errors.password && 'border-red-500'}`} />
+              {Invalid &&
+                <p className="text-red-500 text-sm">
+                  Password is incorrect !
+                </p>
+              }
+
+            </div>
+
+            <button className="bg-blue-400 rounded-md w-full my-2 text-white py-2 shadow-md hover:bg-cyan-600 hover:duration-200">
+              Register
+            </button>
+          </div>
+        </form>
+
+      </div>
     </div>
   );
 };

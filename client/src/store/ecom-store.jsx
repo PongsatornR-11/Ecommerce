@@ -2,6 +2,8 @@ import axios from "axios";
 import { create } from "zustand";
 import _ from 'lodash'
 
+import { useNavigate } from "react-router-dom";
+
 // create, handle local storage
 import { persist, createJSONStorage } from "zustand/middleware";
 
@@ -88,11 +90,14 @@ const ecomStore = (set, get) => ({
     set({ carts: [] })
   },
   actionLogout: () => {
+    
     set({
       user: null,
       token: null,
       carts: [],
     })
+    const navigate = useNavigate()
+    navigate('/')
   }
 });
 

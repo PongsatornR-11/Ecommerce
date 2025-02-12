@@ -25,10 +25,12 @@ const HistoryCard = () => {
     }, [])
 
     return (
-        <div>
+        <div className='border p-2'>
             <div className='flex justify-between items-center'>
-                <h1 className='text-2xl font-bold m-4'> Order History of user: {user.email} </h1>
-                <p><span>{useCurrentTime()}</span></p>
+                <h1 className='text-2xl font-bold m-4'>Order History of email : {user.email} </h1>
+                <div className='m-1 py-1 px-2 text-gray-800 bg-gray-300 rounded-md'>
+                    <p><span>Time : {useCurrentTime()}</span></p>
+                </div>
             </div>
 
             {/*container */}
