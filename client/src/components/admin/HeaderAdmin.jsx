@@ -5,7 +5,7 @@ const HeaderAdmin = () => {
   return (
     <div>
       <header className="bg-[#00ADB5] h-16 flex items-center justify-between">
-        <span className="font-bold px-6 text-2xl">Header</span>
+        <span className="font-bold px-6 text-2xl">Manage Orders</span>
         <nav className="flex h-full items-center">
           <NavLink
             to={'/'}

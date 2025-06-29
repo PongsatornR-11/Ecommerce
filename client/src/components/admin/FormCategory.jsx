@@ -49,26 +49,30 @@ const FromCategory = () => {
 
   return (
     <div className="container mx-auto p-4 bg-[#ffffff] shadow-md">
-      <h1>Category Management</h1>
+      <h1 className="text-xl font-bold">Category Management</h1>
       <form className="my-4" onSubmit={handleSubmit}>
-        <input
-          onChange={(e) => setCategoryName(e.target.value)}
-          className="border"
-          type="text"
-        />
-
-        <button className="bg-[#00ADB5]">Add Category</button>
+        <div className="space-y-2">
+          <div className="flex flex-col w-1/3"> 
+            <label className="text-sm">Category Name</label>
+            <input
+              onChange={(e) => setCategoryName(e.target.value)}
+              className="border p-2 rounded-md shadow-sm"
+              type="text"
+            />
+          </div>
+          <button className="bg-[#00ADB5] p-2 rounded-md shadow-sm hover:bg-[#222831] hover:duration-200 hover:text-[#00ADB5]">Add Category</button>
+        </div>
       </form>
 
       <hr />
 
-      <ul className="list-none">
+      <ul className="list-item mt-4">
         {categories.map((item, index) => (
-          <li className="flex justify-between my-2" key={index}>
-            <span>{item.name}</span>
+          <li className="flex justify-between my-2 py-1 rounded-md hover:bg-gray-400 hover:duration-100" key={index}>
+            <span className="ml-2">{item.name}</span>
 
             <button
-              className="bg-red-400"
+              className="bg-red-300 p-2 rounded-md shadow-sm hover:bg-red-500 hover:duration-200 hover:text-white mr-2"
               onClick={() => handleRemove(item.id)}
             >
               Delete

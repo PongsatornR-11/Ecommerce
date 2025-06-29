@@ -26,15 +26,11 @@ const Login = () => {
 
   // check invalid password
   const [Invalid, setInvalid] = useState(false);
-  // from store folder use zustand
+
   const actionLogin = useEcomStore((state) => state.actionLogin);
   const user = useEcomStore((state) => state.user);
 
-  // Redirect to '/shop' if user is already logged in
-  if (user) {
-    navigate('/shop');
-  }
-  
+
   const {
     register,
     handleSubmit,
@@ -45,7 +41,7 @@ const Login = () => {
   })
 
   const onSubmit = async (data) => {
-
+    console.log(data)
     try {
       const res = await actionLogin(data)
       const role = res.data.payload.role
@@ -59,10 +55,17 @@ const Login = () => {
       roleRedirect(role)
     } catch (err) {
       const errMsg = err.response?.data?.message;
+      console.log(errMsg)
       setInvalid(true)
-
     }
   }
+
+
+  // Redirect to '/shop' if user is already logged in
+  if (user) {
+    navigate('/shop');
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center">
 
@@ -91,21 +94,21 @@ const Login = () => {
                 placeholder="Password"
                 className={`border w-full px-3 py-2 rounded-md 
                             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                            ${errors.password && 'border-red-500'}`} />
-              {Invalid &&
-                <p className="text-red-500 text-sm">
-                  Password is incorrect !
+                            ${Invalid && 'border-red-500'}`} 
+                onInput={() => setInvalid(false)} />
+              {
+                Invalid &&
+                <p className="text-red-500 text-sm ">
+                  Password is incorrect!
                 </p>
               }
-
             </div>
 
             <button className="bg-blue-400 rounded-md w-full my-2 text-white py-2 shadow-md hover:bg-cyan-600 hover:duration-200">
-              Register
+              Login
             </button>
           </div>
         </form>
-
       </div>
     </div>
   );

@@ -18,7 +18,6 @@ const TableUser = () => {
         getListAllUsers(token)
             .then((res) => {
                 setUsers(res.data)
-                console.log(users)
             })
             .catch((err) => console.log(err))
     }

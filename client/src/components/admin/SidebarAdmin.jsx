@@ -1,6 +1,8 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
+import useEcomStore from "../../store/ecom-store";
+
 import {
   LayoutDashboard,
   Bolt,
@@ -11,6 +13,8 @@ import {
 } from "lucide-react";
 
 const SidebarAdmin = () => {
+
+  const logout = useEcomStore((state) => state.actionLogout)
   return (
     <div
       className="bg-[#393E46] text-[#EEEEEE] 
@@ -45,7 +49,7 @@ const SidebarAdmin = () => {
           }
         >
           <Bolt className="mr-2" />
-          Manage
+          Manage Users
         </NavLink>
         <NavLink
           to={"category"}
@@ -56,7 +60,7 @@ const SidebarAdmin = () => {
           }
         >
           <ChartColumnStacked className="mr-2" />
-          Category
+          Manage Categories
         </NavLink>
         <NavLink
           to={"product"}
@@ -67,7 +71,7 @@ const SidebarAdmin = () => {
           }
         >
           <ShoppingBasket className="mr-2" />
-          Product
+          Manage Products
         </NavLink>
         <NavLink
           to={"orders"}
@@ -78,13 +82,14 @@ const SidebarAdmin = () => {
           }
         >
           <PackageSearch className="mr-2" />
-          Orders
+          Manage Orders
         </NavLink>
       </nav>
 
       <div>
         <NavLink
-          // to={''}  // wait path
+          to={'/'}
+          onClick={() => logout()}
           className={({ isActive }) =>
             isActive
               ? "bg-[#222831] rounded-md px-4 py-2 text-white flex items-center"
