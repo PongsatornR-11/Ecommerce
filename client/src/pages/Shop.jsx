@@ -23,10 +23,10 @@ const Shop = () => {
         
         {/* Product Grid (Center Content) */}
         <div className="flex-1 h-full overflow-y-auto">
-          <div className="bg-white rounded-2xl border border-slate-100 p-5 h-full flex flex-col shadow-sm">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800/80 p-5 h-full flex flex-col shadow-sm transition-colors duration-200">
             <div className="flex items-center justify-between mb-4 flex-none">
               <div>
-                <h2 className="text-lg font-extrabold text-slate-800 tracking-tight">All Products</h2>
+                <h2 className="text-lg font-extrabold text-slate-800 dark:text-slate-100 tracking-tight">All Products</h2>
                 <p className="text-[11px] text-slate-400 mt-0.5">{products.length} products found</p>
               </div>
             </div>

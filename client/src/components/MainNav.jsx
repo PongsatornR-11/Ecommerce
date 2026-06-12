@@ -19,7 +19,7 @@ const MainNav = () => {
   };
 
   return (
-    <nav className="glass sticky top-0 z-50 shadow-sm border-b border-slate-200/40 bg-white/75 backdrop-blur-md">
+    <nav className="glass sticky top-0 z-50 shadow-sm border-b border-slate-200/40 bg-white/75 dark:bg-slate-900/75 dark:border-slate-800/80 backdrop-blur-md transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           
@@ -27,7 +27,7 @@ const MainNav = () => {
           <div className="flex items-center gap-6">
             <Link 
               to={"https://github.com/WomenOnTOP"} 
-              className="flex items-center text-slate-700 hover:text-indigo-600 transition-colors p-2 rounded-xl hover:bg-slate-100/50"
+              className="flex items-center text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors p-2 rounded-xl hover:bg-slate-100/50 dark:hover:bg-slate-800/40"
             >
               <Github size={26} />
             </Link>
@@ -38,8 +38,8 @@ const MainNav = () => {
                 className={({ isActive }) =>
                   `px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                     isActive
-                      ? "bg-indigo-50 text-indigo-600 shadow-sm shadow-indigo-100/40"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                      ? "bg-indigo-50 dark:bg-indigo-950/45 text-indigo-600 dark:text-indigo-400 shadow-sm shadow-indigo-100/40 dark:shadow-none"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/40"
                   }`
                 }
               >
@@ -51,8 +51,8 @@ const MainNav = () => {
                 className={({ isActive }) =>
                   `px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                     isActive
-                      ? "bg-indigo-50 text-indigo-600 shadow-sm shadow-indigo-100/40"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                      ? "bg-indigo-50 dark:bg-indigo-950/45 text-indigo-600 dark:text-indigo-400 shadow-sm shadow-indigo-100/40 dark:shadow-none"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/40"
                   }`
                 }
               >
@@ -68,8 +68,8 @@ const MainNav = () => {
               className={({ isActive }) =>
                 `p-2.5 rounded-xl text-sm font-medium transition-all duration-200 flex items-center gap-2 relative border ${
                   isActive
-                    ? "bg-indigo-50 border-indigo-200 text-indigo-600"
-                    : "border-slate-200/60 text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                    ? "bg-indigo-50 dark:bg-indigo-950/45 border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400"
+                    : "border-slate-200/60 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/40"
                 }`
               }
             >
@@ -98,13 +98,13 @@ const MainNav = () => {
               {isThemeOpen && (
                 <>
                   <div className="fixed inset-0 z-45" onClick={() => setIsThemeOpen(false)} />
-                  <div className="absolute right-0 mt-2 w-32 rounded-2xl bg-white dark:bg-slate-850 border border-slate-100 dark:border-slate-800 shadow-xl p-1 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                  <div className="absolute right-0 mt-2 w-32 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-800 shadow-xl p-1 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                     <button 
                       onClick={() => { setTheme('light'); setIsThemeOpen(false); }}
                       className={`flex items-center gap-2.5 w-full px-3 py-2.5 text-xs font-semibold rounded-xl transition-colors ${
                         theme === 'light' 
                           ? 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400' 
-                          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-805/50'
+                          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50'
                       }`}
                     >
                       <Sun size={13} className="text-amber-500" />
@@ -115,7 +115,7 @@ const MainNav = () => {
                       className={`flex items-center gap-2.5 w-full px-3 py-2.5 text-xs font-semibold rounded-xl transition-colors ${
                         theme === 'dark' 
                           ? 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400' 
-                          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-805/50'
+                          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50'
                       }`}
                     >
                       <Moon size={13} className="text-indigo-400" />
@@ -126,7 +126,7 @@ const MainNav = () => {
                       className={`flex items-center gap-2.5 w-full px-3 py-2.5 text-xs font-semibold rounded-xl transition-colors ${
                         theme === 'system' 
                           ? 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400' 
-                          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-805/50'
+                          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50'
                       }`}
                     >
                       <Monitor size={13} className="text-slate-500" />

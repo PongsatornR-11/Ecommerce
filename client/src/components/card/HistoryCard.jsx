@@ -25,63 +25,66 @@ const HistoryCard = () => {
     }, [])
 
     return (
-        <div className='border p-2'>
-            <div className='flex justify-between items-center'>
-                <h1 className='text-2xl font-bold m-4'>Order History of email : {user.email} </h1>
-                <div className='m-1 py-1 px-2 text-gray-800 bg-gray-300 rounded-md'>
-                    <p><span>Time : {useCurrentTime()}</span></p>
+        <div className='bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 p-6 rounded-2xl shadow-sm space-y-6 transition-colors duration-200'>
+            <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800/60'>
+                <div>
+                    <h1 className='text-lg font-extrabold text-slate-800 dark:text-slate-100 tracking-tight'>Order History</h1>
+                    <p className='text-xs text-slate-450 dark:text-slate-400 mt-1'>Logged in as <span className="font-semibold text-indigo-600 dark:text-indigo-400">{user.email}</span></p>
+                </div>
+                <div className='bg-slate-50 dark:bg-slate-950 border border-slate-200/40 dark:border-slate-800/80 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-505 dark:text-slate-400 shadow-sm'>
+                    <span>As of: {useCurrentTime()}</span>
                 </div>
             </div>
 
             {/*container */}
-            <div className='space-y-4'>
+            <div className='space-y-6'>
                 {/* card loop order */}
                 {orders?.slice().reverse().map((item, index) => {
-                    // console.log(item)
                     return (
-                        <div key={index} className='bg-gray-100 p-4 rounded-md shadow-md my-1'>
+                        <div key={index} className='bg-slate-50/50 dark:bg-slate-950/40 border border-slate-100 dark:border-slate-800/60 p-5 rounded-2xl shadow-sm space-y-4 hover:border-slate-200 dark:hover:border-slate-700/80 transition-all duration-200'>
                             {/* header */}
-                            <div className='flex justify-between mb-1'>
-                                <div className='flex flex-col'>
-                                    <p className='text-sm'>Order date time </p>
-                                    <span className='font-bold text-l'>{formatDate(item.updatedAt)} {formatTime(item.updatedAt)}</span>
+                            <div className='flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-800/40'>
+                                <div className='flex flex-col gap-0.5'>
+                                    <span className='text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-wider font-bold'>Order Date & Time</span>
+                                    <span className='font-bold text-xs text-slate-705 dark:text-slate-300'>{formatDate(item.updatedAt)} at {formatTime(item.updatedAt)}</span>
                                 </div>
-                                <div className={`${getStatusColor(item.orderStatus)} p-2 rounded-md m-2`}>
+                                <div className={`${getStatusColor(item.orderStatus)} text-xs px-3 py-1.5 rounded-xl font-bold`}>
                                     {item.orderStatus}
                                 </div>
                             </div>
+                            
                             {/* table  loop product*/}
-                            <div>
-                                <table className='border w-full '>
+                            <div className="overflow-hidden border border-slate-100 dark:border-slate-800/80 rounded-xl bg-white dark:bg-slate-950 shadow-sm">
+                                <table className='w-full text-left border-collapse'>
                                     <thead>
-                                        <tr className='bg-gray-200'>
-                                            <th>Product</th>
-                                            <th>Price</th>
-                                            <th>Quantity</th>
-                                            <th>Total</th>
+                                        <tr className='bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800/80 text-slate-500 dark:text-slate-400'>
+                                            <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider">Product</th>
+                                            <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-right">Price</th>
+                                            <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-center">Qty</th>
+                                            <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-right">Total</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800/40">
                                         {/* product loop */}
-                                        {item?.products.map((products, index) => {
-                                            // console.log(products)
+                                        {item?.products.map((products, idx) => {
                                             return (
-                                                <tr key={index}>
-                                                    <td>{products.product.title}</td>
-                                                    <td>{formatPrice(products.product.price)} THB</td>
-                                                    <td>{products.count}</td>
-                                                    <td>{formatPrice(products.count * products.product.price)} THB</td>
+                                                <tr key={idx} className="text-slate-650 dark:text-slate-350 hover:bg-slate-50/30 dark:hover:bg-slate-900/10">
+                                                    <td className="px-4 py-3 text-xs font-semibold">{products.product.title}</td>
+                                                    <td className="px-4 py-3 text-xs text-right">{formatPrice(products.product.price)} THB</td>
+                                                    <td className="px-4 py-3 text-xs text-center font-medium">{products.count}</td>
+                                                    <td className="px-4 py-3 text-xs font-bold text-right text-indigo-650 dark:text-indigo-400">{formatPrice(products.count * products.product.price)} THB</td>
                                                 </tr>
                                             )
                                         })}
                                     </tbody>
                                 </table>
                             </div>
+                            
                             {/* total */}
-                            <div>
-                                <div className='text-right mr-3 mt-2'>
-                                    <p>Total Price</p>
-                                    <p>{formatPrice(item.cartTotal)} THB</p>
+                            <div className="flex justify-end pt-1">
+                                <div className='text-right space-y-0.5'>
+                                    <p className='text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-wider font-bold'>Total Amount Paid</p>
+                                    <p className="text-sm font-extrabold text-slate-850 dark:text-slate-100">{formatPrice(item.cartTotal)} <span className="text-[10px] font-medium text-slate-500">THB</span></p>
                                 </div>
                             </div>
                         </div>

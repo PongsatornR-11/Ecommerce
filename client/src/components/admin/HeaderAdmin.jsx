@@ -62,7 +62,7 @@ const HeaderAdmin = () => {
               {/* Back drop to close */}
               <div className="fixed inset-0 z-40" onClick={() => setIsThemeOpen(false)} />
               
-              <div className="absolute right-0 mt-2 w-32 rounded-2xl bg-white dark:bg-slate-850 border border-slate-100 dark:border-slate-800 shadow-xl p-1 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+              <div className="absolute right-0 mt-2 w-32 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-800 shadow-xl p-1 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                 <button 
                   onClick={() => { setTheme('light'); setIsThemeOpen(false); }}
                   className={`flex items-center gap-2.5 w-full px-3 py-2.5 text-xs font-semibold rounded-xl transition-colors ${

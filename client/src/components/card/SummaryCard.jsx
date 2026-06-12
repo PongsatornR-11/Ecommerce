@@ -48,74 +48,85 @@ const SummaryCard = () => {
     }
 
     return (
-        <div className='mx-auto'>
-            <div className='flex justify-between gap-4'>
-                {/* left */}
-                <div className='w-2/3'>
-                    <div className='border p-4 rounded-md bg-gray-100 shadow-md space-y-2'>
-                        <h1 className='text-lg font-semibold'>Address</h1>
-                        <textarea className='w-full h-24 border p-3 rounded-md'
-                        placeholder='Enter your address'
-                        required
-                        onChange={(e) => setAddress(e.target.value)} />
+        <div className='max-w-7xl mx-auto'>
+            <div className='flex flex-col lg:flex-row justify-between gap-6'>
+                {/* left - Address */}
+                <div className='w-full lg:w-2/3'>
+                    <div className='border border-slate-100 dark:border-slate-800 p-6 rounded-2xl bg-white dark:bg-slate-900 shadow-sm space-y-4 transition-colors duration-200'>
+                        <h2 className='text-base font-bold text-slate-800 dark:text-slate-100 uppercase tracking-wider pb-2 border-b border-slate-100 dark:border-slate-800'>Shipping Address</h2>
+                        <textarea 
+                            className='w-full h-28 border border-slate-200 dark:border-slate-700 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-850 dark:text-slate-100 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none'
+                            placeholder='Enter your full delivery address (Street, City, Postal Code, Country)'
+                            required
+                            onChange={(e) => setAddress(e.target.value)} 
+                        />
                         <button 
                             onClick={handleSaveAddress}
-                            className='bg-blue-400 text-white px-4 py-2 rounded-md hover:bg-blue-500 hover:shadow-md hover:duration-200 hover:scale-105'>Save Address</button>
+                            className='bg-indigo-650 hover:bg-indigo-750 text-white text-xs font-semibold px-5 py-2.5 rounded-xl hover:shadow-lg hover:shadow-indigo-500/20 active:scale-97 transition-all duration-200'
+                        >
+                            Save Address
+                        </button>
                     </div>
                 </div>
-                {/* right */}
-                <div className='w-1/3'>
-                    <div className='border p-4 rounded-md bg-gray-100 shadow-md space-y-2'>
-                        <p className='text-lg font-semibold'>Summary Details</p>
-                        {products.map((item, index) => (
-                            <div key={index}>
-                                <div className='flex justify-between gap-2 items-end'>
-                                    <div className='flex gap-2 items-center'>
+                
+                {/* right - Summary details */}
+                <div className='w-full lg:w-1/3'>
+                    <div className='border border-slate-100 dark:border-slate-800 p-6 rounded-2xl bg-white dark:bg-slate-900 shadow-sm space-y-5 transition-colors duration-200'>
+                        <h2 className='text-base font-bold text-slate-800 dark:text-slate-100 uppercase tracking-wider pb-2 border-b border-slate-100 dark:border-slate-800'>Summary Details</h2>
+                        
+                        {/* Products list */}
+                        <div className="space-y-4 max-h-[300px] overflow-y-auto pr-1">
+                            {products.map((item, index) => (
+                                <div key={index} className="flex justify-between items-center gap-3">
+                                    <div className='flex gap-3 items-center min-w-0'>
                                         {
                                             item.product.images && item.product.images.length > 0
-                                                ? <img src={item.product.images[0].url} className='w-16 h-16 object-cover rounded-md hover:scale-110 hover:duration-200' />
-                                                : <div className='w-16 h-16 bg-gray-200 rounded-md text-center flex items-center justify-center'>
-                                                    No Image
-                                                </div>
+                                                ? <div className="w-12 h-12 rounded-lg overflow-hidden border border-slate-100 dark:border-slate-800 flex-none">
+                                                    <img src={item.product.images[0].url} className='w-full h-full object-cover' />
+                                                  </div>
+                                                : <div className='w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-lg text-center flex items-center justify-center text-slate-400 dark:text-slate-500 text-[10px] font-semibold flex-none'>
+                                                    No image
+                                                  </div>
                                         }
-                                        <div>
-                                            <p>{item.product.title.length > 15 ? item.product.title.substring(0, 15) + '...' : item.product.title}</p>
-                                            <p className='text-sm'>{item.count} x {formatPrice(item.product.price)}</p>
+                                        <div className="min-w-0">
+                                            <p className='text-xs font-bold text-slate-800 dark:text-slate-200 truncate'>{item.product.title}</p>
+                                            <p className='text-[10px] text-slate-450 dark:text-slate-400 mt-0.5'>{item.count} x {formatPrice(item.product.price)} THB</p>
                                         </div>
                                     </div>
-                                    <div>
-                                        <p className='font-semibold'>{formatPrice(item.count * item.price)} THB</p>
+                                    <div className="flex-none">
+                                        <p className='text-xs font-extrabold text-slate-800 dark:text-slate-100'>{formatPrice(item.count * item.price)} <span className="text-[9px] font-medium text-slate-400">THB</span></p>
                                     </div>
                                 </div>
-                            </div>
-                            
-                        ))}
+                            ))}
+                        </div>
 
-                        {/* items list */}
-                        <div className='space-y-1'>
-                            <hr />
-                            <div className='flex justify-between gap-4 items-end'>
-                                <p>Delivery Charges:</p>
-                                <p>21.00</p>
+                        {/* Charges breakdown */}
+                        <div className='space-y-2.5 pt-3 border-t border-slate-100 dark:border-slate-800/80 text-xs text-slate-500 dark:text-slate-400'>
+                            <div className='flex justify-between items-center'>
+                                <span>Delivery Charges:</span>
+                                <span className="font-semibold text-slate-800 dark:text-slate-200">21.00 THB</span>
                             </div>
-                            <div className='flex justify-between gap-4 items-end'>
-                                <p>Discount:</p>
-                                <p>21.00</p>
-                            </div>
-                        </div>
-                        <hr />
-                        <div>
-                            <div className='flex justify-between gap-4 items-end'>
-                                <p className='font-semibold'>Net Total:</p>
-                                <p className='font-bold text-xl'>{formatPrice(cartTotal)} THB</p>
+                            <div className='flex justify-between items-center'>
+                                <span>Discount:</span>
+                                <span className="font-semibold text-emerald-600 dark:text-emerald-450">-21.00 THB</span>
                             </div>
                         </div>
-                        <hr />
-                        {/* checkout button */}
-                        <div>
+                        
+                        <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80">
+                            <div className='flex justify-between items-center'>
+                                <span className='text-xs font-bold text-slate-650 dark:text-slate-350 uppercase'>Net Total:</span>
+                                <span className='text-lg font-extrabold text-indigo-600 dark:text-indigo-400'>{formatPrice(cartTotal)} <span className="text-xs font-medium text-slate-450">THB</span></span>
+                            </div>
+                        </div>
+
+                        {/* Checkout button */}
+                        <div className="pt-2">
                             <button
-                            onClick={handleCheckout}
-                            className='w-full bg-blue-400 text-white px-4 py-2 rounded-md hover:bg-blue-500 hover:shadow-md hover:duration-200 hover:scale-105'>Checkout</button>
+                                onClick={handleCheckout}
+                                className='w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-3 rounded-xl hover:shadow-lg hover:shadow-indigo-500/20 active:scale-98 transition-all duration-200'
+                            >
+                                Place Order
+                            </button>
                         </div>
                     </div>
                 </div>

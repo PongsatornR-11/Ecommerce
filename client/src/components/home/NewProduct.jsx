@@ -23,7 +23,7 @@ const NewProduct = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex flex-col items-center justify-center text-center mb-8">
                 <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-600 mb-1">Just Arrived</span>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">New Products</h2>
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight">New Products</h2>
                 <div className="w-12 h-1 bg-emerald-500 rounded-full mt-3"></div>
             </div>
 

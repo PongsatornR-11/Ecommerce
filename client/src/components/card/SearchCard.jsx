@@ -68,17 +68,17 @@ const SearchCard = () => {
     }
 
     return (
-        <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm space-y-6">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800/80 p-5 shadow-sm space-y-6 transition-colors duration-200">
             
             {/* Header */}
-            <div className="flex items-center gap-2 pb-3 border-b border-slate-50">
+            <div className="flex items-center gap-2 pb-3 border-b border-slate-50 dark:border-slate-800/50">
                 <SlidersHorizontal size={18} className="text-indigo-600" />
-                <h2 className="text-sm font-bold text-slate-800 uppercase tracking-wider">Filters</h2>
+                <h2 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Filters</h2>
             </div>
 
             {/* Search by Text */}
             <div className="space-y-2">
-                <label className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Keywords</label>
+                <label className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Keywords</label>
                 <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                         <Search size={16} />
@@ -88,14 +88,14 @@ const SearchCard = () => {
                         onChange={(e) => setText(e.target.value)}
                         type="text"
                         placeholder="Search products..."
-                        className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                        className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                     />
                 </div>
             </div>
 
             {/* Search by Category */}
             <div className="space-y-3">
-                <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                     <Tag size={13} className="text-slate-400" />
                     <span>Categories</span>
                 </div>
@@ -107,9 +107,9 @@ const SearchCard = () => {
                                 value={item.id}
                                 checked={categoryChecked.includes(String(item.id))}
                                 onChange={handleCheckbox}
-                                className="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                                className="h-4 w-4 rounded border-slate-300 dark:border-slate-700 text-indigo-600 bg-white dark:bg-slate-800 focus:ring-indigo-500 cursor-pointer"
                             />
-                            <span className="text-xs text-slate-600 group-hover:text-slate-900 transition-colors">
+                            <span className="text-xs text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200 transition-colors">
                                 {item.name}
                             </span>
                         </label>
@@ -119,14 +119,14 @@ const SearchCard = () => {
 
             {/* Search by Price */}
             <div className="space-y-3">
-                <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                     <CircleDollarSign size={13} className="text-slate-400" />
                     <span>Price Range</span>
                 </div>
                 <div className="space-y-4 px-1">
-                    <div className="flex justify-between text-[11px] font-bold text-slate-700">
-                        <span className="bg-slate-50 px-2 py-0.5 rounded border border-slate-100">Min: {formatPrice(price[0])}</span>
-                        <span className="bg-slate-50 px-2 py-0.5 rounded border border-slate-100">Max: {formatPrice(price[1])}</span>
+                    <div className="flex justify-between text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                        <span className="bg-slate-50 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-100 dark:border-slate-700">Min: {formatPrice(price[0])}</span>
+                        <span className="bg-slate-50 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-100 dark:border-slate-700">Max: {formatPrice(price[1])}</span>
                     </div>
                     <div className="pt-2">
                         <Slider

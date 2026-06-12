@@ -14,10 +14,10 @@ const ProductCard = ({ product }) => {
             animate={{ opacity: 1, y: 0 }}
             whileHover={{ y: -6 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="w-[220px] h-[340px] flex flex-col rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md hover:border-slate-200/80 transition-all overflow-hidden"
+            className="w-[220px] h-[340px] flex flex-col rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-slate-200 dark:hover:border-slate-700 transition-all overflow-hidden"
         >
             {/* Image Container */}
-            <div className="h-36 overflow-hidden relative bg-slate-50">
+            <div className="h-36 overflow-hidden relative bg-slate-50 dark:bg-slate-800/50">
                 {product.images && product.images.length > 0 ? (
                     <img 
                         src={product.images[0].url} 
@@ -32,7 +32,7 @@ const ProductCard = ({ product }) => {
                 
                 {/* Category Badge overlay */}
                 {product.category && (
-                    <span className="absolute top-2 left-2 px-2 py-0.5 rounded-lg bg-white/90 backdrop-blur-sm border border-slate-100 text-[10px] font-bold text-indigo-600 shadow-sm">
+                    <span className="absolute top-2 left-2 px-2 py-0.5 rounded-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-100 dark:border-slate-700 text-[10px] font-bold text-indigo-600 dark:text-indigo-400 shadow-sm">
                         {product.category.name}
                     </span>
                 )}
@@ -41,19 +41,19 @@ const ProductCard = ({ product }) => {
             {/* Content Details */}
             <div className="p-4 flex-1 flex flex-col justify-between">
                 <div className="space-y-1">
-                    <h3 className="text-sm font-semibold text-slate-800 line-clamp-1 hover:text-indigo-600 cursor-pointer" title={product.title}>
+                    <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 line-clamp-1 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer" title={product.title}>
                         {product.title}
                     </h3>
-                    <p className="text-xs text-slate-500 line-clamp-3 leading-normal">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-3 leading-normal">
                         {product.description}
                     </p>
                 </div>
 
                 {/* Footer Section */}
-                <div className="flex justify-between items-center pt-2 border-t border-slate-50">
+                <div className="flex justify-between items-center pt-2 border-t border-slate-50 dark:border-slate-800/50">
                     <div className="flex flex-col">
-                        <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Price</span>
-                        <span className="text-sm font-extrabold text-slate-900">{formatPrice(product.price)} <span className="text-[10px] font-medium text-slate-500">THB</span></span>
+                        <span className="text-[10px] text-slate-400 dark:text-slate-500 font-semibold uppercase tracking-wider">Price</span>
+                        <span className="text-sm font-extrabold text-slate-900 dark:text-slate-100">{formatPrice(product.price)} <span className="text-[10px] font-medium text-slate-500">THB</span></span>
                     </div>
 
                     <motion.button 

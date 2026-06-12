@@ -67,45 +67,55 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-
-      <div className="w-full shadow-md px-8 max-w-md bg-gray-200 rounded-md">
-        <h1 className="text-2xl text-center my-3 font-bold text-gray-600">
-          login
+    <div className="min-h-[calc(100vh-100px)] flex items-center justify-center">
+      <div className="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 p-8 rounded-2xl shadow-sm space-y-6 transition-colors duration-200">
+        <h1 className="text-xl font-extrabold text-center text-slate-800 dark:text-slate-100 uppercase tracking-wider">
+          Login
         </h1>
+        
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="space-y-3 my-5 rounded-md">
-            <div>
-              <input {...register('email')}
-                placeholder="Email"
-                className={`border w-full px-3 py-2 rounded-md 
-                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                            ${errors.email && 'border-red-500'}`} />
-              {errors.email &&
-                <p className="text-red-500 text-sm">
+          <div className="space-y-4">
+            
+            {/* Email Input */}
+            <div className="space-y-1">
+              <input 
+                {...register('email')}
+                placeholder="Email Address"
+                className={`w-full px-3 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all ${
+                  errors.email ? 'border-rose-500 focus:ring-rose-500' : ''
+                }`} 
+              />
+              {errors.email && (
+                <p className="text-rose-500 text-xs font-semibold mt-1 pl-1">
                   {errors.email.message}
                 </p>
-              }
+              )}
             </div>
 
-            <div>
-              <input {...register('password')}
+            {/* Password Input */}
+            <div className="space-y-1">
+              <input 
+                {...register('password')}
                 type="password"
                 placeholder="Password"
-                className={`border w-full px-3 py-2 rounded-md 
-                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                            ${Invalid && 'border-red-500'}`} 
-                onInput={() => setInvalid(false)} />
-              {
-                Invalid &&
-                <p className="text-red-500 text-sm ">
+                className={`w-full px-3 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all ${
+                  Invalid ? 'border-rose-500 focus:ring-rose-500' : ''
+                }`} 
+                onInput={() => setInvalid(false)} 
+              />
+              {Invalid && (
+                <p className="text-rose-500 text-xs font-semibold mt-1 pl-1">
                   Password is incorrect!
                 </p>
-              }
+              )}
             </div>
 
-            <button className="bg-blue-400 rounded-md w-full my-2 text-white py-2 shadow-md hover:bg-cyan-600 hover:duration-200">
-              Login
+            {/* Submit Button */}
+            <button 
+              type="submit"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-2.5 rounded-xl hover:shadow-lg hover:shadow-indigo-500/20 active:scale-98 transition-all duration-200 mt-2"
+            >
+              Sign In
             </button>
           </div>
         </form>
