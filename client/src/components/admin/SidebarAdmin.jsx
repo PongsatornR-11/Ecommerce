@@ -1,8 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-
 import useEcomStore from "../../store/ecom-store";
-
 import {
   LayoutDashboard,
   Bolt,
@@ -10,94 +8,103 @@ import {
   PackageSearch,
   ShoppingBasket,
   LogOut,
+  ShieldAlert
 } from "lucide-react";
 
 const SidebarAdmin = () => {
+  const logout = useEcomStore((state) => state.actionLogout);
 
-  const logout = useEcomStore((state) => state.actionLogout)
   return (
-    <div
-      className="bg-[#393E46] text-[#EEEEEE] 
-    w-64 flex flex-col h-screen"
-    >
-      <div
-        className="h-24 bg-[#222831] 
-        flex items-center justify-center text-2xl font-bold"
-      >
-        Admin Panel
+    <div className="bg-slate-900 border-r border-slate-800 text-slate-200 w-64 flex flex-col h-screen flex-none">
+      {/* Header Logo */}
+      <div className="h-16 flex items-center px-6 border-b border-slate-800 gap-2.5">
+        <div className="bg-indigo-600/10 text-indigo-500 p-1.5 rounded-lg border border-indigo-500/25">
+          <ShieldAlert size={18} />
+        </div>
+        <span className="font-extrabold text-sm text-slate-50 uppercase tracking-wider">
+          Admin Portal
+        </span>
       </div>
 
-      <nav className="flex-1 px-4 py-4 space-y-2">
+      {/* Nav Links */}
+      <nav className="flex-1 px-3 py-6 space-y-1.5 overflow-y-auto">
         <NavLink
           to={"/admin"}
           end
           className={({ isActive }) =>
-            isActive
-              ? "bg-[#222831] rounded-md px-4 py-2 text-white flex items-center"
-              : "text-gray-300 px-4 py-2 hover:bg-gray-500 hover:text-white rounded flex items-center"
+            `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+              isActive
+                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/15"
+                : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
+            }`
           }
         >
-          <LayoutDashboard className="mr-2" />
-          Dashboard
+          <LayoutDashboard size={18} />
+          <span>Dashboard</span>
         </NavLink>
         <NavLink
           to={"manage"}
           className={({ isActive }) =>
-            isActive
-              ? "bg-[#222831] rounded-md px-4 py-2 text-white flex items-center"
-              : "text-gray-300 px-4 py-2 hover:bg-gray-500 hover:text-white rounded flex items-center"
+            `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+              isActive
+                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/15"
+                : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
+            }`
           }
         >
-          <Bolt className="mr-2" />
-          Manage Users
+          <Bolt size={18} />
+          <span>Manage Users</span>
         </NavLink>
         <NavLink
           to={"category"}
           className={({ isActive }) =>
-            isActive
-              ? "bg-[#222831] rounded-md px-4 py-2 text-white flex items-center"
-              : "text-gray-300 px-4 py-2 hover:bg-gray-500 hover:text-white rounded flex items-center"
+            `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+              isActive
+                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/15"
+                : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
+            }`
           }
         >
-          <ChartColumnStacked className="mr-2" />
-          Manage Categories
+          <ChartColumnStacked size={18} />
+          <span>Manage Categories</span>
         </NavLink>
         <NavLink
           to={"product"}
           className={({ isActive }) =>
-            isActive
-              ? "bg-[#222831] rounded-md px-4 py-2 text-white flex items-center"
-              : "text-gray-300 px-4 py-2 hover:bg-gray-500 hover:text-white rounded flex items-center"
+            `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+              isActive
+                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/15"
+                : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
+            }`
           }
         >
-          <ShoppingBasket className="mr-2" />
-          Manage Products
+          <ShoppingBasket size={18} />
+          <span>Manage Products</span>
         </NavLink>
         <NavLink
           to={"orders"}
           className={({ isActive }) =>
-            isActive
-              ? "bg-[#222831] rounded-md px-4 py-2 text-white flex items-center"
-              : "text-gray-300 px-4 py-2 hover:bg-gray-500 hover:text-white rounded flex items-center"
+            `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+              isActive
+                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/15"
+                : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
+            }`
           }
         >
-          <PackageSearch className="mr-2" />
-          Manage Orders
+          <PackageSearch size={18} />
+          <span>Manage Orders</span>
         </NavLink>
       </nav>
 
-      <div>
+      {/* Footer logout */}
+      <div className="p-4 border-t border-slate-800">
         <NavLink
-          to={'/'}
+          to={"/"}
           onClick={() => logout()}
-          className={({ isActive }) =>
-            isActive
-              ? "bg-[#222831] rounded-md px-4 py-2 text-white flex items-center"
-              : "text-gray-300 px-4 py-2 hover:bg-gray-500 hover:text-white rounded flex items-center"
-          }
+          className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold text-rose-500 hover:bg-rose-500/10 transition-colors"
         >
-          <LogOut className="mr-2" />
-          Logout
+          <LogOut size={18} />
+          <span>Logout</span>
         </NavLink>
       </div>
     </div>

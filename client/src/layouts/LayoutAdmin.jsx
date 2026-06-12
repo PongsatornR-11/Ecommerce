@@ -11,7 +11,7 @@ const LayoutAdmin = () => {
       <SidebarAdmin />
       <div className="flex-1 flex flex-col">
         <HeaderAdmin />
-        <main className="flex-1 p-6 bg-[#EEEEEE] overflow-y-auto">
+        <main className="flex-1 p-6 bg-slate-50/70 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-200 overflow-y-auto">
           <Outlet />
         </main>
       </div>

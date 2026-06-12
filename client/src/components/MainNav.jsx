@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import useEcomStore from "../store/ecom-store";
-import { Github, UserRound, ChevronDown, ShoppingCart, LogOut, History, ShieldAlert } from 'lucide-react';
+import { Github, UserRound, ChevronDown, ShoppingCart, LogOut, History, ShieldAlert, Sun, Moon, Monitor } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTheme } from "../utils/useTheme";
 
 const MainNav = () => {
   const carts = useEcomStore((state) => state.carts);
@@ -10,6 +11,8 @@ const MainNav = () => {
   const logout = useEcomStore((state) => state.actionLogout);
 
   const [isOpen, setIsOpen] = useState(false);
+  const [theme, setTheme] = useTheme();
+  const [isThemeOpen, setIsThemeOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -78,6 +81,61 @@ const MainNav = () => {
                 </span>
               )}
             </NavLink>
+
+            {/* Theme Selector */}
+            <div className="relative">
+              <button 
+                onClick={() => setIsThemeOpen(!isThemeOpen)}
+                className="flex items-center gap-1 px-2.5 py-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800 text-slate-650 dark:text-slate-350 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 transition-all"
+                title="Choose theme"
+              >
+                {theme === 'light' && <Sun size={15} className="text-amber-500" />}
+                {theme === 'dark' && <Moon size={15} className="text-indigo-400" />}
+                {theme === 'system' && <Monitor size={15} className="text-slate-500" />}
+                <ChevronDown size={11} className={`transition-transform duration-200 ${isThemeOpen ? 'rotate-180' : ''} text-slate-400`} />
+              </button>
+
+              {isThemeOpen && (
+                <>
+                  <div className="fixed inset-0 z-45" onClick={() => setIsThemeOpen(false)} />
+                  <div className="absolute right-0 mt-2 w-32 rounded-2xl bg-white dark:bg-slate-850 border border-slate-100 dark:border-slate-800 shadow-xl p-1 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                    <button 
+                      onClick={() => { setTheme('light'); setIsThemeOpen(false); }}
+                      className={`flex items-center gap-2.5 w-full px-3 py-2.5 text-xs font-semibold rounded-xl transition-colors ${
+                        theme === 'light' 
+                          ? 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400' 
+                          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-805/50'
+                      }`}
+                    >
+                      <Sun size={13} className="text-amber-500" />
+                      <span>Light</span>
+                    </button>
+                    <button 
+                      onClick={() => { setTheme('dark'); setIsThemeOpen(false); }}
+                      className={`flex items-center gap-2.5 w-full px-3 py-2.5 text-xs font-semibold rounded-xl transition-colors ${
+                        theme === 'dark' 
+                          ? 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400' 
+                          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-805/50'
+                      }`}
+                    >
+                      <Moon size={13} className="text-indigo-400" />
+                      <span>Dark</span>
+                    </button>
+                    <button 
+                      onClick={() => { setTheme('system'); setIsThemeOpen(false); }}
+                      className={`flex items-center gap-2.5 w-full px-3 py-2.5 text-xs font-semibold rounded-xl transition-colors ${
+                        theme === 'system' 
+                          ? 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400' 
+                          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-805/50'
+                      }`}
+                    >
+                      <Monitor size={13} className="text-slate-500" />
+                      <span>System</span>
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
 
             {user ? (
               <div className="relative flex items-center gap-2">
