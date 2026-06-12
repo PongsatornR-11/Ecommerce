@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import useEcomStore from '../../store/ecom-store'
 import ProductCard from '../card/ProductCard';
-
-// Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
-
-// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/scrollbar';
 import 'swiper/css/pagination';
 import "swiper/css/navigation"
-
-// import required modules
 import { Autoplay, Scrollbar, Navigation } from 'swiper/modules';
-
 
 const ProductCarousel = () => {
     const getProducts = useEcomStore((state) => state.getProduct)
@@ -45,9 +38,13 @@ const ProductCarousel = () => {
     }, [])
 
     return (
-        <div className='my-2'>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="flex flex-col items-center justify-center text-center mb-8">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-indigo-600 mb-1">Explore More</span>
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">Our Collection</h2>
+                <div className="w-12 h-1 bg-indigo-600 rounded-full mt-3"></div>
+            </div>
 
-            <p className='text-2xl text-center mt-5'>Our other products!</p>
             <Swiper
                 slidesPerView={slidesPerView}
                 spaceBetween={50}
@@ -60,12 +57,12 @@ const ProductCarousel = () => {
                 }}
                 navigation={true}
                 modules={[Scrollbar, Autoplay, Navigation]}
-                className="mySwiper"
+                className="mySwiper rounded-2xl overflow-hidden"
             >
                 {
                     products?.map((product, index) => {
                         return (
-                            <SwiperSlide key={index} className='p-4'>
+                            <SwiperSlide key={index} className='p-4 pb-6'>
                                 <ProductCard key={index} product={product} />
                             </SwiperSlide>
                         )
@@ -76,4 +73,4 @@ const ProductCarousel = () => {
     )
 }
 
-export default ProductCarousel
+export default ProductCarousel;
