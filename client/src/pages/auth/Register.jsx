@@ -55,7 +55,8 @@ const Register = () => {
         return
     }
     try {
-      const res = await axios.post("http://localhost:5000/api/register", data);
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+      const res = await axios.post(`${API_BASE_URL}/register`, data);
       toast.success(res.data);
     } catch (err) {
       const errMsg = err.response?.data?.message;

@@ -17,7 +17,8 @@ const ecomStore = (set, get) => ({
   products: [],
   carts: [],
   actionLogin: async (form) => {
-    const res = await axios.post("http://localhost:5000/api/login", form);
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+    const res = await axios.post(`${API_BASE_URL}/login`, form);
 
     set({
       //set user and token key data from backend
