@@ -4,12 +4,14 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { formatPrice } from '../../utils/number';
 import { Search, SlidersHorizontal, Tag, CircleDollarSign } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 
 const SearchCard = () => {
     const getProduct = useEcomStore((state) => state.getProduct)
     const actionSearchFilter = useEcomStore((state) => state.actionSearchFilter)
     const getCategory = useEcomStore((state) => state.getCategory)
     const categories = useEcomStore((state) => state.categories)
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const [text, setText] = useState('')
     const [categoryChecked, setCategoryChecked] = useState([])
@@ -18,10 +20,17 @@ const SearchCard = () => {
 
     useEffect(() => {
         setText('')
-        setCategoryChecked([])
         setPrice([0, 100000])
-        getProduct()
         getCategory()
+
+        const categoryParam = searchParams.get('category');
+        if (categoryParam) {
+            setCategoryChecked([categoryParam])
+            actionSearchFilter({ category: [categoryParam] })
+        } else {
+            setCategoryChecked([])
+            getProduct()
+        }
     }, [])
 
     // Step 1: Search by Text with Debounce
@@ -47,9 +56,12 @@ const SearchCard = () => {
             inState.splice(findCheck, 1)
         }
         setCategoryChecked(inState)
+        
         if (inState.length > 0) {
+            setSearchParams({ category: inState[0] }, { replace: true })
             actionSearchFilter({ category: inState })
         } else {
+            setSearchParams({}, { replace: true })
             getProduct()
         }
     }
