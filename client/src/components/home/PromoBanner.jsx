@@ -61,7 +61,7 @@ const PromoBanner = () => {
             <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 mb-4">Applicable on all tech accessories & gear</p>
             
             {/* Promo Code Box */}
-            <div className="w-full flex items-center justify-between gap-2 bg-slate-100/60 dark:bg-slate-950/60 border border-slate-250 dark:border-slate-800 rounded-xl p-2.5 pl-4">
+            <div className="w-full flex items-center justify-between gap-2 bg-slate-100/60 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-xl p-2.5 pl-4">
               <code className="text-sm font-black text-slate-800 dark:text-slate-200 tracking-widest">{promoCode}</code>
               <button
                 onClick={handleCopy}
