@@ -1,62 +1,52 @@
-import React, { useEffect, useState } from 'react'
-import { Swiper } from 'swiper/react'
+import React from "react";
+import { Swiper } from "swiper/react";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 
-// import Swiper styles
-import "swiper/css"
-// import "swiper/css/pagination"
-import 'swiper/css/scrollbar';
-import "swiper/css/navigation"
-
-// import required modules
-import { Pagination, Autoplay, Navigation, Scrollbar } from 'swiper/modules'
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const SwiperShowProduct = ({ children }) => {
+  return (
+    <div className="relative py-4 px-2">
+      <Swiper
+        modules={[Autoplay, Navigation, Pagination]}
+        spaceBetween={24}
+        slidesPerView={1}
+        autoplay={{
+          delay: 4500,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        }}
+        pagination={{
+          clickable: true,
+          dynamicBullets: true,
+        }}
+        navigation={true}
+        breakpoints={{
+          640: {
+            slidesPerView: 2,
+            spaceBetween: 20,
+          },
+          768: {
+            slidesPerView: 3,
+            spaceBetween: 24,
+          },
+          1024: {
+            slidesPerView: 4,
+            spaceBetween: 24,
+          },
+          1280: {
+            slidesPerView: 4,
+            spaceBetween: 28,
+          },
+        }}
+        className="product-swiper !pb-12"
+      >
+        {children}
+      </Swiper>
+    </div>
+  );
+};
 
-    const [slidesPerView, setSlidesPerView] = useState(4);
-
-    const calSlidePerView = () => {
-        const width = window.innerWidth
-        const calSlide = Math.floor(width / 200)
-        return calSlide
-    }
-
-    useEffect(() => {
-        const handleResize = () => {
-            setSlidesPerView(calSlidePerView());
-        }
-
-        window.addEventListener('resize', handleResize)
-        setSlidesPerView(calSlidePerView())
-
-        return () => {
-            window.removeEventListener('resize', handleResize)
-        }
-    }, [])
-
-    return (
-        <div>
-            <Swiper
-                slidesPerView={slidesPerView}
-                spaceBetween={50}
-                autoplay={{
-                    delay: 2500,
-                    disableOnInteraction: false,
-                }}
-                // pagination={{
-                //     clickable: true,
-                // }}
-                scrollbar={{
-                    hide: true,
-                }}
-                navigation={true}
-                modules={[Scrollbar, Autoplay, Navigation]}
-                className="mySwiper object-cover rounded-md"
-            >
-                {children}
-
-            </Swiper>
-        </div>
-    )
-}
-
-export default SwiperShowProduct
+export default SwiperShowProduct;

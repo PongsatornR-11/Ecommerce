@@ -1,77 +1,77 @@
-import React, { useEffect, useState } from 'react'
-import { listProductBy } from '../../api/product'
-import ProductCard from '../card/ProductCard'
-
-import SwiperShowProduct from '../../utils/SwiperShowProduct'
-import { SwiperSlide } from 'swiper/react'
-
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { listProductBy } from "../../api/product";
+import ProductCard from "../card/ProductCard";
+import SwiperShowProduct from "../../utils/SwiperShowProduct";
+import { SwiperSlide } from "swiper/react";
+import { Flame, ArrowRight } from "lucide-react";
 
 const BestSellerProduct = () => {
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-    const [products, setProducts] = useState([])
+  useEffect(() => {
+    loadData();
+  }, []);
 
-    useEffect(() => {
-        loadData()
-    }, [])
+  const loadData = () => {
+    setIsLoading(true);
+    listProductBy("sold", "desc", 8)
+      .then((res) => {
+        setProducts(res.data);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false));
+  };
 
-    const loadData = () => {
-        listProductBy('sold', 'desc', 10)
-            .then((res) => {
-                setProducts(res.data)
-            })
-            .catch((err) => console.log(err))
-    }
-
-    // useEffect(() => {
-    //     let previousProductCount = null;
-
-    //     const handleResize = () => {
-    //         const width = window.innerWidth;
-    //         const additionalProducts = Math.floor((width - 1080) / 200);
-    //         const productCount = 4 + additionalProducts;
-
-    //         if (productCount !== previousProductCount) {
-    //             previousProductCount = productCount;
-    //             loadData(productCount);
-    //         }
-    //     };
-
-    //     window.addEventListener('resize', handleResize);
-    //     handleResize(); // Initial load
-    //     return () => {
-    //         window.removeEventListener('resize', handleResize);
-    //     };
-    // }, []);
-    
-    return (
+  return (
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Section Header */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 pb-4 border-b border-slate-200">
         <div>
-            <p className="text-2xl text-center my-3">Best seller!</p>
-            <SwiperShowProduct>
-
-                <div className='flex gap-14 items-center justify-center'>
-                    {
-                        products?.map((product, index) => {
-                            return (
-                                <SwiperSlide key={index}>
-                                    <div >
-                                        <div className='relative z-20'>
-                                            <p className='z-10 absolute px-2 py-1 bg-red-400 shadow-md rounded-full right-1 top-1'>
-                                                {product.sold}
-                                                <span className='text-xs px-0.5'>
-                                                    Sold!
-                                                </span>
-                                            </p>
-                                        </div>
-                                        <ProductCard product={product} />
-                                    </div>
-                                </SwiperSlide>
-                            )
-                        })
-                    }
-                </div>
-            </SwiperShowProduct>
+          <div className="inline-flex items-center space-x-2 text-amber-600 bg-amber-50 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
+            <Flame className="w-4 h-4" />
+            <span>Trending Now</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            Best Sellers & Customer Favorites
+          </h2>
+          <p className="text-sm text-slate-500 mt-1">
+            Top-rated products backed by thousands of verified reviews.
+          </p>
         </div>
-    )
-}
 
-export default BestSellerProduct
+        <Link
+          to="/shop"
+          className="mt-4 sm:mt-0 inline-flex items-center space-x-1.5 text-sm font-bold text-indigo-600 hover:text-indigo-700 transition-colors group"
+        >
+          <span>View All Products</span>
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </Link>
+      </div>
+
+      {/* Products Carousel */}
+      {isLoading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 animate-pulse">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="h-80 bg-slate-200 rounded-2xl" />
+          ))}
+        </div>
+      ) : products.length > 0 ? (
+        <SwiperShowProduct>
+          {products.map((product) => (
+            <SwiperSlide key={product.id} className="flex justify-center">
+              <ProductCard product={product} />
+            </SwiperSlide>
+          ))}
+        </SwiperShowProduct>
+      ) : (
+        <div className="text-center py-12 bg-white rounded-2xl border border-slate-200">
+          <p className="text-slate-500 text-sm">No products found yet.</p>
+        </div>
+      )}
+    </section>
+  );
+};
+
+export default BestSellerProduct;

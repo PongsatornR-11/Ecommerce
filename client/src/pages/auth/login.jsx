@@ -1,113 +1,135 @@
-//rafce
-
-import React, { useState } from "react";
-
-// import redirect module
-import { useNavigate } from "react-router-dom";
-
-// for handle with back end
-import axios from "axios";
-
-// Zustand State Management (global state)
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import useEcomStore from "../../store/ecom-store";
-
 import { useForm } from "react-hook-form";
-import { z } from 'zod';
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-toastify";
+import { Lock, Mail, ArrowRight } from "lucide-react";
 
-const registerSchema = z
-  .object({
-    email: z.string().email({ message: 'Invalid email!' }),
-    password: z.string()
-  })
+const loginSchema = z.object({
+  email: z.string().email({ message: "Please enter a valid email address" }),
+  password: z.string().min(1, { message: "Password is required" }),
+});
 
 const Login = () => {
   const navigate = useNavigate();
-
-  // check invalid password
-  const [Invalid, setInvalid] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const actionLogin = useEcomStore((state) => state.actionLogin);
   const user = useEcomStore((state) => state.user);
-
 
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(registerSchema)
-  })
+    resolver: zodResolver(loginSchema),
+  });
+
+  useEffect(() => {
+    if (user) {
+      if (user.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/shop");
+      }
+    }
+  }, [user, navigate]);
 
   const onSubmit = async (data) => {
-    console.log(data)
+    setLoading(true);
     try {
-      const res = await actionLogin(data)
-      const role = res.data.payload.role
-      const roleRedirect = (role) => {
-        if (role === "admin") {
-          navigate('/admin');
-        } else {
-          navigate(-1);
-        }
+      const res = await actionLogin(data);
+      toast.success("Welcome back!");
+      const role = res.data.payload.role;
+      if (role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/shop");
       }
-      roleRedirect(role)
     } catch (err) {
-      const errMsg = err.response?.data?.message;
-      console.log(errMsg)
-      setInvalid(true)
+      const errMsg = err.response?.data?.message || "Invalid email or password";
+      toast.error(errMsg);
+    } finally {
+      setLoading(false);
     }
-  }
-
-
-  // Redirect to '/shop' if user is already logged in
-  if (user) {
-    navigate('/shop');
-  }
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-[85vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-slate-50">
+      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl border border-slate-100">
+        <div>
+          <h2 className="mt-2 text-center text-3xl font-extrabold text-slate-900 tracking-tight">
+            Sign in to your account
+          </h2>
+          <p className="mt-2 text-center text-sm text-slate-600">
+            Or{" "}
+            <Link to="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+              create a new account today
+            </Link>
+          </p>
+        </div>
 
-      <div className="w-full shadow-md px-8 max-w-md bg-gray-200 rounded-md">
-        <h1 className="text-2xl text-center my-3 font-bold text-gray-600">
-          login
-        </h1>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="space-y-3 my-5 rounded-md">
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <div className="space-y-4">
             <div>
-              <input {...register('email')}
-                placeholder="Email"
-                className={`border w-full px-3 py-2 rounded-md 
-                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                            ${errors.email && 'border-red-500'}`} />
-              {errors.email &&
-                <p className="text-red-500 text-sm">
-                  {errors.email.message}
-                </p>
-              }
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Email address
+              </label>
+              <div className="relative rounded-md shadow-sm">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                  <Mail className="h-5 w-5" />
+                </div>
+                <input
+                  {...register("email")}
+                  type="email"
+                  placeholder="you@example.com"
+                  className={`block w-full pl-10 pr-3 py-2.5 sm:text-sm rounded-xl border ${
+                    errors.email ? "border-red-500 focus:ring-red-500" : "border-slate-300 focus:ring-indigo-500"
+                  } focus:outline-none focus:ring-2`}
+                />
+              </div>
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+              )}
             </div>
 
             <div>
-              <input {...register('password')}
-                type="password"
-                placeholder="Password"
-                className={`border w-full px-3 py-2 rounded-md 
-                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                            ${Invalid && 'border-red-500'}`} 
-                onInput={() => setInvalid(false)} />
-              {
-                Invalid &&
-                <p className="text-red-500 text-sm ">
-                  Password is incorrect!
-                </p>
-              }
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Password
+              </label>
+              <div className="relative rounded-md shadow-sm">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                  <Lock className="h-5 w-5" />
+                </div>
+                <input
+                  {...register("password")}
+                  type="password"
+                  placeholder="••••••••"
+                  className={`block w-full pl-10 pr-3 py-2.5 sm:text-sm rounded-xl border ${
+                    errors.password ? "border-red-500 focus:ring-red-500" : "border-slate-300 focus:ring-indigo-500"
+                  } focus:outline-none focus:ring-2`}
+                />
+              </div>
+              {errors.password && (
+                <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+              )}
             </div>
-
-            <button className="bg-blue-400 rounded-md w-full my-2 text-white py-2 shadow-md hover:bg-cyan-600 hover:duration-200">
-              Login
-            </button>
           </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-60 transition-colors"
+          >
+            {loading ? (
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+            ) : (
+              <>
+                Sign in <ArrowRight className="ml-2 h-4 w-4" />
+              </>
+            )}
+          </button>
         </form>
       </div>
     </div>

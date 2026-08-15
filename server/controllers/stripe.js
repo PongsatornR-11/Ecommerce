@@ -1,5 +1,5 @@
 const prisma = require("../config/prisma");
-const stripe = require("stripe")('sk_test_51QTdPoClpvgManj8NWDcSRQ4x73KcAYlK9qH518kmWAUwffaQza5gWMBegBIEQbtsAIVkesWT3KA4t29PHHJP0F800HAF74ixK');
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 
 exports.createPaymentIntent = async (req, res) => {
@@ -10,6 +10,10 @@ exports.createPaymentIntent = async (req, res) => {
                 orderedById: req.user.id
             }
         })
+
+        if (!cart) {
+            return res.status(400).json({ message: "Cart not found!" });
+        }
 
         const amountTHB = Number(cart.cartTotal) * 100
         // Create a PaymentIntent with the order amount and currency

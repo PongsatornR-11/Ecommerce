@@ -1,95 +1,131 @@
-# Ecommerce Project
+# ShopSphere - Production-Grade Full-Stack E-Commerce Platform
 
-This is a full-stack ecommerce application built with the MERN stack (MySql, Express.js, React, Node.js) and other modern technologies.
+A high-performance, secure, and type-safe e-commerce platform built with **Node.js, Express, TypeScript, Prisma ORM, MySQL, React 18, TanStack Query, Zustand, Tailwind CSS, Stripe, and Docker**.
 
-## Features
+---
 
-*   **User Authentication:** Secure user registration and login.
-*   **Product Management:** Admins can create, read, update, and delete products.
-*   **Category Management:** Admins can organize products into categories.
-*   **Shopping Cart:** Users can add products to their cart and manage it.
-*   **Checkout:** Seamless and secure payment processing with Stripe.
-*   **Order Management:** Admins can view and manage customer orders.
-*   **Admin Dashboard:** A dedicated interface for managing the store.
-*   **Search Functionality:** Users can easily find products.
+## 🚀 Key Highlights & Architecture
 
-## Technologies Used
+### Backend (Express + TypeScript + Prisma)
+* **3-Tier Layered Architecture**: Strict separation of concerns across `Routes` $\rightarrow$ `Controllers` $\rightarrow$ `Services` $\rightarrow$ `Prisma Models`.
+* **Enterprise Security**:
+  * Dual-token authentication (Short-lived Access Token + HttpOnly Refresh Token Cookie).
+  * Rate limiting with `express-rate-limit` for DDoS & brute-force mitigation.
+  * Security HTTP headers with `helmet`.
+  * Strict CORS origin whitelisting.
+* **Resilient Stripe Payments**:
+  * Cryptographically verified Stripe Webhooks (`/api/stripe/webhook`) with raw body signature verification.
+  * Idempotent order processing preventing double charges or race conditions.
+  * Atomic Prisma `$transaction` ensuring stock decrements and order creation occur safely or roll back together.
+* **Type-Safe Validation**: Comprehensive request validation schemas using `Zod`.
+* **Centralized Error Handling**: Unified `AppError` class with structured error responses and environment-aware stack traces.
 
-### Frontend
+### Frontend (React 18 + TypeScript + Vite + Tailwind CSS)
+* **Modern State Architecture**:
+  * **Server State**: Managed by **TanStack Query (React Query)** with caching, automatic refetching, and query invalidation.
+  * **Client/UI State**: Managed by **Zustand** for cart items and responsive drawer state.
+* **Design System**: Responsive dark/light glass navigation, animated cart badges, password strength metrics (`zxcvbn`), and accessible forms.
+* **Stripe Elements**: Seamless checkout flow with embedded payment elements and fallback confirmation.
 
-*   **React:** A JavaScript library for building user interfaces.
-*   **Vite:** A fast build tool for modern web development.
-*   **Tailwind CSS:** A utility-first CSS framework for rapid UI development.
-*   **Zustand:** A small, fast, and scalable state-management solution.
-*   **Stripe.js:** For secure payment processing.
+### DevOps & Testing
+* **Docker & Containerization**: Multi-stage Dockerfiles for Backend & Frontend (with Nginx) + `docker-compose.yml` for 1-command startup.
+* **Automated Testing**: Vitest & Supertest automated API integration test suite.
+* **CI/CD**: GitHub Actions workflow (`.github/workflows/ci.yml`) for automated linting, type-checking, schema generation, tests, and builds.
 
-### Backend
+---
 
-*   **Node.js:** A JavaScript runtime for building server-side applications.
-*   **Express.js:** A web application framework for Node.js.
-*   **Prisma:** A next-generation ORM for Node.js and TypeScript.
-*   **Postman:** Used for API testing and documentation (see `Ecommerce.postman_collection.json`).
+## 🛠️ Tech Stack
 
-## Getting Started
+| Layer | Technologies |
+| :--- | :--- |
+| **Backend** | Node.js, Express 4, TypeScript 5, Prisma 5, Zod, Helmet, JWT, Bcrypt |
+| **Database** | MySQL 8.0 / PostgreSQL |
+| **Payments & Media** | Stripe API 2024, Cloudinary SDK |
+| **Frontend** | React 18, Vite, TypeScript, TanStack Query v5, Zustand v5, Tailwind CSS |
+| **Testing** | Vitest, Supertest |
+| **DevOps** | Docker, Docker Compose, Nginx, GitHub Actions |
 
-### Prerequisites
+---
 
-*   Node.js and npm (or yarn) installed on your machine.
-*   A database supported by Prisma (e.g., PostgreSQL, MySQL, SQLite).
+## ⚙️ Environment Variables
 
-### Installation
+### Server (`server/.env`)
+```env
+PORT=5000
+NODE_ENV=development
+DATABASE_URL="mysql://ecomuser:ecompass@localhost:3306/ecomdb"
+JWT_SECRET="your-256-bit-secret-jwt-key"
+REFRESH_SECRET="your-256-bit-refresh-secret-key"
+STRIPE_SECRET_KEY="sk_test_..."
+STRIPE_WEBHOOK_SECRET="whsec_..."
+CLOUDINARY_CLOUD_NAME="your-cloud-name"
+CLOUDINARY_API_KEY="your-api-key"
+CLOUDINARY_API_SECRET="your-api-secret"
+CLIENT_URL="http://localhost:5173"
+```
 
-1.  **Clone the repository:**
-    ```bash
-    git clone <repository-url>
-    cd Ecommerce
-    ```
+### Client (`client/.env`)
+```env
+VITE_API_URL="http://localhost:5000/api"
+VITE_STRIPE_PUBLISHABLE_KEY="pk_test_..."
+```
 
-2.  **Install server dependencies:**
-    ```bash
-    cd server
-    npm install
-    ```
+---
 
-3.  **Install client dependencies:**
-    ```bash
-    cd ../client
-    npm install
-    ```
+## 🚦 Quick Start
 
-### Environment Variables
+### 1. Run with Docker Compose (Recommended)
+```bash
+# Start MySQL database, Server API, and Client with 1 command
+docker-compose up --build
+```
+- Client will be available at: `http://localhost:80`
+- Server API will be available at: `http://localhost:5000`
 
-You will need to create `.env` files in both the `client` and `server` directories.
+---
 
-*   **`server/.env`:**
-    ```
-    DATABASE_URL="your-database-connection-string"
-    STRIPE_SECRET_KEY="your-stripe-secret-key"
-    JWT_SECRET="your-jwt-secret"
-    ```
+### 2. Run Locally
 
-*   **`client/.env`:**
-    ```
-    VITE_API_URL="http://localhost:5000/api"
-    VITE_STRIPE_PUBLISHABLE_KEY="your-stripe-publishable-key"
-    ```
+#### Server
+```bash
+cd server
+npm install
+npx prisma generate
+npx prisma db push # or npx prisma migrate dev
+npm run dev        # Starts TypeScript API watcher on port 5000
+```
 
-## Usage
+#### Client
+```bash
+cd client
+npm install
+npm run dev        # Starts Vite dev server on port 5173
+```
 
-1.  **Start the server:**
-    ```bash
-    cd server
-    npm run dev
-    ```
-    The server will run on `http://localhost:5000`.
+---
 
-2.  **Start the client:**
-    ```bash
-    cd client
-    npm run dev
-    ```
-    The client will run on `http://localhost:5173`.
+## 🧪 Testing & Verification
 
-## API
+```bash
+# Run backend integration tests
+cd server
+npm test
 
-The API endpoints are defined in the `server/routes` directory. You can use the `Ecommerce.postman_collection.json` file to test the API with Postman.
+# Run TypeScript type check
+cd server
+npm run type-check
+
+# Build frontend production bundle
+cd client
+npm run build
+```
+
+---
+
+## 📄 Stripe Webhook Setup (Local Development)
+
+To test Stripe Webhooks locally with Stripe CLI:
+```bash
+stripe listen --forward-to localhost:5000/api/stripe/webhook
+```
+Copy the webhook signing secret output (`whsec_...`) to `server/.env` as `STRIPE_WEBHOOK_SECRET`.

@@ -1,11 +1,10 @@
-// import moment from 'moment';
 import moment from 'moment/min/moment-with-locales';
-
 import { useState, useEffect } from 'react';
 
 export const TimeNow = () => {
     return moment().format('LTS');
 }
+
 export const useCurrentTime = () => {
     const [time, setTime] = useState(TimeNow());
     useEffect(() => {

@@ -258,77 +258,36 @@ exports.listby = async (req, res) => {
 exports.searchFilters = async (req, res) => {
   try {
     const { query, category, price } = req.body;
+    const where = {};
+
     if (query) {
-      const handleQuery = async (req, res, query) => {
-        try {
-          const products = await prisma.product.findMany({
-            where: {
-              //title is column of table product in database
-              title: {
-                // contains is where is contain with query
-                contains: query,
-              },
-            },
-            include: {
-              category: true,
-              images: true,
-            },
-          });
-          res.send(products);
-        } catch (err) {
-          console.log(err);
-          res.status(500).json({ message: "Search error" });
-        }
+      where.title = {
+        contains: query,
       };
-      await handleQuery(req, res, query);
     }
-    if (category) {
-      const handleCategory = async (req, res, categoryId) => {
-        try {
-          const products = await prisma.product.findMany({
-            where: {
-              categoryId: {
-                in: categoryId.map((id) => Number(id)),
-              },
-            },
-            include: {
-              category: true,
-              images: true,
-            },
-          });
-          res.send(products);
-        } catch (err) {
-          console.log(err);
-          res.status(500).json({ message: "Search category error" });
-        }
+
+    if (category && category.length > 0) {
+      where.categoryId = {
+        in: category.map((id) => Number(id)),
       };
-      await handleCategory(req, res, category);
     }
-    if (price) {
-      const handlePrice = async (req, res, priceRange) => {
-        try {
-          const products = await prisma.product.findMany({
-            where: {
-              price: {
-                // gte >> greater than
-                gte: priceRange[0],
-                // lte >> less than or equal
-                lte: priceRange[1],
-              },
-            },
-            include: {
-              category: true,
-              images: true,
-            },
-          });
-          res.send(products);
-        } catch (err) {
-          console.log(err);
-          res.status(500).json({ message: "Search price error" });
-        }
+
+    if (price && price.length === 2) {
+      where.price = {
+        gte: price[0],
+        lte: price[1],
       };
-      await handlePrice(req, res, price);
     }
+
+    const products = await prisma.product.findMany({
+      where: where,
+      include: {
+        category: true,
+        images: true,
+      },
+    });
+
+    res.send(products);
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Server error" });

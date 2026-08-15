@@ -1,16 +1,16 @@
-//rafce
-
 import React from "react";
 import { Outlet } from "react-router-dom";
 import MainNav from "../components/MainNav";
+import Footer from "../components/Footer";
 
 const Layout = () => {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-indigo-500 selection:text-white">
       <MainNav />
-      <main className="h-full px-4 mt-2 mx-auto">
+      <main className="flex-1 w-full">
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 };

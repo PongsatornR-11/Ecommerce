@@ -140,6 +140,13 @@ exports.getUserCart = async (req, res) => {
         },
       },
     });
+    if (!cart) {
+      return res.json({
+        products: [],
+        cartTotal: 0,
+      });
+    }
+
     res.json({
       products: cart.products,
       cartTotal: cart.cartTotal,
@@ -295,8 +302,8 @@ exports.getOrder = async (req, res) => {
       },
     });
 
-    if (!orders.length === 0) {
-      res.status(400).json({ ok: false, message: "No orders" });
+    if (orders.length === 0) {
+      return res.status(400).json({ ok: false, message: "No orders" });
     }
     res.json({
       ok: true,
