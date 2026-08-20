@@ -22,6 +22,40 @@ async function main() {
   });
   console.log("Admin user ready:", admin.email);
 
+  // 1.1 Create or ensure Customer User
+  const userHashedPassword = await bcrypt.hash("User1234!", 12);
+  const user = await prisma.user.upsert({
+    where: { email: "user@shopsphere.com" },
+    update: { role: "user", enabled: true },
+    create: {
+      email: "user@shopsphere.com",
+      password: userHashedPassword,
+      name: "Test Customer",
+      role: "user",
+      enabled: true,
+      address: "54 Sukhumvit Road, Khlong Toei, Bangkok 10110",
+      addresses: {
+        create: [
+          {
+            title: "Home (Default)",
+            recipient: "Test Customer",
+            phone: "+66 81 234 5678",
+            address: "54 Sukhumvit Road, Khlong Toei, Bangkok 10110",
+            isDefault: true,
+          },
+          {
+            title: "Office",
+            recipient: "Test Customer (Work)",
+            phone: "+66 82 987 6543",
+            address: "88 Wireless Road, Lumpini, Pathum Wan, Bangkok 10330",
+            isDefault: false,
+          },
+        ],
+      },
+    },
+  });
+  console.log("Customer user ready:", user.email);
+
   // 2. Create Categories
   const categoriesData = [
     { name: "Smart Audio" },
