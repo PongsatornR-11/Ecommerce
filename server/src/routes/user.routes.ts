@@ -29,7 +29,13 @@ router.delete(
   asyncHandler(CartController.emptyCart as any)
 );
 
-// Address & Orders endpoints
+// Address endpoints
+router.get(
+  "/user/addresses",
+  authCheck as any,
+  asyncHandler(OrderController.getUserAddresses as any)
+);
+
 router.post(
   "/user/address",
   authCheck as any,
@@ -37,6 +43,25 @@ router.post(
   asyncHandler(OrderController.saveAddress as any)
 );
 
+router.post(
+  "/user/addresses",
+  authCheck as any,
+  asyncHandler(OrderController.addAddress as any)
+);
+
+router.patch(
+  "/user/addresses/:id/default",
+  authCheck as any,
+  asyncHandler(OrderController.setDefaultAddress as any)
+);
+
+router.delete(
+  "/user/addresses/:id",
+  authCheck as any,
+  asyncHandler(OrderController.deleteAddress as any)
+);
+
+// Orders endpoints
 router.post(
   "/user/order",
   authCheck as any,

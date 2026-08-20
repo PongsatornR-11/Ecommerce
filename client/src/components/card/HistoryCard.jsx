@@ -1,30 +1,99 @@
 import React, { useState, useEffect } from "react";
-import { getOrders } from "../../api/user";
+import { getOrders, getUserAddresses, addUserAddress, setDefaultAddress, deleteAddress } from "../../api/user";
 import useEcomStore from "../../store/ecom-store";
 import { formatDate, formatTime } from "../../utils/datetimeformat";
 import { formatPrice } from "../../utils/number";
-import { Package, Clock, ShoppingBag, CheckCircle, Truck, XCircle, AlertCircle } from "lucide-react";
+import { Package, Clock, ShoppingBag, CheckCircle, Truck, XCircle, AlertCircle, MapPin, Plus, Trash2, Check, Star } from "lucide-react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const HistoryCard = () => {
   const token = useEcomStore((state) => state.token);
   const user = useEcomStore((state) => state.user);
+
   const [orders, setOrders] = useState([]);
+  const [addresses, setAddresses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Add Address Modal / Form state
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newTitle, setNewTitle] = useState("Home");
+  const [newRecipient, setNewRecipient] = useState(user?.name || "");
+  const [newPhone, setNewPhone] = useState("");
+  const [newAddress, setNewAddress] = useState("");
+  const [isDefault, setIsDefault] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (token) {
-      setIsLoading(true);
-      getOrders(token)
-        .then((res) => {
-          setOrders(res.data.orders || []);
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => setIsLoading(false));
+      fetchData();
     }
   }, [token]);
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      const [ordersRes, addrRes] = await Promise.all([
+        getOrders(),
+        getUserAddresses()
+      ]);
+      setOrders(ordersRes.data.orders || []);
+      setAddresses(addrRes.data.addresses || []);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSetDefault = async (addressId) => {
+    try {
+      await setDefaultAddress(addressId);
+      toast.success("Default address updated!");
+      fetchData();
+    } catch (err) {
+      toast.error("Failed to set default address");
+    }
+  };
+
+  const handleDeleteAddress = async (addressId) => {
+    if (!window.confirm("Are you sure you want to delete this address?")) return;
+    try {
+      await deleteAddress(addressId);
+      toast.success("Address deleted");
+      fetchData();
+    } catch (err) {
+      toast.error("Failed to delete address");
+    }
+  };
+
+  const handleAddAddress = async (e) => {
+    e.preventDefault();
+    if (!newAddress.trim()) {
+      toast.error("Please enter a valid address.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await addUserAddress({
+        title: newTitle,
+        recipient: newRecipient,
+        phone: newPhone,
+        address: newAddress.trim(),
+        isDefault
+      });
+      toast.success("New address added to your account!");
+      setShowAddForm(false);
+      setNewAddress("");
+      setNewTitle("Home");
+      fetchData();
+    } catch (err) {
+      toast.error("Failed to add address");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const getStatusBadge = (status) => {
     switch (status) {
@@ -79,7 +148,7 @@ const HistoryCard = () => {
             </div>
             <div>
               <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-                Order History & Purchases
+                My Account Profile
               </h1>
               <p className="text-xs sm:text-sm text-slate-500">{user?.email}</p>
             </div>
@@ -96,6 +165,145 @@ const HistoryCard = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Saved Address Book Section */}
+      <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-sm space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <MapPin className="w-5 h-5 text-indigo-600" />
+            <span>Saved Shipping Addresses</span>
+          </h2>
+          <button
+            onClick={() => setShowAddForm(!showAddForm)}
+            className="flex items-center space-x-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-sm"
+          >
+            <Plus className="w-4 h-4" />
+            <span>{showAddForm ? "Cancel" : "Add New Address"}</span>
+          </button>
+        </div>
+
+        {/* Add Address Form */}
+        {showAddForm && (
+          <form onSubmit={handleAddAddress} className="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-4 animate-fadeIn">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700">New Address Details</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label className="block text-[11px] font-bold text-slate-500 mb-1">Label (e.g. Home, Work)</label>
+                <input
+                  type="text"
+                  value={newTitle}
+                  onChange={(e) => setNewTitle(e.target.value)}
+                  className="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs text-slate-900"
+                  placeholder="Home"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] font-bold text-slate-500 mb-1">Recipient Name</label>
+                <input
+                  type="text"
+                  value={newRecipient}
+                  onChange={(e) => setNewRecipient(e.target.value)}
+                  className="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs text-slate-900"
+                  placeholder="Full Name"
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] font-bold text-slate-500 mb-1">Phone Number</label>
+                <input
+                  type="text"
+                  value={newPhone}
+                  onChange={(e) => setNewPhone(e.target.value)}
+                  className="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs text-slate-900"
+                  placeholder="+66 81 234 5678"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-bold text-slate-500 mb-1">Full Street Address *</label>
+              <textarea
+                rows={3}
+                value={newAddress}
+                onChange={(e) => setNewAddress(e.target.value)}
+                className="w-full bg-white border border-slate-200 rounded-xl p-3 text-xs text-slate-900 resize-none"
+                placeholder="Street address, sub-district, district, province, postal code"
+                required
+              />
+            </div>
+
+            <div className="flex items-center justify-between pt-2">
+              <label className="flex items-center space-x-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={isDefault}
+                  onChange={(e) => setIsDefault(e.target.checked)}
+                  className="w-4 h-4 text-indigo-600 rounded"
+                />
+                <span>Set as Default Shipping Address</span>
+              </label>
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all"
+              >
+                {isSubmitting ? "Saving..." : "Save Address"}
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* Addresses List */}
+        {addresses.length === 0 ? (
+          <p className="text-xs text-slate-400 italic">No saved addresses found. Add one above to speed up checkout.</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {addresses.map((addr) => (
+              <div
+                key={addr.id}
+                className={`p-5 rounded-2xl border flex flex-col justify-between space-y-3 ${
+                  addr.isDefault
+                    ? "border-indigo-600 bg-indigo-50/20 shadow-sm"
+                    : "border-slate-200 bg-slate-50/50"
+                }`}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs font-extrabold text-slate-900">{addr.title || "Address"}</span>
+                    {addr.isDefault ? (
+                      <span className="px-2 py-0.5 text-[10px] font-bold uppercase bg-emerald-100 text-emerald-700 rounded-full flex items-center gap-1">
+                        <Star className="w-3 h-3 fill-emerald-600" /> Default
+                      </span>
+                    ) : (
+                      <button
+                        onClick={() => handleSetDefault(addr.id)}
+                        className="text-[11px] font-semibold text-indigo-600 hover:underline"
+                      >
+                        Set as Default
+                      </button>
+                    )}
+                  </div>
+                  {addr.recipient && (
+                    <p className="text-xs font-semibold text-slate-700">Contact: {addr.recipient} {addr.phone && `(${addr.phone})`}</p>
+                  )}
+                  <p className="text-xs text-slate-600 mt-1 leading-relaxed">{addr.address}</p>
+                </div>
+
+                <div className="flex justify-end pt-2 border-t border-slate-100">
+                  <button
+                    onClick={() => handleDeleteAddress(addr.id)}
+                    className="text-xs text-red-500 hover:text-red-700 flex items-center space-x-1 transition-colors"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    <span>Delete</span>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Orders List */}

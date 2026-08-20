@@ -17,6 +17,7 @@ model User {
   role         String    @default("user")
   enabled      Boolean   @default(true)
   address      String?   @db.Text
+  addresses    Address[]
   refreshToken String?   @db.Text
   orders       Order[]
   carts        Cart[]
@@ -55,6 +56,7 @@ model Order {
   orderedBy       User             @relation(fields: [orderedById], references: [id], onDelete: Cascade)
   orderedById     Int
   stripePaymentId String?          @unique
+  shippingAddress String?          @db.Text
   amount          Int
   status          String
   currency        String
@@ -122,4 +124,19 @@ model Image {
   productId  Int
 
   @@index([productId])
+}
+
+model Address {
+  id        Int      @id @default(autoincrement())
+  title     String   @default("Home")
+  recipient String?
+  phone     String?
+  address   String   @db.Text
+  isDefault Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
 }
