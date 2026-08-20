@@ -51,7 +51,8 @@ export class OrderController {
 
   static async setDefaultAddress(req: AuthenticatedRequest, res: Response) {
     if (!req.user) throw new AppError("Unauthorized", 401);
-    const addressId = parseInt(req.params.id, 10);
+    const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const addressId = parseInt(rawId, 10);
     if (isNaN(addressId)) throw new AppError("Invalid address ID", 400);
     const updated = await OrderService.setDefaultAddress(req.user.id, addressId);
     res.json({ ok: true, message: "Default address updated", address: updated });
@@ -59,7 +60,8 @@ export class OrderController {
 
   static async deleteAddress(req: AuthenticatedRequest, res: Response) {
     if (!req.user) throw new AppError("Unauthorized", 401);
-    const addressId = parseInt(req.params.id, 10);
+    const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const addressId = parseInt(rawId, 10);
     if (isNaN(addressId)) throw new AppError("Invalid address ID", 400);
     await OrderService.deleteAddress(req.user.id, addressId);
     res.json({ ok: true, message: "Address deleted successfully" });
