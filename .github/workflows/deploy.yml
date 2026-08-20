@@ -13,7 +13,12 @@ jobs:
     steps:
       - name: Deploy Ecommerce Docker Stack
         run: |
-          cd ~/Ecommerce_docker
+          TARGET_DIR="/srv/dev-disk-by-uuid-168E23328E2309B7/code/project/Ecommerce"
+          if [ -d "$TARGET_DIR" ]; then
+            cd "$TARGET_DIR"
+          else
+            cd ~/Ecommerce_docker || cd ~/Ecommerce
+          fi
           git pull origin main
           docker compose down
           docker compose up --build -d
