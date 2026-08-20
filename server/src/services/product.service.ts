@@ -1,5 +1,6 @@
+import fs from "fs";
+import path from "path";
 import prisma from "../config/prisma";
-import cloudinary from "../config/cloudinary";
 import { AppError } from "../utils/AppError";
 
 export interface CreateProductInput {
@@ -163,14 +164,19 @@ export class ProductService {
       throw new AppError(`Product #${id} not found`, 404);
     }
 
-    // Clean up images in Cloudinary
+    // Clean up images from local disk storage
     if (product.images.length > 0) {
-      const deletePromises = product.images.map((img) =>
-        cloudinary.uploader.destroy(img.public_id).catch((err) => {
-          console.error(`Failed to delete image ${img.public_id} from Cloudinary:`, err);
-        })
-      );
-      await Promise.all(deletePromises);
+      for (const img of product.images) {
+        try {
+          const fileName = path.basename(img.url);
+          const filePath = path.join(__dirname, "../../uploads", fileName);
+          if (fs.existsSync(filePath)) {
+            await fs.promises.unlink(filePath);
+          }
+        } catch (err) {
+          console.error(`Failed to delete local image ${img.url}:`, err);
+        }
+      }
     }
 
     await prisma.product.delete({
@@ -229,15 +235,48 @@ export class ProductService {
   }
 
   static async uploadImage(base64Image: string) {
-    return cloudinary.uploader.upload(base64Image, {
-      public_id: `prod_${Date.now()}_${Math.random().toString(36).substring(7)}`,
-      resource_type: "auto",
-      folder: "Ecommerce",
-    });
+    const uploadsDir = path.join(__dirname, "../../uploads");
+    if (!fs.existsSync(uploadsDir)) {
+      await fs.promises.mkdir(uploadsDir, { recursive: true });
+    }
+
+    // Extract mime type & base64 data
+    const matches = base64Image.match(/^data:image\/([a-zA-Z0-9]+);base64,(.+)$/);
+    let ext = "jpg";
+    let base64Data = base64Image;
+
+    if (matches && matches.length === 3) {
+      ext = matches[1] === "jpeg" ? "jpg" : matches[1];
+      base64Data = matches[2];
+    }
+
+    const publicId = `prod_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+    const fileName = `${publicId}.${ext}`;
+    const filePath = path.join(uploadsDir, fileName);
+
+    const buffer = Buffer.from(base64Data, "base64");
+    await fs.promises.writeFile(filePath, buffer);
+
+    const fileUrl = `/uploads/${fileName}`;
+
+    return {
+      public_id: publicId,
+      asset_id: publicId,
+      url: fileUrl,
+      secure_url: fileUrl,
+    };
   }
 
   static async deleteImage(publicId: string) {
-    return cloudinary.uploader.destroy(publicId);
+    const uploadsDir = path.join(__dirname, "../../uploads");
+    if (fs.existsSync(uploadsDir)) {
+      const files = await fs.promises.readdir(uploadsDir);
+      const targetFile = files.find((f) => f.startsWith(publicId));
+      if (targetFile) {
+        await fs.promises.unlink(path.join(uploadsDir, targetFile));
+      }
+    }
+    return { result: "ok" };
   }
 
   static async getReviews(productId: number) {

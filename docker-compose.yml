@@ -32,12 +32,11 @@ services:
       REFRESH_SECRET: "${REFRESH_SECRET:-super_secret_refresh_key_production_pi}"
       STRIPE_SECRET_KEY: "${STRIPE_SECRET_KEY:-sk_test_placeholder}"
       STRIPE_WEBHOOK_SECRET: "${STRIPE_WEBHOOK_SECRET:-whsec_placeholder}"
-      CLOUDINARY_CLOUD_NAME: "${CLOUDINARY_CLOUD_NAME:-placeholder}"
-      CLOUDINARY_API_KEY: "${CLOUDINARY_API_KEY:-placeholder}"
-      CLOUDINARY_API_SECRET: "${CLOUDINARY_API_SECRET:-placeholder}"
       CLIENT_URL: "${CLIENT_URL:-https://ecom.pongsatorn.dev}"
     ports:
       - "5050:5000"
+    volumes:
+      - uploads_data:/app/uploads
     depends_on:
       mysql:
         condition: service_healthy
@@ -53,8 +52,11 @@ services:
     restart: always
     ports:
       - "8088:80"
+    volumes:
+      - uploads_data:/usr/share/nginx/html/uploads
     depends_on:
       - server
 
 volumes:
   mysql_data:
+  uploads_data:

@@ -1,4 +1,6 @@
 import express, { Express, Request, Response, NextFunction } from "express";
+import fs from "fs";
+import path from "path";
 import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
@@ -62,6 +64,13 @@ export const createApp = (): Express => {
 
   // General Rate Limiter
   app.use("/api", generalLimiter);
+
+  // Serve static uploaded files locally
+  const uploadsDir = path.join(__dirname, "../uploads");
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+  }
+  app.use("/uploads", express.static(uploadsDir));
 
   // Health check endpoint
   app.get("/health", (req: Request, res: Response) => {
