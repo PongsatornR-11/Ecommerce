@@ -10,6 +10,11 @@ const ecomStore = (set, get) => ({
   categories: [],
   products: [],
   carts: [],
+  searchQuery: "",
+  isCartOpen: false,
+
+  setSearchQuery: (query) => set({ searchQuery: query }),
+  setIsCartOpen: (isOpen) => set({ isCartOpen: isOpen }),
 
   actionLogin: async (form) => {
     const res = await loginUser(form);

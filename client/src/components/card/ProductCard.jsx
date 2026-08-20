@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 const ProductCard = ({ product }) => {
   const actionAddCart = useEcomStore((state) => state.actionAddCart);
+  const setIsCartOpen = useEcomStore((state) => state.setIsCartOpen);
   const isOutOfStock = product.quantity <= 0;
 
   const handleAddToCart = (e) => {
@@ -15,6 +16,7 @@ const ProductCard = ({ product }) => {
       return;
     }
     actionAddCart(product);
+    setIsCartOpen(true);
     toast.success(`Added ${product.title} to your cart!`);
   };
 
