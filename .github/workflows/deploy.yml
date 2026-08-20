@@ -11,7 +11,7 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Deploy Ecommerce Docker Stack
+      - name: Deploy Ecommerce Docker Stack with Fast BuildKit Cache
         run: |
           TARGET_DIR="/srv/dev-disk-by-uuid-168E23328E2309B7/code/project/Ecommerce"
           if [ -d "$TARGET_DIR" ]; then
@@ -19,7 +19,8 @@ jobs:
           else
             cd ~/Ecommerce_docker || cd ~/Ecommerce
           fi
+          export DOCKER_BUILDKIT=1
+          export COMPOSE_DOCKER_CLI_BUILD=1
           git pull origin main
-          docker compose down
           docker compose up --build -d
           docker image prune -f

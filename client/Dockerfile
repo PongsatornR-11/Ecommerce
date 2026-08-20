@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-ARG VITE_API_URL=http://192.168.1.109:5050/api
+ARG VITE_API_URL=/api
 ARG VITE_STRIPE_PUBLISHABLE_KEY=pk_test_placeholder
 
 ENV VITE_API_URL=$VITE_API_URL
