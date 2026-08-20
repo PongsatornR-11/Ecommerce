@@ -13,6 +13,9 @@ import { AppError } from "./utils/AppError";
 export const createApp = (): Express => {
   const app = express();
 
+  // Trust reverse proxies (Nginx / Cloudflare Tunnel)
+  app.set("trust proxy", 1);
+
   // Security Headers
   app.use(helmet());
 

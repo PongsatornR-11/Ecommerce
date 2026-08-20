@@ -35,7 +35,7 @@ services:
       CLOUDINARY_CLOUD_NAME: "${CLOUDINARY_CLOUD_NAME:-placeholder}"
       CLOUDINARY_API_KEY: "${CLOUDINARY_API_KEY:-placeholder}"
       CLOUDINARY_API_SECRET: "${CLOUDINARY_API_SECRET:-placeholder}"
-      CLIENT_URL: "http://192.168.1.109:8088"
+      CLIENT_URL: "${CLIENT_URL:-https://ecom.pongsatorn.dev}"
     ports:
       - "5050:5000"
     depends_on:
@@ -47,7 +47,7 @@ services:
       context: ./client
       dockerfile: Dockerfile
       args:
-        VITE_API_URL: "http://192.168.1.109:5050/api"
+        VITE_API_URL: "${VITE_API_URL:-/api}"
         VITE_STRIPE_PUBLISHABLE_KEY: "${VITE_STRIPE_PUBLISHABLE_KEY:-pk_test_placeholder}"
     container_name: ecom_client
     restart: always

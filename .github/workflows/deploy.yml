@@ -1,0 +1,21 @@
+name: Continuous Deployment (Raspberry Pi)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to Raspberry Pi
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy with Docker Compose
+        run: |
+          docker compose down
+          docker compose up --build -d
+          docker image prune -f
