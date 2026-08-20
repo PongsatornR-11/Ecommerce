@@ -53,4 +53,17 @@ export class ProductController {
     await ProductService.deleteImage(public_id);
     res.json({ message: "Image Removed" });
   }
+
+  static async getReviews(req: Request, res: Response) {
+    const productId = Number(req.params.id);
+    const reviews = await ProductService.getReviews(productId);
+    res.json({ ok: true, reviews });
+  }
+
+  static async createReview(req: any, res: Response) {
+    const productId = Number(req.params.id);
+    const { rating, comment } = req.body;
+    const review = await ProductService.createReview(req.user.id, productId, rating, comment);
+    res.json({ ok: true, review });
+  }
 }

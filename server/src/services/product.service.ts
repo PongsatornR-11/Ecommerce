@@ -239,4 +239,37 @@ export class ProductService {
   static async deleteImage(publicId: string) {
     return cloudinary.uploader.destroy(publicId);
   }
+
+  static async getReviews(productId: number) {
+    return prisma.review.findMany({
+      where: { productId },
+      include: {
+        user: {
+          select: { id: true, name: true, email: true }
+        }
+      },
+      orderBy: { createdAt: "desc" }
+    });
+  }
+
+  static async createReview(userId: number, productId: number, rating: number, comment: string) {
+    const productExists = await prisma.product.findUnique({ where: { id: productId } });
+    if (!productExists) {
+      throw new AppError(`Product #${productId} not found`, 404);
+    }
+
+    return prisma.review.create({
+      data: {
+        userId,
+        productId,
+        rating: Math.max(1, Math.min(5, rating)),
+        comment
+      },
+      include: {
+        user: {
+          select: { id: true, name: true, email: true }
+        }
+      }
+    });
+  }
 }

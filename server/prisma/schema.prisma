@@ -21,6 +21,7 @@ model User {
   refreshToken String?   @db.Text
   orders       Order[]
   carts        Cart[]
+  reviews      Review[]
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
@@ -37,6 +38,7 @@ model Product {
   orderItems  ProductOnOrder[]
   cartItems   ProductOnCart[]
   images      Image[]
+  reviews     Review[]
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
   category    Category?        @relation(fields: [categoryId], references: [id], onDelete: SetNull)
@@ -138,5 +140,20 @@ model Address {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@index([userId])
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  rating    Int      @default(5)
+  comment   String   @db.Text
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
   @@index([userId])
 }

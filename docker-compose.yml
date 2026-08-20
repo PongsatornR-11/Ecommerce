@@ -4,10 +4,10 @@ services:
     container_name: ecom_mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: ecomdb
-      MYSQL_USER: ecomuser
-      MYSQL_PASSWORD: ecompass
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:-rootpassword}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE:-ecomdb}"
+      MYSQL_USER: "${MYSQL_USER:-ecomuser}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD:-ecompass}"
     ports:
       - "3308:3306"
     volumes:
@@ -26,10 +26,10 @@ services:
     restart: always
     environment:
       PORT: 5000
-      NODE_ENV: production
-      DATABASE_URL: "mysql://ecomuser:ecompass@mysql:3306/ecomdb"
-      JWT_SECRET: "super_secret_jwt_key_production_pi"
-      REFRESH_SECRET: "super_secret_refresh_key_production_pi"
+      NODE_ENV: "${NODE_ENV:-production}"
+      DATABASE_URL: "${DATABASE_URL:-mysql://ecomuser:ecompass@mysql:3306/ecomdb}"
+      JWT_SECRET: "${JWT_SECRET:-super_secret_jwt_key_production_pi}"
+      REFRESH_SECRET: "${REFRESH_SECRET:-super_secret_refresh_key_production_pi}"
       STRIPE_SECRET_KEY: "${STRIPE_SECRET_KEY:-sk_test_placeholder}"
       STRIPE_WEBHOOK_SECRET: "${STRIPE_WEBHOOK_SECRET:-whsec_placeholder}"
       CLOUDINARY_CLOUD_NAME: "${CLOUDINARY_CLOUD_NAME:-placeholder}"

@@ -58,4 +58,11 @@ router.post(
   asyncHandler(ProductController.removeImage)
 );
 
+router.get("/product/:id/reviews", asyncHandler(ProductController.getReviews));
+router.post(
+  "/product/:id/reviews",
+  authCheck as any,
+  asyncHandler(ProductController.createReview)
+);
+
 export default router;
