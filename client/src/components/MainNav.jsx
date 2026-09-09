@@ -3,7 +3,6 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import useEcomStore from "../store/ecom-store";
 import {
   ShoppingBag,
-  UserRound,
   ChevronDown,
   LogOut,
   Package,
@@ -13,7 +12,12 @@ import {
   Search,
   Sparkles,
   Layers,
-  Truck
+  Truck,
+  Flame,
+  Tag,
+  Home,
+  Store,
+  Grid
 } from "lucide-react";
 
 const MainNav = () => {
@@ -63,87 +67,133 @@ const MainNav = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center space-x-4">
             
-            {/* Logo */}
-            <Link
-              to="/"
-              className="flex items-center space-x-2.5 text-xl font-extrabold tracking-tight text-white hover:opacity-90 transition-opacity flex-shrink-0"
-            >
-              <div className="bg-gradient-to-tr from-indigo-600 to-purple-500 text-white p-2 rounded-xl shadow-md shadow-indigo-500/20">
-                <ShoppingBag className="w-5 h-5" />
-              </div>
-              <span className="bg-gradient-to-r from-white via-slate-100 to-indigo-200 bg-clip-text text-transparent">
-                ShopSphere
-              </span>
-            </Link>
-
-            {/* Navigation Links */}
-            <div className="hidden lg:flex items-center space-x-1">
-              <NavLink
+            {/* Left Section: Logo & Main Navigation Menu */}
+            <div className="flex items-center space-x-6">
+              {/* Brand Logo */}
+              <Link
                 to="/"
-                className={({ isActive }) =>
-                  `px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                    isActive
-                      ? "bg-slate-800 text-indigo-400 font-semibold"
-                      : "text-slate-300 hover:bg-slate-800/80 hover:text-white"
-                  }`
-                }
+                className="flex items-center space-x-2.5 text-xl font-extrabold tracking-tight text-white hover:opacity-90 transition-opacity flex-shrink-0"
               >
-                Home
-              </NavLink>
+                <div className="bg-gradient-to-tr from-indigo-600 to-purple-500 text-white p-2 rounded-xl shadow-md shadow-indigo-500/20">
+                  <ShoppingBag className="w-5 h-5" />
+                </div>
+                <span className="bg-gradient-to-r from-white via-slate-100 to-indigo-200 bg-clip-text text-transparent">
+                  ShopSphere
+                </span>
+              </Link>
 
-              <NavLink
-                to="/shop"
-                className={({ isActive }) =>
-                  `px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                    isActive
-                      ? "bg-slate-800 text-indigo-400 font-semibold"
-                      : "text-slate-300 hover:bg-slate-800/80 hover:text-white"
-                  }`
-                }
-              >
-                Shop
-              </NavLink>
+              {/* Desktop / Tablet Navigation Links (Top Left Menu) */}
+              <div className="hidden md:flex items-center space-x-1">
+                <NavLink
+                  to="/"
+                  end
+                  className={({ isActive }) =>
+                    `flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                      isActive
+                        ? "bg-indigo-600/20 text-indigo-300 border border-indigo-500/30"
+                        : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                    }`
+                  }
+                >
+                  <Home className="w-3.5 h-3.5 text-indigo-400" />
+                  <span>Home</span>
+                </NavLink>
 
-              {/* Category Dropdown */}
-              {categories && categories.length > 0 && (
+                <NavLink
+                  to="/shop"
+                  className={({ isActive }) =>
+                    `flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                      isActive
+                        ? "bg-indigo-600/20 text-indigo-300 border border-indigo-500/30"
+                        : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                    }`
+                  }
+                >
+                  <Store className="w-3.5 h-3.5 text-indigo-400" />
+                  <span>Shop</span>
+                </NavLink>
+
+                {/* Category Dropdown */}
                 <div className="relative">
                   <button
                     onClick={() => setCategoryMenuOpen(!categoryMenuOpen)}
                     onBlur={() => setTimeout(() => setCategoryMenuOpen(false), 200)}
-                    className="flex items-center space-x-1.5 px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800/80 hover:text-white transition-all"
+                    className="flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 hover:text-white transition-all"
                   >
-                    <Layers className="w-4 h-4 text-indigo-400" />
+                    <Grid className="w-3.5 h-3.5 text-indigo-400" />
                     <span>Categories</span>
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform ${categoryMenuOpen ? "rotate-180" : ""}`} />
+                    <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${categoryMenuOpen ? "rotate-180" : ""}`} />
                   </button>
 
                   {categoryMenuOpen && (
-                    <div className="absolute top-full left-0 mt-2 w-48 bg-slate-800/95 backdrop-blur-lg border border-slate-700 rounded-xl shadow-2xl py-2 z-50">
-                      {categories.map((cat) => (
+                    <div className="absolute top-full left-0 mt-2 w-52 bg-slate-800/95 backdrop-blur-xl border border-slate-700/80 rounded-2xl shadow-2xl py-2 z-50 overflow-hidden">
+                      <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-700/50">
+                        Product Categories
+                      </div>
+                      <Link
+                        to="/shop"
+                        onClick={() => setCategoryMenuOpen(false)}
+                        className="flex items-center justify-between px-4 py-2 text-xs font-medium text-indigo-300 hover:bg-slate-700/80 transition-colors"
+                      >
+                        <span>All Categories</span>
+                        <span className="text-[10px] bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full font-bold">Browse</span>
+                      </Link>
+                      {categories && categories.length > 0 && categories.map((cat) => (
                         <button
                           key={cat.id}
                           onClick={() => {
                             setCategoryMenuOpen(false);
                             navigate(`/shop?category=${cat.id}`);
                           }}
-                          className="w-full text-left px-4 py-2 text-xs font-medium text-slate-200 hover:bg-indigo-600 hover:text-white transition-colors"
+                          className="w-full text-left flex items-center justify-between px-4 py-2 text-xs font-medium text-slate-200 hover:bg-indigo-600 hover:text-white transition-colors"
                         >
-                          {cat.name}
+                          <span className="truncate">{cat.name}</span>
+                          <Tag className="w-3 h-3 text-slate-400 opacity-60" />
                         </button>
                       ))}
                     </div>
                   )}
                 </div>
-              )}
+
+                {/* Best Sellers */}
+                <NavLink
+                  to="/shop?sort=bestseller"
+                  className={({ isActive }) =>
+                    `flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                      isActive
+                        ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+                        : "text-slate-300 hover:bg-slate-800 hover:text-amber-300"
+                    }`
+                  }
+                >
+                  <Flame className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Best Sellers</span>
+                </NavLink>
+
+                {/* New Arrivals */}
+                <NavLink
+                  to="/shop?sort=newest"
+                  className={({ isActive }) =>
+                    `flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                      isActive
+                        ? "bg-purple-500/20 text-purple-300 border border-purple-500/30"
+                        : "text-slate-300 hover:bg-slate-800 hover:text-purple-300"
+                    }`
+                  }
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+                  <span>New Arrivals</span>
+                </NavLink>
+              </div>
             </div>
 
             {/* Search Bar */}
-            <form onSubmit={handleSearchSubmit} className="hidden md:flex flex-1 max-w-sm relative">
+            <form onSubmit={handleSearchSubmit} className="hidden lg:flex flex-1 max-w-xs relative">
               <input
                 type="text"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
-                placeholder="Search products, brands, categories..."
+                placeholder="Search products..."
                 className="w-full bg-slate-800/90 text-slate-100 text-xs rounded-full pl-9 pr-4 py-2 border border-slate-700 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder:text-slate-400"
               />
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
@@ -285,16 +335,37 @@ const MainNav = () => {
             <NavLink
               to="/"
               onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white"
+              className="flex items-center space-x-2 px-3 py-2 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white"
             >
-              Home
+              <Home className="w-4 h-4 text-indigo-400" />
+              <span>Home</span>
             </NavLink>
+
             <NavLink
               to="/shop"
               onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white"
+              className="flex items-center space-x-2 px-3 py-2 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white"
             >
-              Shop
+              <Store className="w-4 h-4 text-indigo-400" />
+              <span>Shop All</span>
+            </NavLink>
+
+            <NavLink
+              to="/shop?sort=bestseller"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center space-x-2 px-3 py-2 rounded-xl text-sm font-medium text-amber-300 hover:bg-slate-800"
+            >
+              <Flame className="w-4 h-4 text-amber-400" />
+              <span>Best Sellers</span>
+            </NavLink>
+
+            <NavLink
+              to="/shop?sort=newest"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center space-x-2 px-3 py-2 rounded-xl text-sm font-medium text-purple-300 hover:bg-slate-800"
+            >
+              <Sparkles className="w-4 h-4 text-purple-400" />
+              <span>New Arrivals</span>
             </NavLink>
 
             {user ? (
@@ -351,3 +422,4 @@ const MainNav = () => {
 };
 
 export default MainNav;
+
