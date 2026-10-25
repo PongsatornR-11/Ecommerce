@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { ShieldCheck, Lock } from "lucide-react";
 
-export default function CheckoutForm({ dpmCheckerLink }) {
+export default function CheckoutForm() {
   const navigate = useNavigate();
   const clearCart = useEcomStore((state) => state.actionClearCart);
 

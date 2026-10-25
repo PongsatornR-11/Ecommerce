@@ -1,5 +1,12 @@
 import { z } from "zod";
 
+const imageItemSchema = z.object({
+  asset_id: z.string(),
+  public_id: z.string(),
+  url: z.string().regex(/^(\/uploads\/|https?:\/\/)/, "Invalid image URL format"),
+  secure_url: z.string().regex(/^(\/uploads\/|https?:\/\/)/, "Invalid image URL format"),
+});
+
 export const createProductSchema = z.object({
   body: z.object({
     title: z.string().min(1, "Title is required"),
@@ -7,16 +14,7 @@ export const createProductSchema = z.object({
     price: z.number().positive("Price must be greater than 0"),
     quantity: z.number().int().min(0, "Quantity cannot be negative"),
     categoryId: z.number().int().positive().optional().nullable(),
-    images: z
-      .array(
-        z.object({
-          asset_id: z.string(),
-          public_id: z.string(),
-          url: z.string().min(1, "URL is required"),
-          secure_url: z.string().min(1, "Secure URL is required"),
-        })
-      )
-      .optional(),
+    images: z.array(imageItemSchema).optional(),
   }),
 });
 
@@ -30,16 +28,7 @@ export const updateProductSchema = z.object({
     price: z.number().positive().optional(),
     quantity: z.number().int().min(0).optional(),
     categoryId: z.number().int().positive().optional().nullable(),
-    images: z
-      .array(
-        z.object({
-          asset_id: z.string(),
-          public_id: z.string(),
-          url: z.string().min(1, "URL is required"),
-          secure_url: z.string().min(1, "Secure URL is required"),
-        })
-      )
-      .optional(),
+    images: z.array(imageItemSchema).optional(),
   }),
 });
 

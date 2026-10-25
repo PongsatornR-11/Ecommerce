@@ -18,7 +18,6 @@ const initialState = {
 };
 
 const FormProduct = () => {
-  const token = useEcomStore((state) => state.token);
   const getCategory = useEcomStore((state) => state.getCategory);
   const categories = useEcomStore((state) => state.categories);
   const getProduct = useEcomStore((state) => state.getProduct);
@@ -74,7 +73,7 @@ const FormProduct = () => {
         await deleteProduct(id);
         getProduct(100);
         toast.success(`"${title}" deleted successfully`);
-      } catch (err) {
+      } catch {
         toast.error("Failed to delete product");
       }
     }

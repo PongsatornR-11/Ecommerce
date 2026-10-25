@@ -100,6 +100,26 @@ describe("Ecommerce Server API Integration Tests", () => {
     expect(parsed.success).toBe(true);
   });
 
+  it("createProductSchema rejects invalid non-URL image paths", () => {
+    const invalidData = {
+      title: "Test Product",
+      description: "Invalid image URL test",
+      price: 199.99,
+      quantity: 10,
+      categoryId: 1,
+      images: [
+        {
+          url: "malformed-string",
+          asset_id: "disk-asset-1",
+          public_id: "1745400000000-sample.png",
+          secure_url: "malformed-string",
+        },
+      ],
+    };
+    const parsed = createProductSchema.safeParse({ body: invalidData });
+    expect(parsed.success).toBe(false);
+  });
+
   it("CartService.saveUserCart aggregates duplicate product counts and checks stock", async () => {
     vi.mocked(prisma.product.findMany).mockResolvedValueOnce([
       { id: 10, title: "Limited Item", price: 50, quantity: 3 } as any,

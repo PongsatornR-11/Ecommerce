@@ -11,7 +11,6 @@ import {
   X,
   Search,
   Sparkles,
-  Layers,
   Truck,
   Flame,
   Tag,

@@ -9,7 +9,6 @@ import { Package, ArrowLeft, Save } from "lucide-react";
 const FormEditProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const token = useEcomStore((state) => state.token);
   const getCategory = useEcomStore((state) => state.getCategory);
   const categories = useEcomStore((state) => state.categories);
 

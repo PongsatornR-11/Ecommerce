@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import { Layers, Plus, Trash2 } from "lucide-react";
 
 const FormCategory = () => {
-  const token = useEcomStore((state) => state.token);
   const categories = useEcomStore((state) => state.categories);
   const getCategory = useEcomStore((state) => state.getCategory);
   const [categoryName, setCategoryName] = useState("");
@@ -39,7 +38,7 @@ const FormCategory = () => {
         await removeCategory(id);
         toast.success(`Category "${name}" deleted`);
         getCategory();
-      } catch (err) {
+      } catch {
         toast.error("Failed to delete category");
       }
     }

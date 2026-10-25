@@ -30,6 +30,8 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+let refreshPromise: Promise<string> | null = null;
+
 // Response interceptor: handle 401 token refresh
 apiClient.interceptors.response.use(
   (response) => response,
@@ -38,31 +40,41 @@ apiClient.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry && originalRequest.url !== "/refresh" && originalRequest.url !== "/login") {
       originalRequest._retry = true;
       try {
-        const res = await axios.post(`${API_BASE_URL}/refresh`, {}, { withCredentials: true });
-        if (res.data?.token) {
-          try {
-            const { default: useEcomStore } = await import("../store/ecom-store");
-            useEcomStore.setState({ token: res.data.token });
-          } catch {
-            const persistedState = localStorage.getItem("ecom-store");
-            if (persistedState) {
-              const parsed = JSON.parse(persistedState);
-              parsed.state.token = res.data.token;
-              localStorage.setItem("ecom-store", JSON.stringify(parsed));
+        if (!refreshPromise) {
+          refreshPromise = (async () => {
+            try {
+              const res = await axios.post(`${API_BASE_URL}/refresh`, {}, { withCredentials: true });
+              const token = res.data?.token;
+              if (!token) throw new Error("No token returned");
+              try {
+                const { default: useEcomStore } = await import("../store/ecom-store");
+                useEcomStore.setState({ token });
+              } catch {
+                const persisted = localStorage.getItem("ecom-store");
+                if (persisted) {
+                  const parsed = JSON.parse(persisted);
+                  parsed.state.token = token;
+                  localStorage.setItem("ecom-store", JSON.stringify(parsed));
+                }
+              }
+              return token;
+            } finally {
+              refreshPromise = null;
             }
-          }
-          originalRequest.headers.Authorization = `Bearer ${res.data.token}`;
-          return apiClient(originalRequest);
+          })();
         }
+        const newToken = await refreshPromise;
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        return apiClient(originalRequest);
       } catch (refreshErr) {
         // If refresh fails, clear token
         try {
           const { default: useEcomStore } = await import("../store/ecom-store");
           useEcomStore.setState({ user: null, token: null });
         } catch {
-          const persistedState = localStorage.getItem("ecom-store");
-          if (persistedState) {
-            const parsed = JSON.parse(persistedState);
+          const persisted = localStorage.getItem("ecom-store");
+          if (persisted) {
+            const parsed = JSON.parse(persisted);
             parsed.state.user = null;
             parsed.state.token = null;
             localStorage.setItem("ecom-store", JSON.stringify(parsed));

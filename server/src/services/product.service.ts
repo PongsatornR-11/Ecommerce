@@ -274,7 +274,7 @@ export class ProductService {
     const uploadsDir = path.join(__dirname, "../../uploads");
     if (fs.existsSync(uploadsDir)) {
       const files = await fs.promises.readdir(uploadsDir);
-      const targetFile = files.find((f) => f.startsWith(publicId));
+      const targetFile = files.find((f) => path.parse(f).name === publicId);
       if (targetFile) {
         await fs.promises.unlink(path.join(uploadsDir, targetFile));
       }
