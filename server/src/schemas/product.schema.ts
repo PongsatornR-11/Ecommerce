@@ -12,8 +12,8 @@ export const createProductSchema = z.object({
         z.object({
           asset_id: z.string(),
           public_id: z.string(),
-          url: z.string().url(),
-          secure_url: z.string().url(),
+          url: z.string().min(1, "URL is required"),
+          secure_url: z.string().min(1, "Secure URL is required"),
         })
       )
       .optional(),
@@ -35,8 +35,8 @@ export const updateProductSchema = z.object({
         z.object({
           asset_id: z.string(),
           public_id: z.string(),
-          url: z.string().url(),
-          secure_url: z.string().url(),
+          url: z.string().min(1, "URL is required"),
+          secure_url: z.string().min(1, "Secure URL is required"),
         })
       )
       .optional(),

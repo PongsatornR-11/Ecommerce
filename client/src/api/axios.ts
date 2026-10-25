@@ -40,23 +40,33 @@ apiClient.interceptors.response.use(
       try {
         const res = await axios.post(`${API_BASE_URL}/refresh`, {}, { withCredentials: true });
         if (res.data?.token) {
-          const persistedState = localStorage.getItem("ecom-store");
-          if (persistedState) {
-            const parsed = JSON.parse(persistedState);
-            parsed.state.token = res.data.token;
-            localStorage.setItem("ecom-store", JSON.stringify(parsed));
+          try {
+            const { default: useEcomStore } = await import("../store/ecom-store");
+            useEcomStore.setState({ token: res.data.token });
+          } catch {
+            const persistedState = localStorage.getItem("ecom-store");
+            if (persistedState) {
+              const parsed = JSON.parse(persistedState);
+              parsed.state.token = res.data.token;
+              localStorage.setItem("ecom-store", JSON.stringify(parsed));
+            }
           }
           originalRequest.headers.Authorization = `Bearer ${res.data.token}`;
           return apiClient(originalRequest);
         }
       } catch (refreshErr) {
         // If refresh fails, clear token
-        const persistedState = localStorage.getItem("ecom-store");
-        if (persistedState) {
-          const parsed = JSON.parse(persistedState);
-          parsed.state.user = null;
-          parsed.state.token = null;
-          localStorage.setItem("ecom-store", JSON.stringify(parsed));
+        try {
+          const { default: useEcomStore } = await import("../store/ecom-store");
+          useEcomStore.setState({ user: null, token: null });
+        } catch {
+          const persistedState = localStorage.getItem("ecom-store");
+          if (persistedState) {
+            const parsed = JSON.parse(persistedState);
+            parsed.state.user = null;
+            parsed.state.token = null;
+            localStorage.setItem("ecom-store", JSON.stringify(parsed));
+          }
         }
       }
     }

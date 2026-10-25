@@ -101,7 +101,7 @@ const Shop = () => {
               </div>
               <h3 className="font-bold text-slate-800 text-base">No Matching Products</h3>
               <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                We couldn't find any products matching your search criteria. Try adjusting or resetting the filters.
+                We could not find any products matching your search criteria. Try adjusting or resetting the filters.
               </p>
             </div>
           ) : (

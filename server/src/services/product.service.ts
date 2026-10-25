@@ -268,6 +268,9 @@ export class ProductService {
   }
 
   static async deleteImage(publicId: string) {
+    if (!publicId || typeof publicId !== "string" || !publicId.trim() || publicId.includes("..") || publicId.includes("/") || publicId.includes("\\")) {
+      return { result: "ok" };
+    }
     const uploadsDir = path.join(__dirname, "../../uploads");
     if (fs.existsSync(uploadsDir)) {
       const files = await fs.promises.readdir(uploadsDir);

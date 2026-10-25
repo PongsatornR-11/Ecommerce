@@ -14,13 +14,13 @@ const TableOrders = () => {
 
   useEffect(() => {
     if (token) {
-      handleGetOrderAdmin(token);
+      handleGetOrderAdmin();
     }
   }, [token]);
 
-  const handleGetOrderAdmin = (jwtToken) => {
+  const handleGetOrderAdmin = () => {
     setIsLoading(true);
-    getOrdersAdmin(jwtToken)
+    getOrdersAdmin()
       .then((res) => {
         setOrders(res.data || []);
       })
@@ -32,9 +32,9 @@ const TableOrders = () => {
 
   const handleChangeOrderStatus = async (orderId, newStatus) => {
     try {
-      await changeOrderStatus(token, orderId, newStatus);
+      await changeOrderStatus(orderId, newStatus);
       toast.success(`Order #${orderId} status changed to ${newStatus}`);
-      handleGetOrderAdmin(token);
+      handleGetOrderAdmin();
     } catch (err) {
       toast.error("Failed to update order status");
     }

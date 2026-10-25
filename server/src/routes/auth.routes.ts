@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/auth.controller";
-import { authCheck } from "../middlewares/authCheck";
+import { authCheck, adminCheck } from "../middlewares/authCheck";
 import { validate } from "../middlewares/validate";
 import { authLimiter } from "../middlewares/rateLimiter";
 import { registerSchema, loginSchema } from "../schemas/auth.schema";
@@ -34,6 +34,7 @@ router.post(
 router.post(
   "/current-admin",
   authCheck as any,
+  adminCheck as any,
   asyncHandler(AuthController.currentUser as any)
 );
 

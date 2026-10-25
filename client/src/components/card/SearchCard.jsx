@@ -29,7 +29,7 @@ const SearchCard = ({ onReset }) => {
       if (categoryChecked.length > 0) {
         filters.category = categoryChecked.map(Number);
       }
-      if (price) {
+      if (price && (price[0] > 0 || price[1] < 10000)) {
         filters.price = price;
       }
 

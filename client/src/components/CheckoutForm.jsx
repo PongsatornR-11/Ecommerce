@@ -41,7 +41,7 @@ export default function CheckoutForm({ dpmCheckerLink }) {
         setMessage(payload.error.message || "An unexpected error occurred.");
         toast.error(payload.error.message || "Payment failed");
       } else if (payload.paymentIntent?.status === "succeeded") {
-        await saveOrder(payload);
+        await saveOrder(payload.paymentIntent);
         clearCart();
         toast.success("Order confirmed successfully!");
         navigate("/user/history");

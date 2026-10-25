@@ -68,7 +68,7 @@ const CartDrawer = () => {
                     <div className="flex-1 min-w-0">
                       <h4 className="text-sm font-semibold text-white truncate">{item.title}</h4>
                       <p className="text-xs text-indigo-400 font-bold mt-0.5">
-                        ${Number(item.price).toLocaleString()}
+                        ฿{Number(item.price).toLocaleString()}
                       </p>
 
                       {/* Quantity Controls */}
@@ -106,23 +106,16 @@ const CartDrawer = () => {
             <div className="p-6 border-t border-slate-800 space-y-4 bg-slate-900/80">
               <div className="flex justify-between items-center text-sm">
                 <span className="text-slate-400 font-medium">Subtotal</span>
-                <span className="text-xl font-extrabold text-white">${total.toLocaleString()}</span>
+                <span className="text-xl font-extrabold text-white">฿{total.toLocaleString()}</span>
               </div>
               <p className="text-xs text-slate-400">Shipping and taxes calculated at checkout.</p>
-              <div className="grid grid-cols-2 gap-3 pt-2">
+              <div className="pt-2">
                 <Link
                   to="/cart"
                   onClick={() => setIsCartOpen(false)}
-                  className="w-full text-center px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-sm transition-colors border border-slate-700"
-                >
-                  View Cart
-                </Link>
-                <Link
-                  to="/checkout"
-                  onClick={() => setIsCartOpen(false)}
                   className="w-full text-center px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl text-sm transition-colors flex items-center justify-center space-x-1 shadow-lg shadow-indigo-600/30"
                 >
-                  <span>Checkout</span>
+                  <span>View Cart & Checkout</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>

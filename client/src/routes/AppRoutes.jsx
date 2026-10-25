@@ -1,31 +1,37 @@
-//rafce
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-// import pages form folder 'pages'
+// Public pages
 import Home from "../pages/Home";
 import Shop from "../pages/Shop";
 import Cart from "../pages/Cart";
-import History from "../pages/user/History";
 import Checkout from "../pages/Checkout";
 import Login from "../pages/auth/login";
 import Register from "../pages/auth/Register";
-import Dashboard from "../pages/admin/Dashboard";
-import Category from "../pages/admin/Category";
-import Product from "../pages/admin/Product";
-import Manage from "../pages/admin/Manage";
-import HomeUser from "../pages/user/HomeUser";
-import EditProduct from "../pages/admin/EditProduct";
-import Payment from "../pages/user/Payment";
-//import layouts from folder 'layouts'
+
+// Lazy-loaded pages
+const Dashboard = lazy(() => import("../pages/admin/Dashboard"));
+const Category = lazy(() => import("../pages/admin/Category"));
+const Product = lazy(() => import("../pages/admin/Product"));
+const EditProduct = lazy(() => import("../pages/admin/EditProduct"));
+const Manage = lazy(() => import("../pages/admin/Manage"));
+const ManageOrder = lazy(() => import("../pages/admin/ManageOrder"));
+const HomeUser = lazy(() => import("../pages/user/HomeUser"));
+const Payment = lazy(() => import("../pages/user/Payment"));
+const History = lazy(() => import("../pages/user/History"));
+
+// Layouts & Guards
 import Layout from "../layouts/Layout";
 import LayoutAdmin from "../layouts/LayoutAdmin";
 import LayoutUser from "../layouts/LayoutUser";
-
-// import protect route
 import ProtectRouteUser from "./ProtectRouteUser";
 import ProtectRouteAdmin from "./ProtectRouteAdmin";
-import ManageOrder from "../pages/admin/ManageOrder";
+
+const Lazy = ({ children }) => (
+  <Suspense fallback={<div className="flex min-h-[50vh] items-center justify-center text-slate-400">Loading...</div>}>
+    {children}
+  </Suspense>
+);
 
 const router = createBrowserRouter([
   // public path
@@ -47,35 +53,30 @@ const router = createBrowserRouter([
     path: "/admin",
     element: <ProtectRouteAdmin element={<LayoutAdmin />} />,
     children: [
-      { index: true, element: <Dashboard /> },
-      { path: "category", element: <Category /> },
-      { path: "product", element: <Product /> },
-      { path: "product/:id", element: <EditProduct /> },
-      { path: "manage", element: <Manage /> },
-      { path: "orders", element: <ManageOrder /> },
+      { index: true, element: <Lazy><Dashboard /></Lazy> },
+      { path: "category", element: <Lazy><Category /></Lazy> },
+      { path: "product", element: <Lazy><Product /></Lazy> },
+      { path: "product/:id", element: <Lazy><EditProduct /></Lazy> },
+      { path: "manage", element: <Lazy><Manage /></Lazy> },
+      { path: "orders", element: <Lazy><ManageOrder /></Lazy> },
     ],
   },
 
   // user path
   {
     path: "/user",
-    // element: <LayoutUser />,
     element: <ProtectRouteUser element={<LayoutUser />} />,
     children: [
-      { index: true, element: <HomeUser /> }, 
-      { path: 'payment', element: <Payment /> },
-      { path: "history", element: <History /> },
+      { index: true, element: <Lazy><HomeUser /></Lazy> }, 
+      { path: "payment", element: <Lazy><Payment /></Lazy> },
+      { path: "history", element: <Lazy><History /></Lazy> },
       { path: "shop", element: <Shop /> },
     ],
   },
 ]);
 
 const AppRoutes = () => {
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default AppRoutes;

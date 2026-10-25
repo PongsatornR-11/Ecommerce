@@ -84,11 +84,17 @@ export class StripeService {
       return existingOrder;
     }
 
-    // Fetch user cart
-    const userCart = await prisma.cart.findUnique({
-      where: { orderedById: userId },
-      include: { products: { include: { product: true } } },
-    });
+    // Fetch user cart and default address
+    const [userCart, user] = await Promise.all([
+      prisma.cart.findUnique({
+        where: { orderedById: userId },
+        include: { products: { include: { product: true } } },
+      }),
+      prisma.user.findUnique({
+        where: { id: userId },
+        select: { address: true },
+      }),
+    ]);
 
     if (!userCart || userCart.products.length === 0) {
       console.error(`Cart for user ${userId} not found during webhook processing`);
@@ -105,6 +111,7 @@ export class StripeService {
           cartTotal: userCart.cartTotal,
           stripePaymentId: paymentId,
           amount: Math.round(orderAmount),
+          shippingAddress: user?.address || null,
           status: paymentIntent.status,
           currency: paymentIntent.currency,
           orderStatus: "Processing",

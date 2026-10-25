@@ -50,7 +50,7 @@ const ListCart = () => {
 
     setIsSubmitting(true);
     try {
-      await createUserCart(token, { cart });
+      await createUserCart(cart);
       toast.success("Cart verified! Proceeding to shipping.");
       navigate("/checkout");
     } catch (err) {

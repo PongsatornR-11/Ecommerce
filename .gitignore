@@ -3,6 +3,7 @@ dist/
 build/
 .env
 .env.local
-*.log
 *.sql
+*.log
 .DS_Store
+graphify-out/

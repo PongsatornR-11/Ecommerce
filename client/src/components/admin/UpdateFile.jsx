@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import Resize from "react-image-file-resizer";
 import { removeFile, uploadFiles } from "../../api/product";
-import useEcomStore from "../../store/ecom-store";
 import { Loader2, UploadCloud, X } from "lucide-react";
 
 const UpdateFile = ({ form, setForm }) => {
-  const token = useEcomStore((state) => state.token);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleOnChange = (e) => {
@@ -30,7 +28,7 @@ const UpdateFile = ({ form, setForm }) => {
           95,
           0,
           (data) => {
-            uploadFiles(token, data)
+            uploadFiles(data)
               .then((res) => {
                 allFiles.push(res.data);
                 setForm({
@@ -55,7 +53,7 @@ const UpdateFile = ({ form, setForm }) => {
 
   const handleDelete = (public_id) => {
     const images = form.images || [];
-    removeFile(token, public_id)
+    removeFile(public_id)
       .then(() => {
         const filtered = images.filter((item) => item.public_id !== public_id);
         setForm({

@@ -12,7 +12,7 @@ const FormCategory = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    getCategory(token);
+    getCategory();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -22,10 +22,10 @@ const FormCategory = () => {
     }
     setIsSubmitting(true);
     try {
-      const res = await createCategory(token, { name: categoryName.trim() });
+      const res = await createCategory({ name: categoryName.trim() });
       toast.success(`Category "${res.data.name}" added successfully!`);
       setCategoryName("");
-      getCategory(token);
+      getCategory();
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to create category");
     } finally {
@@ -36,9 +36,9 @@ const FormCategory = () => {
   const handleRemove = async (id, name) => {
     if (window.confirm(`Are you sure you want to delete category "${name}"?`)) {
       try {
-        await removeCategory(token, id);
+        await removeCategory(id);
         toast.success(`Category "${name}" deleted`);
-        getCategory(token);
+        getCategory();
       } catch (err) {
         toast.error("Failed to delete category");
       }

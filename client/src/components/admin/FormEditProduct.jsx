@@ -28,7 +28,7 @@ const FormEditProduct = () => {
     getCategory();
     if (id) {
       setIsLoading(true);
-      readProduct(token, id)
+      readProduct(Number(id))
         .then((res) => {
           setForm(res.data);
         })
@@ -53,7 +53,21 @@ const FormEditProduct = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      await updateProduct(token, id, form);
+      const cleanImages = (form.images || []).map((img) => ({
+        asset_id: String(img.asset_id || img.public_id),
+        public_id: String(img.public_id),
+        url: String(img.url),
+        secure_url: String(img.secure_url || img.url),
+      }));
+      const payload = {
+        title: form.title,
+        description: form.description,
+        price: Number(form.price),
+        quantity: Number(form.quantity),
+        categoryId: form.categoryId ? Number(form.categoryId) : null,
+        images: cleanImages,
+      };
+      await updateProduct(Number(id), payload);
       toast.success(`Updated "${form.title}" successfully!`);
       navigate("/admin/product");
     } catch (err) {

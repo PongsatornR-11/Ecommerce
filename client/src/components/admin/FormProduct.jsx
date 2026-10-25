@@ -53,7 +53,11 @@ const FormProduct = () => {
 
     setIsSubmitting(true);
     try {
-      const res = await createProduct(token, form);
+      const payload = {
+        ...form,
+        categoryId: form.categoryId ? Number(form.categoryId) : null,
+      };
+      const res = await createProduct(payload);
       setForm(initialState);
       getProduct(100);
       toast.success(`Product "${res.data.title}" added to store!`);
@@ -67,7 +71,7 @@ const FormProduct = () => {
   const handleDelete = async (id, title) => {
     if (window.confirm(`Are you sure you want to permanently delete "${title}"?`)) {
       try {
-        await deleteProduct(token, id);
+        await deleteProduct(id);
         getProduct(100);
         toast.success(`"${title}" deleted successfully`);
       } catch (err) {

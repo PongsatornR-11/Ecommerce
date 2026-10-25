@@ -13,7 +13,13 @@ export class CartService {
       throw new AppError("Cart cannot be empty", 400);
     }
 
-    const productIds = items.map((i) => i.id);
+    // Merge duplicate product line items to avoid stock bypass
+    const mergedMap = new Map<number, number>();
+    for (const item of items) {
+      mergedMap.set(item.id, (mergedMap.get(item.id) || 0) + item.count);
+    }
+
+    const productIds = Array.from(mergedMap.keys());
     const dbProducts = await prisma.product.findMany({
       where: { id: { in: productIds } },
     });
@@ -24,25 +30,25 @@ export class CartService {
     let cartTotal = 0;
     const validatedProducts: Array<{ productId: number; count: number; price: number }> = [];
 
-    for (const item of items) {
-      const product = productMap.get(item.id);
+    for (const [productId, count] of mergedMap.entries()) {
+      const product = productMap.get(productId);
       if (!product) {
-        throw new AppError(`Product #${item.id} no longer exists`, 400);
+        throw new AppError(`Product #${productId} no longer exists`, 400);
       }
 
-      if (item.count > product.quantity) {
+      if (count > product.quantity) {
         throw new AppError(
-          `Insufficient stock for "${product.title}". Requested: ${item.count}, Available: ${product.quantity}`,
+          `Insufficient stock for "${product.title}". Requested: ${count}, Available: ${product.quantity}`,
           400
         );
       }
 
-      const itemTotal = product.price * item.count;
+      const itemTotal = product.price * count;
       cartTotal += itemTotal;
 
       validatedProducts.push({
         productId: product.id,
-        count: item.count,
+        count,
         price: product.price, // Use verified DB price
       });
     }

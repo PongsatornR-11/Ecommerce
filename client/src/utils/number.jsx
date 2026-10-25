@@ -1,5 +1,3 @@
-import numeral from "numeral";
-
 export const formatPrice = (price) => {
-    return numeral(price).format("0,0");
+  return Number(price || 0).toLocaleString();
 };

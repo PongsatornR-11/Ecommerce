@@ -12,9 +12,9 @@ const TableUser = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
-  const handleGetAllUsers = (jwtToken) => {
+  const handleGetAllUsers = () => {
     setIsLoading(true);
-    getListAllUsers(jwtToken)
+    getListAllUsers()
       .then((res) => {
         setUsers(res.data || []);
       })
@@ -24,7 +24,7 @@ const TableUser = () => {
 
   useEffect(() => {
     if (token) {
-      handleGetAllUsers(token);
+      handleGetAllUsers();
     }
   }, [token]);
 
@@ -34,15 +34,12 @@ const TableUser = () => {
       return;
     }
 
-    const value = {
-      id: userId,
-      enabled: !currentEnabled,
-    };
+    const nextEnabled = !currentEnabled;
 
-    changeUserStatus(token, value)
+    changeUserStatus(userId, nextEnabled)
       .then(() => {
-        handleGetAllUsers(token);
-        toast.success(`Account for ${email} has been ${value.enabled ? "enabled" : "disabled"}`);
+        handleGetAllUsers();
+        toast.success(`Account for ${email} has been ${nextEnabled ? "enabled" : "disabled"}`);
       })
       .catch((err) => console.log(err));
   };
@@ -53,14 +50,9 @@ const TableUser = () => {
       return;
     }
 
-    const value = {
-      id: userId,
-      role: newRole,
-    };
-
-    changeUserRole(token, value)
+    changeUserRole(userId, newRole)
       .then(() => {
-        handleGetAllUsers(token);
+        handleGetAllUsers();
         toast.success(`Role for ${email} updated to ${newRole}`);
       })
       .catch((err) => console.log(err));
